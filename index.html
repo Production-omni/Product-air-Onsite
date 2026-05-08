@@ -753,6 +753,17 @@
             return dateStr;
         }
 
+        // Hàm format riêng cho xuất Excel (chuẩn MM/DD/YYYY)
+        function formatDateForExport(dateStr) {
+            if (!dateStr) return '';
+            // Kiểm tra nếu đang là định dạng YYYY-MM-DD trong database
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+                const parts = dateStr.split('-');
+                return `${parts[1]}/${parts[2]}/${parts[0]}`; // Đổi thành MM/DD/YYYY
+            }
+            return dateStr;
+        }
+
         function getLocalDateStr(d) {
             return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
         }
@@ -1453,14 +1464,27 @@
         window.exportCSV = function() {
             if(tableData.length === 0) return alert("Không có dữ liệu!");
             let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Tình trạng chụp,Tình trạng retouch,Ghi chú,Phân loại\n";
-            tableData.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateToDisplay(r.ngayBatDau)}","${formatDateToDisplay(r.ngayNhan)}","${formatDateToDisplay(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${r.ttChup}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}"\n`; });
+            tableData.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${r.ttChup}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}"\n`; });
             downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         window.exportSummaryCSV = function() {
             const tbody = document.getElementById('summaryBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
             let csv = "\uFEFFTháng,Nơi mượn,Lô mượn,Bắt đầu mượn,Nhận hàng,Ngày mượn,Tổng ngày SX,Tình trạng,TT Chụp (Chưa/Tổng),TT Retouch (Chưa/Tổng),Ghi chú,Tổng SKU\n";
-            Array.from(tbody.querySelectorAll('tr')).forEach(tr => { csv += Array.from(tr.querySelectorAll('td')).map(td => { const input = td.querySelector('input'); const val = input ? input.value : td.innerText.trim(); return `"${val.replace(/"/g,'""')}"`; }).join(",") + "\n"; });
+            Array.from(tbody.querySelectorAll('tr')).forEach(tr => { 
+                csv += Array.from(tr.querySelectorAll('td')).map(td => { 
+                    const input = td.querySelector('input'); 
+                    let val = input ? input.value : td.innerText.trim(); 
+                    
+                    // Nếu giá trị xuất ra là ngày YYYY-MM-DD, đổi nó sang MM/DD/YYYY
+                    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+                        const parts = val.split('-');
+                        val = `${parts[1]}/${parts[2]}/${parts[0]}`;
+                    }
+                    
+                    return `"${val.replace(/"/g,'""')}"`; 
+                }).join(",") + "\n"; 
+            });
             downloadCSV(csv, `PNJ_Report_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
