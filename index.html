@@ -540,7 +540,7 @@
             
             <!-- START: VIDEO DASHBOARD (NEW) -->
             <!-- KPI Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- KPI Năm -->
                 <div class="bg-[#1C3B5E] text-white rounded-xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
                     <div class="absolute right-[-20px] bottom-[-20px] opacity-10"><i class="fas fa-video fa-6x"></i></div>
@@ -560,29 +560,14 @@
                     </div>
                 </div>
 
-                <!-- KPI Quý Target -->
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 flex flex-col justify-center items-center relative">
-                    <div class="flex items-center gap-2 mb-2 text-emerald-600 font-bold text-sm cursor-pointer hover:bg-gray-50 px-3 py-1 rounded-lg transition-colors border border-transparent hover:border-gray-200 relative group">
-                        <i class="fas fa-check-circle"></i> 
-                        <select id="video-quarter-select" onchange="updateVideoQuarter(this.value)" class="bg-transparent font-bold text-emerald-600 outline-none cursor-pointer appearance-none pr-4">
-                            <option value="1">KPI QUÝ 1</option>
-                            <option value="2" selected>KPI QUÝ 2</option>
-                            <option value="3">KPI QUÝ 3</option>
-                            <option value="4">KPI QUÝ 4</option>
-                        </select>
-                        <i class="fas fa-chevron-down absolute right-2 top-1/2 transform -translate-y-1/2 text-xs"></i>
-                    </div>
-                    <span class="text-5xl font-black text-[#1C3B5E]">120</span>
-                </div>
-
-                <!-- KPI Quý Actual -->
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 flex flex-col justify-center items-center">
-                    <h3 id="label-video-q-actual" class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                        <i class="fas fa-video text-pnjGold"></i> Tổng Đã Quay (Q2)
+                <!-- Tổng Actual -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 flex flex-col justify-center items-center relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 w-2 h-full bg-pnjGold transition-all group-hover:w-3"></div>
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                        <i class="fas fa-video text-pnjGold"></i> Tổng Đã Quay
                     </h3>
                     <div class="flex items-center gap-4">
-                        <span id="kpi-video-q-actual" class="text-5xl font-black text-pnjGold">0</span>
-                        <span id="kpi-video-q-pct" class="bg-[#Fdf6E3] text-[#B8860B] px-3 py-1 rounded-lg text-sm font-bold border border-[#F5E6B3]">0% Quý 2</span>
+                        <span id="kpi-video-total-actual" class="text-6xl font-black text-pnjBlue">0</span>
                     </div>
                 </div>
             </div>
@@ -707,6 +692,8 @@
     <datalist id="ttChupList"><option value="Done chụp"><option value="0"></datalist>
     <datalist id="ttRetouchList"><option value="Done - đã retouch"><option value="0"></datalist>
     <datalist id="phanLoaiList"><option value="Hàng 2025"><option value="Hàng 2026"></datalist>
+    <datalist id="ttQuayList"><option value="Đã xong"><option value="Đang quay"><option value="Chưa quay"></datalist>
+    <datalist id="ttDungList"><option value="Đã xong"><option value="Đang dựng"><option value="Chưa dựng"></datalist>
 
     <!-- START: FIREBASE CLOUD STORAGE SCRIPT -->
     <script type="module">
@@ -859,7 +846,6 @@
         var imageManualRetouchEnds = {}; 
         var chartDoneInstance = null;
         var chartVideoInstance = null;
-        var currentVideoQuarter = 2; // Default Q2
 
         // UI toggles
         function togglePendingDetails() {
@@ -1157,12 +1143,15 @@
         window.renderVideoTable = function() {
             const tbody = document.getElementById('videoSummaryBody'); if(!tbody) return;
             tbody.innerHTML = videoData.map(row => {
-                let tQClass = (row.ttQuay || '').toLowerCase().includes('xong') || (row.ttQuay || '').toLowerCase().includes('done') 
+                let tQVal = (row.ttQuay || '').toLowerCase();
+                let tQClass = tQVal.includes('xong') || tQVal.includes('done') 
                               ? 'text-[#B8860B] font-bold bg-[#Fdf6E3]' 
-                              : 'text-gray-600 bg-gray-50';
-                let tDClass = (row.ttDung || '').toLowerCase().includes('đang') 
+                              : (tQVal.includes('đang') ? 'text-[#1C3B5E] font-bold bg-[#E8F0FE]' : 'text-gray-600 bg-gray-50');
+
+                let tDVal = (row.ttDung || '').toLowerCase();
+                let tDClass = tDVal.includes('đang') 
                               ? 'text-[#1C3B5E] font-bold bg-[#E8F0FE]'
-                              : ((row.ttDung || '').toLowerCase().includes('xong') || (row.ttDung || '').toLowerCase().includes('done') 
+                              : (tDVal.includes('xong') || tDVal.includes('done') 
                                   ? 'text-[#B8860B] font-bold bg-[#Fdf6E3]' 
                                   : 'text-gray-600 bg-gray-50');
 
@@ -1172,22 +1161,16 @@
                     <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${row.month}" onchange="updateVideoCell('${row.id}', 'month', this.value)" class="text-center font-bold text-gray-700 bg-transparent border-none"></td>
                     <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loVideo || ''}" onchange="updateVideoCell('${row.id}', 'loVideo', this.value)" class="font-bold text-[#1C3B5E] bg-transparent border-none" placeholder="VD: Video-Jan"></td>
                     <td class="px-1 py-1 border-r border-gray-100 w-24"><input type="number" value="${row.slThucTe || ''}" onchange="updateVideoCell('${row.id}', 'slThucTe', this.value)" class="text-center font-bold text-red-500 bg-transparent border-none" placeholder="0"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttQuay || ''}" onchange="updateVideoCell('${row.id}', 'ttQuay', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tQClass}" placeholder="VD: Đã xong"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttDung || ''}" onchange="updateVideoCell('${row.id}', 'ttDung', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tDClass}" placeholder="VD: Đang dựng"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttQuay || ''}" list="ttQuayList" onchange="updateVideoCell('${row.id}', 'ttQuay', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tQClass}" placeholder="VD: Đã xong"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttDung || ''}" list="ttDungList" onchange="updateVideoCell('${row.id}', 'ttDung', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tDClass}" placeholder="VD: Đang dựng"></td>
                     <td class="px-1 py-1"><input type="text" value="${row.ghiChu || ''}" onchange="updateVideoCell('${row.id}', 'ghiChu', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..."></td>
                 </tr>`;
             }).join('');
             renderVideoDashboard();
         }
 
-        window.updateVideoQuarter = function(q) {
-            currentVideoQuarter = parseInt(q);
-            renderVideoDashboard();
-        }
-
         function renderVideoDashboard() {
             let yearlyTotal = 0;
-            let quarterlyTotal = 0;
             let monthlyData = {};
 
             for(let i=1; i<=12; i++) {
@@ -1201,11 +1184,6 @@
 
                 yearlyTotal += sl;
                 monthlyData[m].count += sl;
-                
-                let q = Math.floor((m - 1) / 3) + 1;
-                if(q === currentVideoQuarter) {
-                    quarterlyTotal += sl;
-                }
             });
 
             let yearPct = Math.min(100, Math.round((yearlyTotal / 480) * 100));
@@ -1214,13 +1192,8 @@
             const yearBarEl = document.getElementById('kpi-video-year-bar');
             if (yearBarEl) yearBarEl.style.width = `${yearPct}%`;
 
-            const labelActual = document.getElementById('label-video-q-actual');
-            if (labelActual) labelActual.innerHTML = `<i class="fas fa-video text-pnjGold"></i> Tổng Đã Quay (Q${currentVideoQuarter})`;
-            const kpiActual = document.getElementById('kpi-video-q-actual');
-            if (kpiActual) kpiActual.innerText = quarterlyTotal;
-            let qPct = Math.min(100, Math.round((quarterlyTotal / 120) * 100));
-            const kpiPct = document.getElementById('kpi-video-q-pct');
-            if (kpiPct) kpiPct.innerText = `${qPct}% Quý ${currentVideoQuarter}`;
+            const kpiTotalActual = document.getElementById('kpi-video-total-actual');
+            if (kpiTotalActual) kpiTotalActual.innerText = yearlyTotal;
 
             let chartLabels = [];
             let chartValues = [];
