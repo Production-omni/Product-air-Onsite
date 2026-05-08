@@ -45,13 +45,13 @@
         .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .table-container::-webkit-scrollbar-thumb:hover { background: #003366; }
         
-        input, select {
+        input, select, textarea {
             width: 100%; background: transparent; border: 1px solid transparent;
             padding: 8px 10px; border-radius: 6px; outline: none;
             text-overflow: ellipsis; transition: all 0.2s ease; font-size: 0.875rem;
         }
-        input:hover, select:hover { background: #f8fafc; border-color: #e2e8f0; }
-        input:focus, select:focus { border-color: #D4AF37; background: white; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
+        input:hover, select:hover, textarea:hover { background: #f8fafc; border-color: #e2e8f0; }
+        input:focus, select:focus, textarea:focus { border-color: #D4AF37; background: white; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
         
         .sticky-col { position: sticky; left: 0; background-color: white; z-index: 10; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
         th.sticky-col { background-color: #003366; z-index: 20; }
@@ -110,7 +110,7 @@
     <div class="w-full px-4 md:px-6 py-6 mx-auto max-w-[1600px]">
         
         <!-- Navigation Tabs Style PNJ -->
-        <div class="mb-8 bg-white rounded-xl shadow-sm border border-gray-200 p-2 overflow-x-auto">
+        <div class="mb-4 bg-white rounded-xl shadow-sm border border-gray-200 p-2 overflow-x-auto">
             <nav class="flex space-x-2 min-w-max" aria-label="Tabs">
                 <button onclick="switchTab('tab-report')" id="btn-tab-report" class="bg-pnjBlue text-white py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-md">
                     <i class="fas fa-chart-pie text-pnjGold"></i> Report
@@ -133,11 +133,11 @@
 
         <!-- ==================== TAB 1: REPORT DASHBOARD ==================== -->
         <div id="tab-report">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-4 items-center">
-                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-2"></i> Lọc Báo Cáo:</span>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-3 items-center">
+                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
                 
                 <div class="relative inline-block text-left" id="wrap-filter-report-month">
-                    <button onclick="toggleFilterDropdown('dropdown-report-month')" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-gray-50 hover:bg-white flex items-center justify-between min-w-[150px] transition-all">
+                    <button onclick="toggleFilterDropdown('dropdown-report-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm text-gray-700 bg-gray-50 hover:bg-white flex items-center justify-between min-w-[130px] transition-all">
                         <span id="label-report-month" class="truncate font-medium">Tất cả Tháng</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                     </button>
                     <div id="dropdown-report-month" class="hidden absolute z-50 mt-1 w-56 bg-white shadow-xl rounded-lg border border-gray-100 top-full left-0">
@@ -147,7 +147,7 @@
                 </div>
 
                 <div class="relative inline-block text-left" id="wrap-filter-report-noiMuon">
-                    <button onclick="toggleFilterDropdown('dropdown-report-noiMuon')" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-gray-50 hover:bg-white flex items-center justify-between min-w-[170px] transition-all">
+                    <button onclick="toggleFilterDropdown('dropdown-report-noiMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm text-gray-700 bg-gray-50 hover:bg-white flex items-center justify-between min-w-[150px] transition-all">
                         <span id="label-report-noiMuon" class="truncate font-medium">Tất cả Nơi mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                     </button>
                     <div id="dropdown-report-noiMuon" class="hidden absolute z-50 mt-1 w-56 bg-white shadow-xl rounded-lg border border-gray-100 top-full left-0">
@@ -156,8 +156,16 @@
                     </div>
                 </div>
 
+                <div class="w-px h-6 bg-gray-300 mx-1 hidden md:block"></div>
+                
+                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
+                <div class="flex-grow min-w-[150px] max-w-xs relative">
+                    <textarea id="sku-input-report" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-2 py-1.5 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[34px]" placeholder="Dán mã SKU..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter('sku-input-report');}"></textarea>
+                </div>
+                <button onclick="window.applyGlobalSkuFilter('sku-input-report')" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
+
                 <div class="flex-grow"></div>
-                <button onclick="clearReportFilters()" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-4 py-2 transition-colors border border-red-100"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
+                <button onclick="clearReportFilters(); window.clearGlobalSkuFilter();" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -308,10 +316,10 @@
                     </div>
                 </div>
                 
-                <div class="bg-gray-50 p-4 border-b border-gray-200 flex flex-wrap gap-4 items-center">
-                    <span class="text-sm font-bold text-pnjBlue uppercase"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc dữ liệu:</span>
+                <div class="bg-gray-50 p-4 border-b border-gray-200 flex flex-wrap gap-3 items-center">
+                    <span class="text-sm font-bold text-pnjBlue uppercase"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
                     <div class="relative inline-block text-left" id="wrap-filter-month">
-                        <button onclick="toggleFilterDropdown('dropdown-month')" class="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
+                        <button onclick="toggleFilterDropdown('dropdown-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[120px]">
                             <span id="label-month" class="truncate font-medium">Tất cả Tháng</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                         </button>
                         <div id="dropdown-month" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
@@ -320,7 +328,7 @@
                         </div>
                     </div>
                     <div class="relative inline-block text-left" id="wrap-filter-noiMuon">
-                        <button onclick="toggleFilterDropdown('dropdown-noiMuon')" class="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[160px]">
+                        <button onclick="toggleFilterDropdown('dropdown-noiMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
                             <span id="label-noiMuon" class="truncate font-medium">Tất cả Nơi mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                         </button>
                         <div id="dropdown-noiMuon" class="hidden absolute z-50 mt-1 w-56 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
@@ -329,7 +337,7 @@
                         </div>
                     </div>
                     <div class="relative inline-block text-left" id="wrap-filter-ttMuon">
-                        <button onclick="toggleFilterDropdown('dropdown-ttMuon')" class="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[160px]">
+                        <button onclick="toggleFilterDropdown('dropdown-ttMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
                             <span id="label-ttMuon" class="truncate font-medium">Tất cả TT Mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                         </button>
                         <div id="dropdown-ttMuon" class="hidden absolute z-50 mt-1 w-64 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
@@ -337,7 +345,16 @@
                             <div id="list-ttMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                         </div>
                     </div>
-                    <button onclick="clearSummaryFilters()" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
+                    
+                    <div class="w-px h-6 bg-gray-300 mx-1 hidden lg:block"></div>
+                    
+                    <span class="text-sm font-bold text-pnjBlue uppercase"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
+                    <div class="flex-grow min-w-[130px] max-w-xs relative">
+                        <textarea id="sku-input-summary" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-2 py-1.5 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[34px]" placeholder="Dán mã SKU..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter('sku-input-summary');}"></textarea>
+                    </div>
+                    <button onclick="window.applyGlobalSkuFilter('sku-input-summary')" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
+
+                    <button onclick="clearSummaryFilters(); window.clearGlobalSkuFilter();" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
                 </div>
 
                 <div class="overflow-x-auto table-container max-h-[65vh]">
@@ -369,11 +386,11 @@
 
         <!-- ==================== TAB 3: HÌNH ẢNH ==================== -->
         <div id="tab-image" class="hidden">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-4 items-center">
-                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-2"></i> Lọc Tiến Độ:</span>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-3 items-center">
+                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
                 
                 <div class="relative inline-block text-left" id="wrap-filter-img-month">
-                    <button onclick="toggleFilterDropdown('dropdown-img-month')" class="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[140px] flex justify-between items-center">
+                    <button onclick="toggleFilterDropdown('dropdown-img-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[120px] flex justify-between items-center">
                         <span id="label-img-month" class="truncate font-medium">Tất cả Tháng</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                     </button>
                     <div id="dropdown-img-month" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-xl rounded-lg border border-gray-200 top-full left-0">
@@ -383,7 +400,7 @@
                 </div>
                 
                 <div class="relative inline-block text-left" id="wrap-filter-img-noiMuon">
-                    <button onclick="toggleFilterDropdown('dropdown-img-noiMuon')" class="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[160px] flex justify-between items-center">
+                    <button onclick="toggleFilterDropdown('dropdown-img-noiMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[140px] flex justify-between items-center">
                         <span id="label-img-noiMuon" class="truncate font-medium">Tất cả Nơi mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                     </button>
                     <div id="dropdown-img-noiMuon" class="hidden absolute z-50 mt-1 w-56 bg-white shadow-xl rounded-lg border border-gray-200 top-full left-0">
@@ -393,7 +410,7 @@
                 </div>
                 
                 <div class="relative inline-block text-left" id="wrap-filter-img-loMuon">
-                    <button onclick="toggleFilterDropdown('dropdown-img-loMuon')" class="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[200px] flex justify-between items-center">
+                    <button onclick="toggleFilterDropdown('dropdown-img-loMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[160px] flex justify-between items-center">
                         <span id="label-img-loMuon" class="truncate font-medium">Tất cả Lô mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                     </button>
                     <div id="dropdown-img-loMuon" class="hidden absolute z-50 mt-1 w-72 bg-white shadow-xl rounded-lg border border-gray-200 top-full left-0">
@@ -405,13 +422,25 @@
                     </div>
                 </div>
                 
-                <label class="flex items-center space-x-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg border border-red-100 font-bold cursor-pointer hover:bg-red-100 transition-colors shadow-sm ml-2">
-                    <input type="checkbox" id="filter-img-late" onchange="renderImageTrackingTable()" class="rounded text-red-600 focus:ring-red-500 w-4 h-4 cursor-pointer">
-                    <i class="fas fa-exclamation-circle"></i><span>Chỉ hiện lô trễ hạn</span>
+                <label class="flex items-center space-x-1 text-xs text-red-600 bg-red-50 px-2 py-1.5 rounded border border-red-100 font-bold cursor-pointer hover:bg-red-100 transition-colors shadow-sm ml-1">
+                    <input type="checkbox" id="filter-img-late" onchange="window.renderImageTrackingTable()" class="rounded text-red-600 focus:ring-red-500 w-3 h-3 cursor-pointer">
+                    <i class="fas fa-exclamation-circle"></i><span>Trễ hạn</span>
                 </label>
                 
+                <button onclick="window.downloadLateSKUs()" class="flex items-center space-x-1 text-xs text-white bg-red-500 hover:bg-red-600 px-2 py-1.5 rounded border border-red-600 font-bold transition-colors shadow-sm ml-1" title="Tải danh sách các mã SKU chưa hoàn thành trong các lô trễ hạn">
+                    <i class="fas fa-download"></i><span>Tải mã trễ</span>
+                </button>
+                
+                <div class="w-full xl:w-px xl:h-6 xl:bg-gray-300 xl:mx-1"></div>
+
+                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider hidden xl:block"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
+                <div class="flex-grow min-w-[130px] max-w-xs relative">
+                    <textarea id="sku-input-image" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-2 py-1.5 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[34px]" placeholder="Dán mã SKU..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter('sku-input-image');}"></textarea>
+                </div>
+                <button onclick="window.applyGlobalSkuFilter('sku-input-image')" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
+
                 <div class="flex-grow"></div>
-                <button onclick="clearImageFilters()" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-4 py-2 transition-colors border border-red-100">Xóa lọc</button>
+                <button onclick="window.clearImageFilters(); window.clearGlobalSkuFilter();" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100">Xóa lọc</button>
             </div>
 
             <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6 hidden">
@@ -558,10 +587,20 @@
                 <button onclick="addNewRow()" class="bg-pnjBlue/10 text-pnjBlue hover:bg-pnjBlue/20 px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Dòng</button>
                 <button onclick="saveData()" class="bg-pnjGold text-white hover:bg-pnjGoldLight px-6 py-2.5 rounded-lg font-bold shadow-md flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
                 <div class="w-px h-8 bg-gray-300 mx-2 hidden md:block"></div>
-                <label class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg font-semibold cursor-pointer flex items-center gap-2">
+                <label class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold cursor-pointer flex items-center gap-2">
                     <i class="fas fa-upload text-pnjBlue"></i> Nhập CSV<input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="importCSV(event)">
                 </label>
-                <button onclick="exportCSV()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-download text-pnjBlue"></i> Xuất CSV</button>
+                <button onclick="exportCSV()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-download text-pnjBlue"></i> Xuất CSV</button>
+                
+                <div class="w-px h-8 bg-gray-300 mx-2 hidden lg:block"></div>
+                
+                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider hidden xl:block"><i class="fas fa-search text-pnjGold mr-1"></i> Lọc SKU:</span>
+                <div class="flex-grow min-w-[150px] max-w-sm relative">
+                    <textarea id="sku-input-db" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-2 py-2 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[38px]" placeholder="Dán các mã SKU cần tìm..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter('sku-input-db');}"></textarea>
+                </div>
+                <button onclick="window.applyGlobalSkuFilter('sku-input-db')" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-2 rounded-lg font-semibold transition-colors">Tìm</button>
+                <button onclick="window.clearGlobalSkuFilter()" class="bg-gray-100 text-gray-700 hover:bg-gray-200 px-3 py-2 rounded-lg font-semibold transition-colors" title="Xóa tìm kiếm SKU"><i class="fas fa-times"></i></button>
+
                 <div class="flex-grow"></div>
                 <button onclick="clearAllData()" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2.5 rounded-lg font-semibold border border-red-100">Xóa toàn bộ</button>
             </div>
@@ -759,6 +798,55 @@
         var imageManualRetouchEnds = {}; 
         var chartDoneInstance = null;
         var chartVideoInstance = null;
+        
+        // Cấu hình mảng lọc SKU toàn cục
+        window.globalSkuFilterArray = [];
+
+        window.applyGlobalSkuFilter = function(inputId) {
+            let val = '';
+            if (inputId) {
+                let el = document.getElementById(inputId);
+                if(el) val = el.value;
+            } else {
+                ['sku-input-report', 'sku-input-summary', 'sku-input-image', 'sku-input-db'].forEach(id => {
+                    let el = document.getElementById(id);
+                    if (el && el.value) val = el.value;
+                });
+            }
+
+            if (!val || !val.trim()) {
+                window.globalSkuFilterArray = [];
+            } else {
+                window.globalSkuFilterArray = val.split(/[\s,]+/).map(s => s.trim()).filter(s => s.length > 0);
+            }
+            
+            let textVal = window.globalSkuFilterArray.join(', ');
+            ['sku-input-report', 'sku-input-summary', 'sku-input-image', 'sku-input-db'].forEach(id => {
+                let el = document.getElementById(id);
+                if(el) el.value = textVal;
+            });
+            
+            // Tìm tab đang mở để render lại
+            let activeTabId = ['tab-report', 'tab-summary', 'tab-image', 'tab-video', 'tab-database'].find(id => {
+                let el = document.getElementById(id);
+                return el && !el.classList.contains('hidden');
+            });
+            if (activeTabId) window.switchTab(activeTabId.replace('tab-', 'tab-'));
+        }
+
+        window.clearGlobalSkuFilter = function() {
+            window.globalSkuFilterArray = [];
+            ['sku-input-report', 'sku-input-summary', 'sku-input-image', 'sku-input-db'].forEach(id => {
+                let el = document.getElementById(id);
+                if(el) el.value = '';
+            });
+            
+            let activeTabId = ['tab-report', 'tab-summary', 'tab-image', 'tab-video', 'tab-database'].find(id => {
+                let el = document.getElementById(id);
+                return el && !el.classList.contains('hidden');
+            });
+            if (activeTabId) window.switchTab(activeTabId.replace('tab-', 'tab-'));
+        }
 
         // Logic xử lý Flow mượn hàng
         window.calculateFlowTotal = function() {
@@ -845,7 +933,7 @@
             if(activeBtn) activeBtn.className = "bg-pnjBlue text-white py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-md";
 
             if(tabId === 'tab-summary') { populateSummaryFilters(); window.renderSummary(); window.loadFlowSettings(); }
-            else if (tabId === 'tab-report') { populateReportFilters(); renderReport(); }
+            else if (tabId === 'tab-report') { populateReportFilters(); window.renderReport(); }
             else if (tabId === 'tab-video') { window.renderVideoTable(); }
             else if (tabId === 'tab-image') { populateImageFilters(); window.renderImageTrackingTable(); }
             else if (tabId === 'tab-database') { window.renderTable(); }
@@ -1036,7 +1124,7 @@
         window.toggleAllCheckboxes = function(fullType, isChecked) {
             document.querySelectorAll(`.cb-${fullType}`).forEach(cb => cb.checked = isChecked);
             updateFilterLabel(fullType);
-            if(fullType.startsWith('report-')) renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else window.renderSummary();
+            if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else window.renderSummary();
         }
 
         window.handleCheckboxChange = function(fullType) {
@@ -1044,7 +1132,7 @@
             const selectAllBtn = document.getElementById(`selectAll-${fullType}`);
             if(selectAllBtn) selectAllBtn.checked = Array.from(cbs).every(cb => cb.checked);
             updateFilterLabel(fullType);
-            if(fullType.startsWith('report-')) renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else window.renderSummary();
+            if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else window.renderSummary();
         }
 
         function updateFilterLabel(fullType) {
@@ -1076,7 +1164,11 @@
         function populateSummaryFilters() {
             const curMonth = getFilterState('month'); const curNoi = getFilterState('noiMuon'); const curTT = getFilterState('ttMuon');
             const months = new Set(); const nois = new Set(); const tts = new Set();
-            tableData.forEach(row => { if (!row.sku && !row.loMuon && !row.noiMuon) return; months.add(row.month || 'Trống'); nois.add(row.noiMuon || 'Trống'); tts.add(row.ttMuon || 'Trống'); });
+            tableData.forEach(row => { 
+                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
+                if (!row.sku && !row.loMuon && !row.noiMuon) return; 
+                months.add(row.month || 'Trống'); nois.add(row.noiMuon || 'Trống'); tts.add(row.ttMuon || 'Trống'); 
+            });
             buildFilterDropdown(months, 'month', curMonth); buildFilterDropdown(nois, 'noiMuon', curNoi); buildFilterDropdown(tts, 'ttMuon', curTT);
         }
         window.clearSummaryFilters = function() { ['month', 'noiMuon', 'ttMuon'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
@@ -1084,7 +1176,11 @@
         function populateReportFilters() {
             const curMonth = getFilterState('report-month'); const curNoi = getFilterState('report-noiMuon');
             const months = new Set(); const nois = new Set();
-            tableData.forEach(row => { if (!row.sku && !row.loMuon && !row.noiMuon) return; months.add(row.month || 'Trống'); nois.add(row.noiMuon || 'Trống'); });
+            tableData.forEach(row => { 
+                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
+                if (!row.sku && !row.loMuon && !row.noiMuon) return; 
+                months.add(row.month || 'Trống'); nois.add(row.noiMuon || 'Trống'); 
+            });
             buildFilterDropdown(months, 'report-month', curMonth); buildFilterDropdown(nois, 'report-noiMuon', curNoi);
         }
         window.clearReportFilters = function() { ['report-month', 'report-noiMuon'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
@@ -1092,7 +1188,11 @@
         function populateImageFilters() {
             const curMonth = getFilterState('img-month'); const curNoi = getFilterState('img-noiMuon'); const curLo = getFilterState('img-loMuon');
             const months = new Set(); const nois = new Set(); const los = new Set();
-            tableData.forEach(row => { if (!row.loMuon) return; months.add(row.month || 'Trống'); nois.add(row.noiMuon || 'Trống'); los.add(row.loMuon); });
+            tableData.forEach(row => { 
+                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
+                if (!row.loMuon) return; 
+                months.add(row.month || 'Trống'); nois.add(row.noiMuon || 'Trống'); los.add(row.loMuon); 
+            });
             buildFilterDropdown(months, 'img-month', curMonth); buildFilterDropdown(nois, 'img-noiMuon', curNoi); buildFilterDropdown(los, 'img-loMuon', curLo);
         }
         window.clearImageFilters = function() { 
@@ -1157,7 +1257,13 @@
 
         window.renderTable = function() {
             const tbody = document.getElementById('tableBody'); if(!tbody) return;
-            tbody.innerHTML = tableData.map(row => {
+            
+            let dataToRender = tableData;
+            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
+                dataToRender = tableData.filter(row => window.globalSkuFilterArray.includes(row.sku));
+            }
+
+            tbody.innerHTML = dataToRender.map(row => {
                 const calculatedDays = calculateDays(row.ngayBatDau, row.ngayNhan);
                 return `
                     <tr class="hover:bg-gray-50 transition-colors group bg-white">
@@ -1178,7 +1284,7 @@
                     </tr>`;
             }).join('');
             const totalCount = document.getElementById('totalRowsCount');
-            if (totalCount) totalCount.innerText = tableData.length.toLocaleString();
+            if (totalCount) totalCount.innerText = dataToRender.length.toLocaleString();
         }
 
         window.renderVideoTable = function() {
@@ -1240,6 +1346,15 @@
             const getV = (type) => Array.from(document.querySelectorAll(`.cb-img-${type}:checked`)).map(cb => cb.value);
             const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon');
 
+            let targetGroupKeys = new Set();
+            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
+                tableData.forEach(row => {
+                    if (window.globalSkuFilterArray.includes(row.sku)) {
+                        targetGroupKeys.add(row.ngayNhan);
+                    }
+                });
+            }
+
             let dailyGroups = {};
             tableData.forEach(row => {
                 if (!row.ngayNhan) return; 
@@ -1298,8 +1413,15 @@
                 return { ...g, manualKey, sKHO, eKHO, sNVT, eNVT, sOther, eOther, startChup: finalStartChup, endChup: finalEndChup, startRetouch: asR, endRetouch: aeR, tCD, tRD, isChupLate, isRetouchLate };
             });
 
+            // Lưu lại dữ liệu Gantt hiện tại để dùng cho tính năng tải SKU trễ hạn
+            window.currentGanttData = processedGanttData;
+
             const showOnlyLate = document.getElementById('filter-img-late')?.checked;
             if (showOnlyLate) { processedGanttData = processedGanttData.filter(g => g.isChupLate || g.isRetouchLate); }
+
+            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
+                processedGanttData = processedGanttData.filter(g => targetGroupKeys.has(g.groupKey));
+            }
 
             processedGanttData.forEach(g => {
                 let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0">${i.loMuon}</div>`).join('') || '-';
@@ -1322,7 +1444,7 @@
                         <td class="px-2 py-2 text-center"><button onclick="downloadSpecificSKUs('${g.ids.join(',')}', '${g.ngayNhan}')" class="bg-gray-100 hover:bg-pnjBlue hover:text-white text-pnjBlue p-2 rounded transition-colors shadow-sm" title="Tải mã SKU 13 của lô này"><i class="fas fa-file-csv"></i></button></td>
                     </tr>`;
             });
-            tbody.innerHTML = html || '<tr><td colspan="12" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu phù hợp (Cần có Ngày nhận hàng trong Database).</td></tr>';
+            tbody.innerHTML = html || '<tr><td colspan="12" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu phù hợp.</td></tr>';
 
             window.renderGanttChart(processedGanttData);
         }
@@ -1411,6 +1533,7 @@
             let groups = {}; let grandTotal = 0;
             
             tableData.forEach(row => {
+                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
                 if (!row.sku && !row.loMuon && !row.noiMuon) return; 
                 const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const tt = row.ttMuon || 'Trống';
                 if (!mF.includes(m.toString()) || !nF.includes(n) || !tF.includes(tt)) return;
@@ -1449,11 +1572,12 @@
             const sgt = document.getElementById('summaryGrandTotal'); if (sgt) sgt.innerText = grandTotal.toLocaleString();
         }
 
-        function renderReport() {
+        window.renderReport = function() {
             const getV = (t) => Array.from(document.querySelectorAll(`.cb-report-${t}:checked`)).map(cb => cb.value);
             const mF = getV('month'); const nF = getV('noiMuon');
             let tMD = 0, tCD = 0, tRD = 0; let mD = {};
             tableData.forEach(row => {
+                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
                 if (!row.sku && !row.loMuon && !row.noiMuon) return;
                 const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống';
                 if (!mF.includes(m.toString()) || !nF.includes(n)) return;
@@ -1584,9 +1708,14 @@
         }
 
         window.exportCSV = function() {
-            if(tableData.length === 0) return alert("Không có dữ liệu!");
+            let dataToExport = tableData;
+            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
+                dataToExport = tableData.filter(row => window.globalSkuFilterArray.includes(row.sku));
+            }
+            if(dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
+            
             let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Tình trạng chụp,Tình trạng retouch,Ghi chú,Phân loại\n";
-            tableData.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${r.ttChup}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}"\n`; });
+            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${r.ttChup}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}"\n`; });
             downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
@@ -1597,13 +1726,10 @@
                 csv += Array.from(tr.querySelectorAll('td')).map(td => { 
                     const input = td.querySelector('input'); 
                     let val = input ? input.value : td.innerText.trim(); 
-                    
-                    // Nếu giá trị xuất ra là ngày YYYY-MM-DD, đổi nó sang MM/DD/YYYY
                     if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
                         const parts = val.split('-');
                         val = `${parts[1]}/${parts[2]}/${parts[0]}`;
                     }
-                    
                     return `"${val.replace(/"/g,'""')}"`; 
                 }).join(",") + "\n"; 
             });
@@ -1617,6 +1743,51 @@
             let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Tình trạng chụp,Tình trạng retouch,Ghi chú\n";
             rowsToExport.forEach(r => { csv += `"${r.sku || ''}","${r.loMuon || ''}","${r.noiMuon || ''}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`; });
             downloadCSV(csv, `DanhSachSKU_${dateLabel}.csv`);
+        }
+
+        window.downloadLateSKUs = function() {
+            if (!window.currentGanttData || window.currentGanttData.length === 0) {
+                return alert("Không có dữ liệu trên bảng tiến độ!");
+            }
+
+            let lateSKURows = [];
+
+            window.currentGanttData.forEach(g => {
+                if (g.isChupLate || g.isRetouchLate) {
+                    // Lọc ra các dòng thuộc lô này
+                    let rowsInGroup = tableData.filter(r => g.ids.includes(r.id));
+                    
+                    rowsInGroup.forEach(r => {
+                        let cDone = r.ttChup && r.ttChup.toLowerCase().includes('done');
+                        let rDone = r.ttRetouch && r.ttRetouch.toLowerCase().includes('done');
+                        
+                        let isThisRowLateChup = g.isChupLate && !cDone;
+                        let isThisRowLateRetouch = g.isRetouchLate && !rDone;
+                        
+                        // Chỉ lấy những mã thực sự chưa xong
+                        if (isThisRowLateChup || isThisRowLateRetouch) {
+                            let status = [];
+                            if (isThisRowLateChup) status.push("Trễ Chụp");
+                            if (isThisRowLateRetouch) status.push("Trễ Retouch");
+                            
+                            lateSKURows.push({
+                                ...r,
+                                lateStatus: status.join(', ')
+                            });
+                        }
+                    });
+                }
+            });
+
+            if (lateSKURows.length === 0) {
+                return alert("Tuyệt vời! Không có mã SKU nào đang bị trễ hạn trong danh sách hiện tại.");
+            }
+
+            let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Ngày nhận,Tình trạng trễ,TT Chụp,TT Retouch,Ghi chú\n";
+            lateSKURows.forEach(r => {
+                csv += `"${r.sku || ''}","${r.loMuon || ''}","${r.noiMuon || ''}","${formatDateForExport(r.ngayNhan)}","${r.lateStatus}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`;
+            });
+            downloadCSV(csv, `DanhSachSKU_TreHan_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         function downloadCSV(content, filename) { const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = filename; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
