@@ -218,6 +218,87 @@
 
         <!-- ==================== TAB 2: SUMMARY ==================== -->
         <div id="tab-summary" class="hidden">
+            
+            <!-- START: MODULE FLOW MƯỢN HÀNG -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6">
+                <h3 class="font-bold text-pnjBlue text-lg uppercase mb-4"><i class="fas fa-project-diagram mr-2 text-pnjGold"></i> Flow Thời Gian Mượn Hàng</h3>
+                
+                <div class="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-3">
+                    
+                    <!-- Step 1 -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
+                        <p class="font-bold text-sm text-pnjBlue mb-1">1. Check tồn</p>
+                        <p class="text-[10px] text-gray-500 mb-2 uppercase">(Thứ 2 hàng tuần)</p>
+                        <div class="flex items-center justify-center gap-1 text-xs">
+                            <input type="number" id="flow-min-1" value="1" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                            <span class="text-gray-400">-</span>
+                            <input type="number" id="flow-max-1" value="1" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden md:block"></i><i class="fas fa-arrow-down text-gray-300 md:hidden py-1"></i>
+
+                    <!-- Step 2 -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
+                        <p class="font-bold text-sm text-pnjBlue mb-1">2. Trình EO</p>
+                        <p class="text-[10px] text-gray-500 mb-2 uppercase">(Đề xuất mượn)</p>
+                        <div class="flex items-center justify-center gap-1 text-xs">
+                            <input type="number" id="flow-min-2" value="3" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                            <span class="text-gray-400">-</span>
+                            <input type="number" id="flow-max-2" value="5" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden md:block"></i><i class="fas fa-arrow-down text-gray-300 md:hidden py-1"></i>
+
+                    <!-- Step 3 -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
+                        <p class="font-bold text-sm text-pnjBlue mb-1">3. Soạn hàng</p>
+                        <p class="text-[10px] text-transparent mb-2 select-none">.</p>
+                        <div class="flex items-center justify-center gap-1 text-xs">
+                            <input type="number" id="flow-min-3" value="5" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                            <span class="text-gray-400">-</span>
+                            <input type="number" id="flow-max-3" value="5" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden md:block"></i><i class="fas fa-arrow-down text-gray-300 md:hidden py-1"></i>
+
+                    <!-- Step 4 -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
+                        <p class="font-bold text-sm text-pnjBlue mb-1">4. KCS</p>
+                        <p class="text-[10px] text-gray-500 mb-2 uppercase">(Kiểm tra CL)</p>
+                        <div class="flex items-center justify-center gap-1 text-xs">
+                            <input type="number" id="flow-min-4" value="4" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                            <span class="text-gray-400">-</span>
+                            <input type="number" id="flow-max-4" value="7" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden md:block"></i><i class="fas fa-arrow-down text-gray-300 md:hidden py-1"></i>
+
+                    <!-- Step 5 -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
+                        <p class="font-bold text-sm text-pnjBlue mb-1">5. Nhận hàng</p>
+                        <p class="text-[10px] text-transparent mb-2 select-none">.</p>
+                        <div class="flex items-center justify-center gap-1 text-xs">
+                            <input type="number" id="flow-min-5" value="1" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                            <span class="text-gray-400">-</span>
+                            <input type="number" id="flow-max-5" value="1" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
+                        </div>
+                    </div>
+
+                    <!-- RESULT -->
+                    <div class="md:ml-2 bg-pnjBlue/5 border border-pnjBlue/20 rounded-xl p-4 text-center w-full md:w-auto shadow-inner min-w-[140px]">
+                        <p class="font-bold text-xs text-pnjBlue uppercase mb-1 whitespace-nowrap">Tổng Thời Gian</p>
+                        <div class="flex items-baseline justify-center gap-1">
+                            <span class="text-2xl font-black text-pnjGold" id="flow-total-min">14</span>
+                            <span class="text-gray-500 font-bold mx-1">-</span>
+                            <span class="text-2xl font-black text-pnjGold" id="flow-total-max">19</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-gray-500 uppercase mt-1">Ngày làm việc</p>
+                    </div>
+
+                </div>
+            </div>
+            <!-- END: MODULE FLOW MƯỢN HÀNG -->
+
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-white p-5 border-b border-gray-200 flex flex-col md:flex-row justify-between md:items-center gap-4">
                     <span class="font-bold text-pnjBlue text-lg uppercase"><i class="fas fa-layer-group mr-2 text-pnjGold"></i> Mượn hàng</span>
@@ -679,6 +760,47 @@
         var chartDoneInstance = null;
         var chartVideoInstance = null;
 
+        // Logic xử lý Flow mượn hàng
+        window.calculateFlowTotal = function() {
+            let totalMin = 0;
+            let totalMax = 0;
+            let flowData = {};
+            for (let i = 1; i <= 5; i++) {
+                let minEl = document.getElementById(`flow-min-${i}`);
+                let maxEl = document.getElementById(`flow-max-${i}`);
+                if(minEl && maxEl) {
+                    let minVal = parseInt(minEl.value) || 0;
+                    let maxVal = parseInt(maxEl.value) || 0;
+                    totalMin += minVal;
+                    totalMax += maxVal;
+                    flowData[`min${i}`] = minVal;
+                    flowData[`max${i}`] = maxVal;
+                }
+            }
+            const tMin = document.getElementById('flow-total-min');
+            const tMax = document.getElementById('flow-total-max');
+            if(tMin) tMin.innerText = totalMin;
+            if(tMax) tMax.innerText = totalMax;
+            
+            localStorage.setItem('pnj_flow_settings', JSON.stringify(flowData));
+        };
+
+        window.loadFlowSettings = function() {
+            try {
+                const saved = localStorage.getItem('pnj_flow_settings');
+                if (saved) {
+                    const flowData = JSON.parse(saved);
+                    for (let i = 1; i <= 5; i++) {
+                        let minEl = document.getElementById(`flow-min-${i}`);
+                        let maxEl = document.getElementById(`flow-max-${i}`);
+                        if (minEl && flowData[`min${i}`] !== undefined) minEl.value = flowData[`min${i}`];
+                        if (maxEl && flowData[`max${i}`] !== undefined) maxEl.value = flowData[`max${i}`];
+                    }
+                }
+            } catch(e) {}
+            window.calculateFlowTotal();
+        };
+
         function togglePendingDetails() {
             const details = document.getElementById('pending-m-details');
             const icon = document.getElementById('icon-pending-details');
@@ -722,7 +844,7 @@
             const activeBtn = document.getElementById('btn-' + tabId);
             if(activeBtn) activeBtn.className = "bg-pnjBlue text-white py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-md";
 
-            if(tabId === 'tab-summary') { populateSummaryFilters(); window.renderSummary(); }
+            if(tabId === 'tab-summary') { populateSummaryFilters(); window.renderSummary(); window.loadFlowSettings(); }
             else if (tabId === 'tab-report') { populateReportFilters(); renderReport(); }
             else if (tabId === 'tab-video') { window.renderVideoTable(); }
             else if (tabId === 'tab-image') { populateImageFilters(); window.renderImageTrackingTable(); }
