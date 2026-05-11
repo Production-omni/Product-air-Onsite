@@ -1240,7 +1240,10 @@
                 }
 
                 let starts = [sKHO, sNVT, sOther].filter(x => x !== null);
+                let ends = [eKHO, eNVT, eOther].filter(x => x !== null);
                 let minStart = starts.length > 0 ? starts.reduce((min, p) => p < min ? p : min, starts[0]) : baseStart;
+                let maxEnd = ends.length > 0 ? ends.reduce((max, p) => p > max ? p : max, ends[0]) : baseStart;
+                
                 let manualKey = g.ngayNhan;
                 let finalStartChup = imageManualDates[manualKey] || minStart;
                 let finalEndChup = imageManualEndDates[manualKey] || maxEnd;
