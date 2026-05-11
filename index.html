@@ -516,6 +516,9 @@
                             <tbody id="imageTrackingBody" class="divide-y divide-gray-200"></tbody>
                         </table>
                     </div>
+                    <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end text-gray-800 text-base font-bold">
+                        <div>Tổng SKU: <span id="imageTrackingGrandTotal" class="text-pnjBlue text-2xl ml-2 font-black">0</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -531,6 +534,9 @@
                 <!-- Bọc nội dung vào div hidden mặc định -->
                 <div id="gantt-content" class="hidden">
                     <div class="overflow-auto table-container max-h-[500px]" id="gantt-container"></div>
+                    <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end text-gray-800 text-base font-bold">
+                        <div>Tổng SKU: <span id="ganttGrandTotal" class="text-pnjBlue text-2xl ml-2 font-black">0</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -661,7 +667,7 @@
 
             <!-- Flow 2: Sản xuất hình ảnh -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH (GÓI HÀNG 160SKU)</h3>
+                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH</h3>
                 <div class="flex flex-col lg:flex-row items-center justify-start gap-4">
                     
                     <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
@@ -1647,7 +1653,10 @@
                 processedGanttData = processedGanttData.filter(g => targetGroupKeys.has(g.groupKey));
             }
 
+            let totalSKU = 0;
+
             processedGanttData.forEach(g => {
+                totalSKU += g.skuCount;
                 let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0">${i.loMuon}</div>`).join('') || '-';
                 let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.chupDone}</span> / ${g.skuCount} ${g.isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
                 let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.retouchDone}</span> / ${g.skuCount} ${g.isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
@@ -1673,6 +1682,12 @@
                     </tr>`;
             });
             tbody.innerHTML = html || '<tr><td colspan="13" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu phù hợp.</td></tr>';
+
+            const elTotal1 = document.getElementById('imageTrackingGrandTotal');
+            if (elTotal1) elTotal1.innerText = totalSKU.toLocaleString();
+            
+            const elTotal2 = document.getElementById('ganttGrandTotal');
+            if (elTotal2) elTotal2.innerText = totalSKU.toLocaleString();
 
             window.renderGanttChart(processedGanttData);
         }
