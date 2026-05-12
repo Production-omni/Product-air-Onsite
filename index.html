@@ -159,6 +159,16 @@
                     </div>
                 </div>
 
+                <div class="relative inline-block text-left" id="wrap-filter-report-phanLoai">
+                    <button onclick="toggleFilterDropdown('dropdown-report-phanLoai')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm text-gray-700 bg-gray-50 hover:bg-white flex items-center justify-between min-w-[150px] transition-all">
+                        <span id="label-report-phanLoai" class="truncate font-medium">Tất cả Phân loại</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
+                    </button>
+                    <div id="dropdown-report-phanLoai" class="hidden absolute z-50 mt-1 w-56 bg-white shadow-xl rounded-lg border border-gray-100 top-full left-0">
+                        <div class="p-3 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-report-phanLoai" checked onchange="toggleAllCheckboxes('report-phanLoai', this.checked)"><span>Chọn tất cả</span></label></div>
+                        <div id="list-report-phanLoai" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
+                    </div>
+                </div>
+
                 <div class="w-px h-6 bg-gray-300 mx-1 hidden md:block"></div>
                 
                 <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
@@ -510,7 +520,7 @@
                                     <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Tiến độ Chụp</th>
                                     <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Tiến độ Retouch</th>
                                     <th class="px-4 py-4 border-r border-pnjBlueLight text-center min-w-[120px]">Trạng thái lô</th>
-                                    <th class="px-2 py-4 text-center" title="Tải SKU 13"><i class="fas fa-download text-pnjGold"></i></th>
+                                    <th class="px-2 py-4 text-center cursor-pointer hover:bg-pnjBlueLight transition-colors" title="Tải FULL danh sách SKU đang hiển thị" onclick="window.downloadAllImageTrackingSKUs()"><i class="fas fa-download text-pnjGold"></i></th>
                                 </tr>
                             </thead>
                             <tbody id="imageTrackingBody" class="divide-y divide-gray-200"></tbody>
@@ -1132,7 +1142,7 @@
         }
 
         document.addEventListener('click', function(event) {
-            const dropdowns = ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon'];
+            const dropdowns = ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon'];
             dropdowns.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.classList.contains('hidden')) {
@@ -1336,7 +1346,7 @@
 
         window.toggleFilterDropdown = function(id) {
             const el = document.getElementById(id);
-            ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon'].forEach(otherId => {
+            ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon'].forEach(otherId => {
                 const otherEl = document.getElementById(otherId); if(otherEl && otherId !== id) otherEl.classList.add('hidden');
             });
             if(el) el.classList.toggle('hidden');
@@ -1363,7 +1373,7 @@
             if(!labelEl) return;
             
             let baseType = fullType.replace('report-', '').replace('img-', '');
-            let prefix = baseType === 'month' ? 'Tháng' : (baseType === 'noiMuon' ? 'Nơi mượn' : (baseType === 'loMuon' ? 'Lô mượn' : 'TT Mượn'));
+            let prefix = baseType === 'month' ? 'Tháng' : (baseType === 'noiMuon' ? 'Nơi mượn' : (baseType === 'loMuon' ? 'Lô mượn' : (baseType === 'phanLoai' ? 'Phân loại' : 'TT Mượn')));
             
             if (checkedCbs.length === cbs.length) labelEl.innerText = `Tất cả ${prefix}`;
             else if (checkedCbs.length === 0) labelEl.innerText = `Trống (${prefix})`;
@@ -1395,18 +1405,19 @@
         window.clearSummaryFilters = function() { ['month', 'noiMuon', 'ttMuon'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
 
         function populateReportFilters() {
-            const curMonth = getFilterState('report-month'); const curNoi = getFilterState('report-noiMuon');
-            const months = new Set(); const nois = new Set();
+            const curMonth = getFilterState('report-month'); const curNoi = getFilterState('report-noiMuon'); const curPhanLoai = getFilterState('report-phanLoai');
+            const months = new Set(); const nois = new Set(); const phanLoais = new Set();
             tableData.forEach(row => { 
                 if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
                 if (!row.sku && !row.loMuon && !row.noiMuon) return; 
                 
                 months.add(row.month || 'Trống'); 
                 nois.add(row.noiMuon || 'Trống'); 
+                phanLoais.add(row.phanLoai || 'Trống');
             });
-            buildFilterDropdown(months, 'report-month', curMonth); buildFilterDropdown(nois, 'report-noiMuon', curNoi);
+            buildFilterDropdown(months, 'report-month', curMonth); buildFilterDropdown(nois, 'report-noiMuon', curNoi); buildFilterDropdown(phanLoais, 'report-phanLoai', curPhanLoai);
         }
-        window.clearReportFilters = function() { ['report-month', 'report-noiMuon'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
+        window.clearReportFilters = function() { ['report-month', 'report-noiMuon', 'report-phanLoai'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
 
         function populateImageFilters() {
             const curMonth = getFilterState('img-month'); const curNoi = getFilterState('img-noiMuon'); const curLo = getFilterState('img-loMuon');
@@ -1994,6 +2005,7 @@
             };
             const mF = getV('month'); 
             const nF = getV('noiMuon');
+            const plF = getV('phanLoai');
 
             let tMD = 0, tCD = 0, tRD = 0; 
             let sPK = 0, sPN = 0, sPT = 0, sPC = 0, sPR = 0;
@@ -2013,8 +2025,10 @@
                 
                 const mBase = row.month ? row.month.toString() : 'Trống'; 
                 const n = row.noiMuon || 'Trống';
+                const pl = row.phanLoai || 'Trống';
                 
                 if (!nF.includes('ALL') && !nF.includes(n)) return;
+                if (!plF.includes('ALL') && !plF.includes(pl)) return;
 
                 let iDM = row.ttMuon?.toLowerCase().includes('done'), 
                     iCBM = row.ttMuon?.toLowerCase().includes('chuẩn bị mượn'), 
@@ -2277,6 +2291,28 @@
                 csv += `"${r.sku || ''}","${r.loMuon || ''}","${r.noiMuon || ''}","${formatDateForExport(r.ngayNhan)}","${r.lateStatus}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`;
             });
             downloadCSV(csv, `DanhSachSKU_TreHan_${new Date().toISOString().slice(0,10)}.csv`);
+        }
+
+        window.downloadAllImageTrackingSKUs = function() {
+            if (!window.currentGanttData || window.currentGanttData.length === 0) {
+                return alert("Không có dữ liệu trên bảng tiến độ để tải!");
+            }
+
+            let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Ngày nhận,Deadline Chụp,Deadline Retouch,Tình trạng chụp,Tình trạng retouch,Ghi chú\n";
+            
+            window.currentGanttData.forEach(g => {
+                let deadlineChup = formatDateForExport(g.endChup);
+                let deadlineRetouch = formatDateForExport(g.endRetouch);
+                
+                let groupRows = tableData.filter(r => g.ids.includes(r.id));
+                groupRows.forEach(r => {
+                    if (r.sku) {
+                        csv += `"${r.sku}","${r.loMuon || ''}","${r.noiMuon || ''}","${formatDateForExport(r.ngayNhan)}","${deadlineChup}","${deadlineRetouch}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`;
+                    }
+                });
+            });
+
+            downloadCSV(csv, `DanhSachSKU_SanXuatHinhAnh_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         function downloadCSV(content, filename) { const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = filename; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
