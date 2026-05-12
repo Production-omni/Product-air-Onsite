@@ -93,7 +93,7 @@
             <div class="w-12 h-12 bg-pnjBlue text-pnjGold rounded-lg flex items-center justify-center font-bold text-2xl shadow-md border border-pnjGold/30">P</div>
             <div>
                 <h1 class="text-xl md:text-2xl font-bold text-pnjBlue uppercase tracking-wide">Product Air Onsite</h1>
-                <p class="text-xs text-gray-500 font-medium"><i class="fas fa-cloud text-pnjGold mr-1"></i>Đã lưu trữ</p>
+                <p id="last-update-time" class="text-xs text-gray-500 font-medium"><i class="fas fa-cloud text-pnjGold mr-1"></i>Chưa cập nhật</p>
             </div>
         </div>
         
@@ -112,6 +112,9 @@
         <!-- Navigation Tabs Style PNJ -->
         <div class="mb-4 bg-white rounded-xl shadow-sm border border-gray-200 p-2 overflow-x-auto">
             <nav class="flex space-x-2 min-w-max" aria-label="Tabs">
+                <button onclick="switchTab('tab-process')" id="btn-tab-process" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
+                    <i class="fas fa-project-diagram text-gray-400"></i> Quy trình
+                </button>
                 <button onclick="switchTab('tab-report')" id="btn-tab-report" class="bg-pnjBlue text-white py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-md">
                     <i class="fas fa-chart-pie text-pnjGold"></i> Report
                 </button>
@@ -131,7 +134,7 @@
             </nav>
         </div>
 
-        <!-- ==================== TAB 1: REPORT DASHBOARD ==================== -->
+        <!-- GLOBAL SKU FILTER -->
         <div id="tab-report">
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-3 items-center">
                 <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
@@ -227,7 +230,7 @@
         <!-- ==================== TAB 2: SUMMARY ==================== -->
         <div id="tab-summary" class="hidden">
             
-            <!-- START: MODULE FLOW MƯỢN HÀNG -->
+            <!-- START: MODULE FLOW MƯỢN HÀNG (GIỮ NGUYÊN NHƯ CŨ) -->
             <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6">
                 <h3 class="font-bold text-pnjBlue text-lg uppercase mb-4"><i class="fas fa-project-diagram mr-2 text-pnjGold"></i> Flow Thời Gian Mượn Hàng</h3>
                 
@@ -513,6 +516,9 @@
                             <tbody id="imageTrackingBody" class="divide-y divide-gray-200"></tbody>
                         </table>
                     </div>
+                    <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end text-gray-800 text-base font-bold">
+                        <div>Tổng SKU: <span id="imageTrackingGrandTotal" class="text-pnjBlue text-2xl ml-2 font-black">0</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -528,6 +534,9 @@
                 <!-- Bọc nội dung vào div hidden mặc định -->
                 <div id="gantt-content" class="hidden">
                     <div class="overflow-auto table-container max-h-[500px]" id="gantt-container"></div>
+                    <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end text-gray-800 text-base font-bold">
+                        <div>Tổng SKU: <span id="ganttGrandTotal" class="text-pnjBlue text-2xl ml-2 font-black">0</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -580,6 +589,140 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB QUY TRÌNH ==================== -->
+        <div id="tab-process" class="hidden">
+            <!-- Flow 1: Mượn hàng -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
+                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-share-alt mr-3 text-pnjGold"></i> FLOW THỜI GIAN MƯỢN HÀNG</h3>
+                <div class="flex flex-col xl:flex-row items-center justify-between gap-4">
+                    
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">1. Check tồn</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Thứ 2 hàng tuần)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-1" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-1" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">2. Trình EO</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Đề xuất mượn)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-2" value="3" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">3. Soạn hàng</p>
+                        <p class="text-[10px] text-transparent mb-3 select-none">.</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">4. KCS</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Kiểm tra CL)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-4" value="4" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-4" value="7" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">5. Nhận hàng</p>
+                        <p class="text-[10px] text-transparent mb-3 select-none">.</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-5" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-5" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+
+                    <div class="xl:ml-2 bg-[#F8F9FA] border border-gray-200 rounded-xl p-5 text-center w-full xl:w-56 shadow-sm">
+                        <p class="font-bold text-xs text-[#1C3B5E] uppercase mb-2">Tổng Thời Gian</p>
+                        <div class="flex items-baseline justify-center gap-2">
+                            <span class="text-3xl font-black text-pnjGold" id="f1-total-min">14</span>
+                            <span class="text-gray-400 font-bold mx-1">-</span>
+                            <span class="text-3xl font-black text-pnjGold" id="f1-total-max">19</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-gray-500 uppercase mt-2">Ngày làm việc</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flow 2: Sản xuất hình ảnh -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
+                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH</h3>
+                <div class="flex flex-col lg:flex-row items-center justify-start gap-4">
+                    
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">1. Chụp hình</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Studio/Outsource)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f2-min-1" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f2-max-1" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden lg:block"></i><i class="fas fa-arrow-down text-gray-300 lg:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">2. Retouch</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Hậu kỳ hình ảnh)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f2-min-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f2-max-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden lg:block"></i><i class="fas fa-arrow-down text-gray-300 lg:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">3. Onsite</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Tại địa điểm)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f2-min-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f2-max-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 hidden lg:block border-transparent"></div> <!-- Spacer -->
+                    
+                    <div class="lg:ml-2 bg-[#F8F9FA] border border-gray-200 rounded-xl p-5 text-center w-full lg:w-56 shadow-sm">
+                        <p class="font-bold text-xs text-[#1C3B5E] uppercase mb-2">Tổng Thời Gian</p>
+                        <div class="flex items-baseline justify-center gap-2">
+                            <span class="text-3xl font-black text-pnjGold" id="f2-total-min">15</span>
+                            <span class="text-gray-400 font-bold mx-1">-</span>
+                            <span class="text-3xl font-black text-pnjGold" id="f2-total-max">15</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-gray-500 uppercase mt-2">Ngày làm việc</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng Ghi chú -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-[#1C3B5E] text-lg uppercase flex items-center"><i class="fas fa-edit mr-3 text-pnjGold"></i> Bảng Ghi Chú Quy Trình</h3>
+                    <button onclick="saveData()" class="bg-gray-100 hover:bg-pnjGold/20 text-pnjBlue px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"><i class="fas fa-save text-pnjGold"></i> Lưu Ghi chú</button>
+                </div>
+                <textarea id="process-notes" rows="8" class="w-full border border-gray-200 bg-gray-50/50 rounded-xl p-4 text-sm focus:bg-white focus:border-pnjGold focus:ring-2 focus:ring-pnjGold/20 outline-none resize-y leading-relaxed text-gray-700" onchange="saveProcessFlowSettings()" placeholder="Nhập các quy định, lưu ý về năng suất, thời gian, cách thức mượn hàng hoặc sản xuất tại đây..."></textarea>
             </div>
         </div>
 
@@ -742,6 +885,7 @@
             if (!isFakeLoggedIn) { alert("Vui lòng đăng nhập để lưu dữ liệu!"); return; }
             try {
                 await authPromise;
+                const now = new Date().toISOString();
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data'); 
                 await setDoc(docRef, {
                     tableData: window.tableData || [],
@@ -750,8 +894,12 @@
                     imageManualEndDates: window.imageManualEndDates || {},
                     imageManualRetouchStarts: window.imageManualRetouchStarts || {},
                     imageManualRetouchEnds: window.imageManualRetouchEnds || {},
-                    timestamp: new Date().toISOString()
+                    flowProcessSettings: JSON.parse(localStorage.getItem('pnj_flow_process_settings') || '{}'),
+                    flowSettings: JSON.parse(localStorage.getItem('pnj_flow_settings') || '{}'),
+                    timestamp: now
                 });
+                
+                if (window.updateLastUpdatedUI) window.updateLastUpdatedUI(now);
                 
                 const toast = document.getElementById('toast'); 
                 if (toast) {
@@ -779,6 +927,17 @@
                     window.imageManualRetouchStarts = data.imageManualRetouchStarts || {};
                     window.imageManualRetouchEnds = data.imageManualRetouchEnds || {};
                     
+                    if (data.flowProcessSettings) {
+                        localStorage.setItem('pnj_flow_process_settings', JSON.stringify(data.flowProcessSettings));
+                    }
+                    if (data.flowSettings) {
+                        localStorage.setItem('pnj_flow_settings', JSON.stringify(data.flowSettings));
+                    }
+                    
+                    if (data.timestamp && window.updateLastUpdatedUI) {
+                        window.updateLastUpdatedUI(data.timestamp);
+                    }
+                    
                     if (window.renderTable) window.renderTable(); 
                     if (window.renderVideoTable) window.renderVideoTable(); 
                     if (window.switchTab) window.switchTab('tab-report');
@@ -802,6 +961,18 @@
         var chartDoneInstance = null;
         var chartVideoInstance = null;
         
+        window.updateLastUpdatedUI = function(isoString) {
+            const el = document.getElementById('last-update-time');
+            if (el && isoString) {
+                const d = new Date(isoString);
+                if (!isNaN(d.getTime())) {
+                    const pad = (n) => String(n).padStart(2, '0');
+                    const timeStr = `${pad(d.getHours())}:${pad(d.getMinutes())} - ${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+                    el.innerHTML = `<i class="fas fa-cloud text-pnjGold mr-1"></i>Đã cập nhật: ${timeStr}`;
+                }
+            }
+        };
+
         // Cấu hình mảng lọc SKU toàn cục
         window.globalSkuFilterArray = [];
 
@@ -830,28 +1001,14 @@
             });
             
             // Tìm tab đang mở để render lại
-            let activeTabId = ['tab-report', 'tab-summary', 'tab-image', 'tab-video', 'tab-database'].find(id => {
+            let activeTabId = ['tab-report', 'tab-summary', 'tab-image', 'tab-video', 'tab-process', 'tab-database'].find(id => {
                 let el = document.getElementById(id);
                 return el && !el.classList.contains('hidden');
             });
             if (activeTabId) window.switchTab(activeTabId.replace('tab-', 'tab-'));
         }
 
-        window.clearGlobalSkuFilter = function() {
-            window.globalSkuFilterArray = [];
-            ['sku-input-report', 'sku-input-summary', 'sku-input-image', 'sku-input-db'].forEach(id => {
-                let el = document.getElementById(id);
-                if(el) el.value = '';
-            });
-            
-            let activeTabId = ['tab-report', 'tab-summary', 'tab-image', 'tab-video', 'tab-database'].find(id => {
-                let el = document.getElementById(id);
-                return el && !el.classList.contains('hidden');
-            });
-            if (activeTabId) window.switchTab(activeTabId.replace('tab-', 'tab-'));
-        }
-
-        // Logic xử lý Flow mượn hàng
+        // Logic xử lý Flow mượn hàng ở Tab Summary (Bản gốc)
         window.calculateFlowTotal = function() {
             let totalMin = 0;
             let totalMax = 0;
@@ -892,6 +1049,66 @@
             window.calculateFlowTotal();
         };
 
+        // Logic xử lý Tab Quy trình (Process) - Độc lập
+        window.saveProcessFlowSettings = function() {
+            let flowData = { f1: {}, f2: {}, notes: '' };
+            
+            // Flow 1
+            let min1 = 0, max1 = 0;
+            for(let i=1; i<=5; i++) {
+                let mnEl = document.getElementById(`f1-min-${i}`);
+                let mxEl = document.getElementById(`f1-max-${i}`);
+                if(mnEl && mxEl) {
+                    let mn = parseInt(mnEl.value) || 0;
+                    let mx = parseInt(mxEl.value) || 0;
+                    flowData.f1[`min${i}`] = mn; flowData.f1[`max${i}`] = mx;
+                    min1 += mn; max1 += mx;
+                }
+            }
+            if(document.getElementById('f1-total-min')) document.getElementById('f1-total-min').innerText = min1;
+            if(document.getElementById('f1-total-max')) document.getElementById('f1-total-max').innerText = max1;
+
+            // Flow 2
+            let min2 = 0, max2 = 0;
+            for(let i=1; i<=3; i++) {
+                let mnEl = document.getElementById(`f2-min-${i}`);
+                let mxEl = document.getElementById(`f2-max-${i}`);
+                if(mnEl && mxEl) {
+                    let mn = parseInt(mnEl.value) || 0;
+                    let mx = parseInt(mxEl.value) || 0;
+                    flowData.f2[`min${i}`] = mn; flowData.f2[`max${i}`] = mx;
+                    min2 += mn; max2 += mx;
+                }
+            }
+            if(document.getElementById('f2-total-min')) document.getElementById('f2-total-min').innerText = min2;
+            if(document.getElementById('f2-total-max')) document.getElementById('f2-total-max').innerText = max2;
+
+            const notesEl = document.getElementById('process-notes');
+            if (notesEl) flowData.notes = notesEl.value || '';
+
+            localStorage.setItem('pnj_flow_process_settings', JSON.stringify(flowData));
+        };
+
+        window.loadProcessFlowSettings = function() {
+            try {
+                const saved = localStorage.getItem('pnj_flow_process_settings');
+                
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    for(let i=1; i<=5; i++) {
+                        if(data.f1 && data.f1[`min${i}`] !== undefined && document.getElementById(`f1-min-${i}`)) document.getElementById(`f1-min-${i}`).value = data.f1[`min${i}`];
+                        if(data.f1 && data.f1[`max${i}`] !== undefined && document.getElementById(`f1-max-${i}`)) document.getElementById(`f1-max-${i}`).value = data.f1[`max${i}`];
+                    }
+                    for(let i=1; i<=3; i++) {
+                        if(data.f2 && data.f2[`min${i}`] !== undefined && document.getElementById(`f2-min-${i}`)) document.getElementById(`f2-min-${i}`).value = data.f2[`min${i}`];
+                        if(data.f2 && data.f2[`max${i}`] !== undefined && document.getElementById(`f2-max-${i}`)) document.getElementById(`f2-max-${i}`).value = data.f2[`max${i}`];
+                    }
+                    if(data.notes !== undefined && document.getElementById('process-notes')) document.getElementById('process-notes').value = data.notes;
+                }
+            } catch(e) {}
+            window.saveProcessFlowSettings(); 
+        };
+
         function togglePendingDetails() {
             const details = document.getElementById('pending-m-details');
             const icon = document.getElementById('icon-pending-details');
@@ -926,7 +1143,7 @@
         });
 
         window.switchTab = function(tabId) {
-            ['tab-database', 'tab-summary', 'tab-report', 'tab-video', 'tab-image'].forEach(id => {
+            ['tab-database', 'tab-summary', 'tab-report', 'tab-video', 'tab-image', 'tab-process'].forEach(id => {
                 const el = document.getElementById(id); if (el) el.classList.add('hidden');
                 const btn = document.getElementById('btn-' + id);
                 if(btn) btn.className = "text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all";
@@ -939,6 +1156,7 @@
             else if (tabId === 'tab-report') { populateReportFilters(); window.renderReport(); }
             else if (tabId === 'tab-video') { window.renderVideoTable(); }
             else if (tabId === 'tab-image') { populateImageFilters(); window.renderImageTrackingTable(); }
+            else if (tabId === 'tab-process') { window.loadProcessFlowSettings(); }
             else if (tabId === 'tab-database') { window.renderTable(); }
         }
 
@@ -1352,10 +1570,124 @@
             }
         }
 
+        window.renderSummary = function() {
+            const tbody = document.getElementById('summaryBody'); if(!tbody) return;
+            
+            // Hàm lấy danh sách filter cực kỳ an toàn, trả về ['ALL'] nếu DOM chưa có
+            const getV = (t) => {
+                const cbs = document.querySelectorAll(`.cb-${t}`);
+                if (cbs.length === 0) return ['ALL'];
+                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            };
+
+            const mF = getV('month'); const nF = getV('noiMuon'); const tF = getV('ttMuon'); const sF = getV('status');
+            const globalSchedules = window.getGlobalSchedule ? window.getGlobalSchedule() : {};
+            let groups = {}; let grandTotal = 0;
+            
+            tableData.forEach(row => {
+                // Lọc theo SKU chung (nếu có)
+                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
+                
+                const m = row.month || 'Trống'; 
+                const n = row.noiMuon || 'Trống'; 
+                const tt = row.ttMuon || 'Trống';
+                
+                // Lọc an toàn, bỏ qua nếu người dùng chủ động bỏ tick
+                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
+                if (!nF.includes('ALL') && !nF.includes(n)) return;
+                if (!tF.includes('ALL') && !tF.includes(tt)) return;
+
+                const d = calculateDays(row.ngayBatDau, row.ngayNhan); 
+                const l = row.loMuon || 'Trống';
+                const bd = row.ngayBatDau || 'Trống'; 
+                const nh = row.ngayNhan || 'Trống'; 
+                const ds = d !== '' ? d : 'Trống';
+                const tr = row.ngayTra || 'Trống';
+                
+                // Gom nhóm các dòng giống nhau
+                const k = `${m}|${n}|${l}|${bd}|${nh}|${tr}|${ds}|${tt}`;
+                
+                if (!groups[k]) {
+                    groups[k] = { m, n, l, bd, nh, tr, ds, tt, count: 0, cD: 0, cND: 0, rD: 0, rND: 0, notes: new Set(), ids: [] };
+                }
+                
+                groups[k].count++; groups[k].ids.push(row.id);
+                
+                if (row.ttChup && row.ttChup.toLowerCase().includes('done')) groups[k].cD++; else groups[k].cND++;
+                if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) groups[k].rD++; else groups[k].rND++;
+                if (row.note && row.note.trim()) groups[k].notes.add(row.note.trim());
+            });
+            
+            let todayStr = new Date().toISOString().slice(0, 10);
+
+            // Sắp xếp an toàn, tránh lỗi khi m là "Trống" hoặc l bị trống
+            let sortedGroups = Object.values(groups).sort((a,b) => {
+                if(a.m === 'Trống' && b.m !== 'Trống') return 1;
+                if(b.m === 'Trống' && a.m !== 'Trống') return -1;
+                let mDiff = parseInt(a.m) - parseInt(b.m);
+                if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
+                return (a.l || '').localeCompare(b.l || '');
+            });
+
+            // Lọc theo Trạng thái Lô (Hoàn thành / Đang xử lý)
+            let filteredGroups = sortedGroups.filter(g => {
+                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
+                let statusLabelText = isHoanThanh ? 'Hoàn thành' : 'Đang xử lý';
+                if (!sF.includes('ALL') && !sF.includes(statusLabelText)) return false;
+                return true;
+            });
+
+            // Đếm lại tổng Grand Total sau khi đã áp dụng các bộ lọc
+            filteredGroups.forEach(g => { grandTotal += g.count; });
+
+            tbody.innerHTML = filteredGroups.map(g => {
+                let isChupLate = false;
+                let isRetouchLate = false;
+                
+                if (g.nh !== 'Trống') {
+                    let schedule = globalSchedules[g.nh];
+                    if (schedule) {
+                        isChupLate = todayStr > schedule.endChup && g.cD < g.count;
+                        isRetouchLate = todayStr > schedule.endRetouch && g.rD < g.count;
+                    }
+                }
+                
+                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
+                let statusLabel = isHoanThanh ? '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold whitespace-nowrap">Hoàn thành</span>' : '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold whitespace-nowrap">Đang xử lý</span>';
+
+                let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.cD}</span> / ${g.count} ${isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
+                let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.rD}</span> / ${g.count} ${isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
+
+                return `
+                <tr class="hover:bg-gray-50 transition-colors bg-white">
+                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full min-w-[150px]"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.ds}</td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}"></td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${Array.from(g.notes).join('; ')}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'note', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..."></td>
+                    <td class="px-4 py-3 text-right font-black text-pnjBlue bg-pnjBlue/5">${g.count}</td>
+                </tr>`;
+            }).join('');
+            
+            const sgt = document.getElementById('summaryGrandTotal'); 
+            if (sgt) sgt.innerText = grandTotal.toLocaleString();
+        }
+
         window.renderImageTrackingTable = function() {
             const tbody = document.getElementById('imageTrackingBody'); if(!tbody) return;
-            const getV = (type) => Array.from(document.querySelectorAll(`.cb-img-${type}:checked`)).map(cb => cb.value);
-            const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon');
+            const getV = (type) => {
+                const cbs = document.querySelectorAll(`.cb-img-${type}`);
+                if (cbs.length === 0) return ['ALL'];
+                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            };
+            const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon'); const sF = getV('status');
 
             let targetGroupKeys = new Set();
             if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
@@ -1435,7 +1767,19 @@
                 processedGanttData = processedGanttData.filter(g => targetGroupKeys.has(g.groupKey));
             }
 
+            // Lọc theo Trạng thái Lô (Hoàn thành / Đang xử lý)
+            if (!sF.includes('ALL')) {
+                processedGanttData = processedGanttData.filter(g => {
+                    let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
+                    let statusLabelText = isHoanThanh ? 'Hoàn thành' : 'Đang xử lý';
+                    return sF.includes(statusLabelText);
+                });
+            }
+
+            let totalSKU = 0;
+
             processedGanttData.forEach(g => {
+                totalSKU += g.skuCount;
                 let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0">${i.loMuon}</div>`).join('') || '-';
                 let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.chupDone}</span> / ${g.skuCount} ${g.isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
                 let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.retouchDone}</span> / ${g.skuCount} ${g.isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
@@ -1462,6 +1806,12 @@
             });
             tbody.innerHTML = html || '<tr><td colspan="13" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu phù hợp.</td></tr>';
 
+            const elTotal1 = document.getElementById('imageTrackingGrandTotal');
+            if (elTotal1) elTotal1.innerText = totalSKU.toLocaleString();
+            
+            const elTotal2 = document.getElementById('ganttGrandTotal');
+            if (elTotal2) elTotal2.innerText = totalSKU.toLocaleString();
+
             window.renderGanttChart(processedGanttData);
         }
 
@@ -1476,11 +1826,10 @@
 
             let html = '<table class="text-sm text-left whitespace-nowrap border-collapse border border-gray-200" style="table-layout: fixed; min-width: 100%;">';
             html += '<thead class="text-xs text-gray-700 bg-gray-50 sticky top-0" style="z-index: 30;"><tr>';
-            html += '<th class="px-2 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 80px; max-width: 80px; position: sticky; left: 0; z-index: 30;" rowspan="2">Tổng<br>ngày</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 bg-gray-50" style="min-width: 150px; max-width: 150px; position: sticky; left: 80px; z-index: 30;" rowspan="2">Lô</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 100px; max-width: 100px; position: sticky; left: 230px; z-index: 30;" rowspan="2">Ngày nhận</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 90px; max-width: 90px; position: sticky; left: 330px; z-index: 30;" rowspan="2">Nơi mượn</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 60px; max-width: 60px; position: sticky; left: 420px; z-index: 30;" rowspan="2">SL</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 bg-gray-50" style="min-width: 150px; max-width: 150px; position: sticky; left: 0; z-index: 30;" rowspan="2">Lô</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 100px; max-width: 100px; position: sticky; left: 150px; z-index: 30;" rowspan="2">Ngày nhận</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 90px; max-width: 90px; position: sticky; left: 250px; z-index: 30;" rowspan="2">Nơi mượn</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 60px; max-width: 60px; position: sticky; left: 340px; z-index: 30;" rowspan="2">SL</th>';
             
             timelineDates.forEach(d => {
                 let isW = isWeekend(d); let isH = isHoliday(d);
@@ -1499,7 +1848,6 @@
             
             ganttData.forEach(g => {
                 let isManualOverride = !!(imageManualDates[g.manualKey] || imageManualEndDates[g.manualKey]);
-                let totalDays = getWorkingDays(g.ngayNhan, g.endRetouch);
                 
                 Object.values(g.items).forEach(item => {
                     let nUpper = item.noiMuon.toUpperCase(); let iStart = null, iEnd = null;
@@ -1507,11 +1855,10 @@
                     else { iStart = g.startChup; iEnd = g.endChup; }
 
                     html += `<tr>`;
-                    html += `<td class="px-2 py-2 border border-gray-200 text-center font-bold text-pnjGold bg-pnjGold/5" style="position: sticky; left: 0; z-index: 10;">${totalDays}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 font-medium bg-white truncate" style="position: sticky; left: 80px; z-index: 10;" title="${item.loMuon}">${item.loMuon}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center text-gray-500 bg-white" style="position: sticky; left: 230px; z-index: 10;">${formatDateToDisplay(g.ngayNhan)}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 330px; z-index: 10;">${item.noiMuon}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 420px; z-index: 10;">${item.skuCount}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 font-medium bg-white truncate" style="position: sticky; left: 0; z-index: 10;" title="${item.loMuon}">${item.loMuon}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center text-gray-500 bg-white" style="position: sticky; left: 150px; z-index: 10;">${formatDateToDisplay(g.ngayNhan)}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 250px; z-index: 10;">${item.noiMuon}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 340px; z-index: 10;">${item.skuCount}</td>`;
                     
                     timelineDates.forEach(d => {
                         let isW = isWeekend(d); let isH = isHoliday(d);
@@ -1524,10 +1871,9 @@
 
                 html += `<tr class="bg-gray-50 font-bold">`;
                 html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 0; z-index: 10;"></td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 80px; z-index: 10;"></td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 230px; z-index: 10;"></td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 text-right text-[#1C3B5E] bg-gray-50" style="position: sticky; left: 330px; z-index: 10;">Total</td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 text-center text-pnjBlue bg-gray-50" style="position: sticky; left: 420px; z-index: 10;">${g.skuCount}</td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 150px; z-index: 10;"></td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 text-right text-[#1C3B5E] bg-gray-50" style="position: sticky; left: 250px; z-index: 10;">Total</td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 text-center text-pnjBlue bg-gray-50" style="position: sticky; left: 340px; z-index: 10;">${g.skuCount}</td>`;
                 
                 timelineDates.forEach(d => {
                     let isW = isWeekend(d); let isH = isHoliday(d);
@@ -1821,6 +2167,11 @@
             localStorage.setItem('pnj_imageManualEndDates', JSON.stringify(imageManualEndDates));
             localStorage.setItem('pnj_imageManualRetouchStarts', JSON.stringify(imageManualRetouchStarts));
             localStorage.setItem('pnj_imageManualRetouchEnds', JSON.stringify(imageManualRetouchEnds));
+            
+            const now = new Date().toISOString();
+            localStorage.setItem('pnj_last_updated', now);
+            if (window.updateLastUpdatedUI) window.updateLastUpdatedUI(now);
+
             const toast = document.getElementById('toast'); 
             if(toast) { toast.classList.remove('opacity-0', 'translate-y-[-10px]'); setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-[-10px]'); }, 2500); }
         }
@@ -1837,6 +2188,11 @@
             parseLS('pnj_imageManualRetouchStarts', 'imageManualRetouchStarts_v1', imageManualRetouchStarts);
             parseLS('pnj_imageManualRetouchEnds', 'imageManualRetouchEnds_v1', imageManualRetouchEnds);
             
+            const savedTime = localStorage.getItem('pnj_last_updated');
+            if (savedTime && window.updateLastUpdatedUI) {
+                window.updateLastUpdatedUI(savedTime);
+            }
+
             window.renderTable(); window.renderVideoTable(); window.switchTab('tab-report');
         }
 
