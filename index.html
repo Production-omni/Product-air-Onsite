@@ -667,7 +667,7 @@
 
             <!-- Flow 2: Sản xuất hình ảnh -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH</h3>
+                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH (GÓI 160 MÓN)</h3>
                 <div class="flex flex-col lg:flex-row items-center justify-start gap-4">
                     
                     <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
@@ -1570,9 +1570,112 @@
             }
         }
 
+        window.renderSummary = function() {
+            const tbody = document.getElementById('summaryBody'); if(!tbody) return;
+            
+            // Hàm lấy danh sách filter cực kỳ an toàn, trả về ['ALL'] nếu DOM chưa có
+            const getV = (t) => {
+                const cbs = document.querySelectorAll(`.cb-${t}`);
+                if (cbs.length === 0) return ['ALL'];
+                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            };
+
+            const mF = getV('month'); const nF = getV('noiMuon'); const tF = getV('ttMuon');
+            const globalSchedules = window.getGlobalSchedule ? window.getGlobalSchedule() : {};
+            let groups = {}; let grandTotal = 0;
+            
+            tableData.forEach(row => {
+                // Lọc theo SKU chung (nếu có)
+                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
+                
+                const m = row.month || 'Trống'; 
+                const n = row.noiMuon || 'Trống'; 
+                const tt = row.ttMuon || 'Trống';
+                
+                // Lọc an toàn, bỏ qua nếu người dùng chủ động bỏ tick
+                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
+                if (!nF.includes('ALL') && !nF.includes(n)) return;
+                if (!tF.includes('ALL') && !tF.includes(tt)) return;
+
+                const d = calculateDays(row.ngayBatDau, row.ngayNhan); 
+                const l = row.loMuon || 'Trống';
+                const bd = row.ngayBatDau || 'Trống'; 
+                const nh = row.ngayNhan || 'Trống'; 
+                const ds = d !== '' ? d : 'Trống';
+                const tr = row.ngayTra || 'Trống';
+                
+                // Gom nhóm các dòng giống nhau
+                const k = `${m}|${n}|${l}|${bd}|${nh}|${tr}|${ds}|${tt}`;
+                
+                if (!groups[k]) {
+                    groups[k] = { m, n, l, bd, nh, tr, ds, tt, count: 0, cD: 0, cND: 0, rD: 0, rND: 0, notes: new Set(), ids: [] };
+                }
+                
+                groups[k].count++; grandTotal++; groups[k].ids.push(row.id);
+                
+                if (row.ttChup && row.ttChup.toLowerCase().includes('done')) groups[k].cD++; else groups[k].cND++;
+                if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) groups[k].rD++; else groups[k].rND++;
+                if (row.note && row.note.trim()) groups[k].notes.add(row.note.trim());
+            });
+            
+            let todayStr = new Date().toISOString().slice(0, 10);
+
+            // Sắp xếp an toàn, tránh lỗi khi m là "Trống" hoặc l bị trống
+            let sortedGroups = Object.values(groups).sort((a,b) => {
+                if(a.m === 'Trống' && b.m !== 'Trống') return 1;
+                if(b.m === 'Trống' && a.m !== 'Trống') return -1;
+                let mDiff = parseInt(a.m) - parseInt(b.m);
+                if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
+                return (a.l || '').localeCompare(b.l || '');
+            });
+
+            tbody.innerHTML = sortedGroups.map(g => {
+                let isChupLate = false;
+                let isRetouchLate = false;
+                
+                if (g.nh !== 'Trống') {
+                    let schedule = globalSchedules[g.nh];
+                    if (schedule) {
+                        isChupLate = todayStr > schedule.endChup && g.cD < g.count;
+                        isRetouchLate = todayStr > schedule.endRetouch && g.rD < g.count;
+                    }
+                }
+                
+                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
+                let statusLabel = isHoanThanh ? '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold whitespace-nowrap">Hoàn thành</span>' : '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold whitespace-nowrap">Đang xử lý</span>';
+
+                let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.cD}</span> / ${g.count} ${isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
+                let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.rD}</span> / ${g.count} ${isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
+
+                return `
+                <tr class="hover:bg-gray-50 transition-colors bg-white">
+                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full min-w-[150px]"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.ds}</td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}"></td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${Array.from(g.notes).join('; ')}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'note', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..."></td>
+                    <td class="px-4 py-3 text-right font-black text-pnjBlue bg-pnjBlue/5">${g.count}</td>
+                </tr>`;
+            }).join('');
+            
+            const sgt = document.getElementById('summaryGrandTotal'); 
+            if (sgt) sgt.innerText = grandTotal.toLocaleString();
+        }
+
         window.renderImageTrackingTable = function() {
             const tbody = document.getElementById('imageTrackingBody'); if(!tbody) return;
-            const getV = (type) => Array.from(document.querySelectorAll(`.cb-img-${type}:checked`)).map(cb => cb.value);
+            const getV = (type) => {
+                const cbs = document.querySelectorAll(`.cb-img-${type}`);
+                if (cbs.length === 0) return ['ALL'];
+                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            };
             const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon');
 
             let targetGroupKeys = new Set();
@@ -1762,428 +1865,6 @@
             });
             html += '</tbody></table>';
             container.innerHTML = html;
-        }
-
-        window.renderSummary = function() {
-            const tbody = document.getElementById('summaryBody'); if(!tbody) return;
-            
-            // Hàm lấy danh sách filter cực kỳ an toàn, trả về ['ALL'] nếu DOM chưa có
-            const getV = (t) => {
-                const cbs = document.querySelectorAll(`.cb-${t}`);
-                if (cbs.length === 0) return ['ALL'];
-                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
-            };
-
-            const mF = getV('month'); const nF = getV('noiMuon'); const tF = getV('ttMuon');
-            const globalSchedules = window.getGlobalSchedule ? window.getGlobalSchedule() : {};
-            let groups = {}; let grandTotal = 0;
-            
-            tableData.forEach(row => {
-                // Lọc theo SKU chung (nếu có)
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
-                
-                const m = row.month || 'Trống'; 
-                const n = row.noiMuon || 'Trống'; 
-                const tt = row.ttMuon || 'Trống';
-                
-                // Lọc an toàn, bỏ qua nếu người dùng chủ động bỏ tick
-                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
-                if (!nF.includes('ALL') && !nF.includes(n)) return;
-                if (!tF.includes('ALL') && !tF.includes(tt)) return;
-
-                const d = calculateDays(row.ngayBatDau, row.ngayNhan); 
-                const l = row.loMuon || 'Trống';
-                const bd = row.ngayBatDau || 'Trống'; 
-                const nh = row.ngayNhan || 'Trống'; 
-                const ds = d !== '' ? d : 'Trống';
-                const tr = row.ngayTra || 'Trống';
-                
-                // Gom nhóm các dòng giống nhau
-                const k = `${m}|${n}|${l}|${bd}|${nh}|${tr}|${ds}|${tt}`;
-                
-                if (!groups[k]) {
-                    groups[k] = { m, n, l, bd, nh, tr, ds, tt, count: 0, cD: 0, cND: 0, rD: 0, rND: 0, notes: new Set(), ids: [] };
-                }
-                
-                groups[k].count++; grandTotal++; groups[k].ids.push(row.id);
-                
-                if (row.ttChup && row.ttChup.toLowerCase().includes('done')) groups[k].cD++; else groups[k].cND++;
-                if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) groups[k].rD++; else groups[k].rND++;
-                if (row.note && row.note.trim()) groups[k].notes.add(row.note.trim());
-            });
-            
-            let todayStr = new Date().toISOString().slice(0, 10);
-
-            // Sắp xếp an toàn, tránh lỗi khi m là "Trống" hoặc l bị trống
-            let sortedGroups = Object.values(groups).sort((a,b) => {
-                if(a.m === 'Trống' && b.m !== 'Trống') return 1;
-                if(b.m === 'Trống' && a.m !== 'Trống') return -1;
-                let mDiff = parseInt(a.m) - parseInt(b.m);
-                if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
-                return (a.l || '').localeCompare(b.l || '');
-            });
-
-            tbody.innerHTML = sortedGroups.map(g => {
-                let isChupLate = false;
-                let isRetouchLate = false;
-                
-                if (g.nh !== 'Trống') {
-                    let schedule = globalSchedules[g.nh];
-                    if (schedule) {
-                        isChupLate = todayStr > schedule.endChup && g.cD < g.count;
-                        isRetouchLate = todayStr > schedule.endRetouch && g.rD < g.count;
-                    }
-                }
-                
-                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
-                let statusLabel = isHoanThanh ? '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold whitespace-nowrap">Hoàn thành</span>' : '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold whitespace-nowrap">Đang xử lý</span>';
-
-                let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.cD}</span> / ${g.count} ${isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
-                let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.rD}</span> / ${g.count} ${isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
-
-                return `
-                <tr class="hover:bg-gray-50 transition-colors bg-white">
-                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full min-w-[150px]"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
-                    <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.ds}</td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}"></td>
-                    <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
-                    <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
-                    <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${Array.from(g.notes).join('; ')}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'note', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..."></td>
-                    <td class="px-4 py-3 text-right font-black text-pnjBlue bg-pnjBlue/5">${g.count}</td>
-                </tr>`;
-            }).join('');
-            
-            const sgt = document.getElementById('summaryGrandTotal'); 
-            if (sgt) sgt.innerText = grandTotal.toLocaleString();
-        }
-
-        window.renderReport = function() {
-            const getV = (t) => {
-                const cbs = document.querySelectorAll(`.cb-report-${t}`);
-                if (cbs.length === 0) return ['ALL'];
-                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
-            };
-            const mF = getV('month'); 
-            const nF = getV('noiMuon');
-
-            let tMD = 0, tCD = 0, tRD = 0; 
-            let sPK = 0, sPN = 0, sPT = 0, sPC = 0, sPR = 0;
-            let chartObj = {};
-
-            const extractMonth = (dateStr) => {
-                if (dateStr && dateStr.includes('-')) {
-                    const m = parseInt(dateStr.split('-')[1], 10);
-                    if (!isNaN(m)) return m.toString();
-                }
-                return null;
-            };
-
-            tableData.forEach(row => {
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
-                if (!row.sku && !row.loMuon && !row.noiMuon) return;
-                
-                const mBase = row.month ? row.month.toString() : 'Trống'; 
-                const n = row.noiMuon || 'Trống';
-                
-                if (!nF.includes('ALL') && !nF.includes(n)) return;
-
-                let iDM = row.ttMuon?.toLowerCase().includes('done'), 
-                    iCBM = row.ttMuon?.toLowerCase().includes('chuẩn bị mượn'), 
-                    iDC = row.ttChup?.toLowerCase().includes('done'), 
-                    iDR = row.ttRetouch?.toLowerCase().includes('done');
-                let nU = n.toUpperCase();
-
-                // 1. DỮ LIỆU KPI & DỰ KIẾN: Tính theo "Cột Tháng" (mBase)
-                if (mF.includes('ALL') || mF.includes(mBase)) {
-                    // Cập nhật KPI
-                    if (iDM) tMD++;
-                    if (iDC) tCD++;
-                    if (iDR) tRD++;
-
-                    // Cập nhật Thống kê dự kiến
-                    if (!iDM) {
-                        sPT++;
-                        if (nU === 'KHO') sPK++;
-                        else if (nU === 'NVT') sPN++;
-                    }
-                    if (!iDC && !iCBM) sPC++;
-                    if (iDC && !iDR) sPR++;
-                }
-
-                // 2. DỮ LIỆU CHART: Bỏ qua Cột Tháng, tính theo "Ngày thực tế"
-                // Fallback thông minh: Nếu ngày thực tế trống, mượn tạm Ngày Nhận/Tháng kế hoạch để ko bị mất data trên biểu đồ
-                const mMuon = extractMonth(row.ngayNhan) || mBase;
-                const mChup = extractMonth(row.ngayChup) || mMuon;
-                const mRetouch = extractMonth(row.ngayRetouch) || mChup;
-
-                const addToChart = (m, type) => {
-                    if (mF.includes('ALL') || mF.includes(m)) {
-                        if (!chartObj[m]) chartObj[m] = { dM: 0, dC: 0, dR: 0 };
-                        chartObj[m][type]++;
-                    }
-                };
-
-                if (iDM) addToChart(mMuon, 'dM');
-                if (iDC) addToChart(mChup, 'dC');
-                if (iDR) addToChart(mRetouch, 'dR');
-            });
-
-            // Hiển thị KPI Tổng
-            const kpiMuon = document.getElementById('kpi-total-muon'); if(kpiMuon) kpiMuon.innerText = tMD.toLocaleString();
-            const kpiChup = document.getElementById('kpi-total-chup'); if(kpiChup) kpiChup.innerText = tCD.toLocaleString();
-            const kpiRetouch = document.getElementById('kpi-total-retouch'); if(kpiRetouch) kpiRetouch.innerText = tRD.toLocaleString();
-
-            // Hiển thị Chart
-            const canvas = document.getElementById('chartDone'); const empty = document.getElementById('emptyChartDone');
-            if(!canvas || !empty) return;
-            if (chartDoneInstance) chartDoneInstance.destroy();
-            
-            const sM = Object.keys(chartObj).sort((a,b) => {
-                if (a === 'Trống') return 1;
-                if (b === 'Trống') return -1;
-                return Number(a) - Number(b);
-            });
-
-            if (sM.length === 0) { 
-                canvas.classList.add('hidden'); empty.classList.remove('hidden'); 
-            } else {
-                canvas.classList.remove('hidden'); empty.classList.add('hidden');
-                chartDoneInstance = new Chart(canvas, { 
-                    type: 'bar', 
-                    data: { 
-                        labels: sM.map(m => m === 'Trống' ? 'Trống' : `Tháng ${m}`), 
-                        datasets: [ 
-                            { label: 'Đã Mượn', data: sM.map(m => chartObj[m].dM), backgroundColor: '#003366', borderRadius: 4 }, 
-                            { label: 'Đã Chụp', data: sM.map(m => chartObj[m].dC), backgroundColor: '#D4AF37', borderRadius: 4 }, 
-                            { label: 'Đã Retouch', data: sM.map(m => chartObj[m].dR), backgroundColor: '#9CA3AF', borderRadius: 4 } 
-                        ] 
-                    }, 
-                    options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, font: { family: "'Be Vietnam Pro', sans-serif" } } } }, scales: { x: { grid: { display: false } }, y: { border: { display: false } } } },
-                    plugins: [{ id: 'customDataLabelsReport', afterDatasetsDraw(chart) { const { ctx, data } = chart; ctx.save(); ctx.font = 'bold 11px "Be Vietnam Pro", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillStyle = '#4B5563'; data.datasets.forEach((dataset, i) => { const meta = chart.getDatasetMeta(i); if (!meta.hidden) { meta.data.forEach((bar, index) => { const value = dataset.data[index]; if (value > 0) { ctx.fillText(value, bar.x, bar.y - 4); } }); } }); ctx.restore(); } }]
-                });
-            }
-
-            // Hiển thị số liệu Dự kiến
-            const vM = document.getElementById('val-pending-m-total'); if (vM) vM.innerText = sPT || '-'; 
-            const vMK = document.getElementById('val-pending-m-kho'); if (vMK) vMK.innerText = sPK || '-'; 
-            const vMN = document.getElementById('val-pending-m-nvt'); if (vMN) vMN.innerText = sPN || '-'; 
-            const vC = document.getElementById('val-pending-c'); if (vC) vC.innerText = sPC || '-'; 
-            const vR = document.getElementById('val-pending-r'); if (vR) vR.innerText = sPR || '-';
-        }
-
-        window.getLatestEndChup = function(noiMuonTarget) {
-            if (!noiMuonTarget) return {};
-            let nUpper = noiMuonTarget.toUpperCase();
-            let maxEndDate = null; let conflictDate = null;
-            let dailyGroups = {};
-            tableData.forEach(row => {
-                if (!row.ngayNhan || !row.noiMuon) return;
-                let dateKey = row.ngayNhan;
-                if (!dailyGroups[dateKey]) { dailyGroups[dateKey] = { ngayNhan: dateKey, khoSku: 0, nvtSku: 0, otherSku: 0 }; }
-                let n = row.noiMuon.toUpperCase();
-                if (n === 'KHO') dailyGroups[dateKey].khoSku++; else if (n === 'NVT') dailyGroups[dateKey].nvtSku++; else dailyGroups[dateKey].otherSku++;
-            });
-
-            let sortedDates = Object.values(dailyGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan));
-            let globalNextFree = null;
-
-            sortedDates.forEach(g => {
-                let skuCount = 0;
-                if (nUpper === 'KHO') skuCount = g.khoSku; else if (nUpper === 'NVT') skuCount = g.nvtSku; else skuCount = g.otherSku;
-                if(skuCount === 0) return;
-                let baseStart = addWorkingDays(g.ngayNhan, 1);
-                let startChup = baseStart;
-                if (globalNextFree && startChup < globalNextFree) { startChup = globalNextFree; }
-                let s = imageManualDates[g.ngayNhan] || startChup; 
-                let rD = Math.ceil(skuCount / 32); let dD = Math.max(0, rD - 1);
-                let eC = addWorkingDays(s, dD);
-                let aeC = imageManualEndDates[g.ngayNhan] || eC;
-                globalNextFree = addWorkingDays(aeC, 1);
-                if (!maxEndDate || aeC > maxEndDate) { maxEndDate = aeC; conflictDate = g.ngayNhan; }
-            });
-            return { date: maxEndDate, conflictDate: conflictDate };
-        }
-
-        window.calculateSimulation = function() {
-            const noi = document.getElementById('calc-noi').value; const ngayNhan = document.getElementById('calc-ngay').value; const sku = parseInt(document.getElementById('calc-sku').value);
-            if (!ngayNhan || isNaN(sku) || sku <= 0) { alert('Vui lòng nhập ngày nhận hàng và số lượng SKU hợp lệ!'); return; }
-            const resArea = document.getElementById('calc-result-area'); const warnArea = document.getElementById('calc-warning'); const warnText = document.getElementById('calc-warning-text');
-            resArea.classList.remove('hidden'); warnArea.classList.add('hidden');
-            let baseStart = addWorkingDays(ngayNhan, 1); let actualStart = baseStart;
-
-            if (noi) {
-                let latest = window.getLatestEndChup(noi);
-                if (latest.date && latest.date >= baseStart) {
-                    actualStart = addWorkingDays(latest.date, 1);
-                    warnText.innerHTML = `Lưu ý: <b>${noi}</b> đang bị kẹt lịch chụp của nhóm nhận ngày <b>${formatDateToDisplay(latest.conflictDate)}</b> cho đến hết ngày <b>${formatDateToDisplay(latest.date)}</b>.<br>Hệ thống tự động dời ngày chụp dự kiến mới sang: <b>${formatDateToDisplay(actualStart)}</b>.`;
-                    warnArea.classList.remove('hidden');
-                }
-            }
-
-            let daysToProcess = Math.max(0, Math.ceil(sku / 32) - 1);
-            let endChup = addWorkingDays(actualStart, daysToProcess);
-            let startRetouch = addWorkingDays(actualStart, 2);
-            let endRetouch = addWorkingDays(startRetouch, daysToProcess);
-
-            document.getElementById('res-bd-c').innerText = formatDateToDisplay(actualStart);
-            document.getElementById('res-kt-c').innerText = formatDateToDisplay(endChup);
-            document.getElementById('res-bd-r').innerText = formatDateToDisplay(startRetouch);
-            document.getElementById('res-kt-r').innerText = formatDateToDisplay(endRetouch);
-        }
-
-        window.saveDataLocal = function() {
-            localStorage.setItem('pnj_inventoryData', JSON.stringify(tableData));
-            localStorage.setItem('pnj_videoData', JSON.stringify(videoData));
-            localStorage.setItem('pnj_imageManualDates', JSON.stringify(imageManualDates));
-            localStorage.setItem('pnj_imageManualEndDates', JSON.stringify(imageManualEndDates));
-            localStorage.setItem('pnj_imageManualRetouchStarts', JSON.stringify(imageManualRetouchStarts));
-            localStorage.setItem('pnj_imageManualRetouchEnds', JSON.stringify(imageManualRetouchEnds));
-            
-            const now = new Date().toISOString();
-            localStorage.setItem('pnj_last_updated', now);
-            if (window.updateLastUpdatedUI) window.updateLastUpdatedUI(now);
-
-            const toast = document.getElementById('toast'); 
-            if(toast) { toast.classList.remove('opacity-0', 'translate-y-[-10px]'); setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-[-10px]'); }, 2500); }
-        }
-
-        window.loadDataLocal = function() {
-            const saved = localStorage.getItem('pnj_inventoryData') || localStorage.getItem('inventoryData_v6');
-            if (saved) try { tableData = JSON.parse(saved); } catch(e) { tableData = []; }
-            const savedVideo = localStorage.getItem('pnj_videoData') || localStorage.getItem('videoData_v1');
-            if (savedVideo) try { videoData = JSON.parse(savedVideo); } catch(e) { videoData = []; }
-            
-            const parseLS = (key, oldKey, targetObj) => { const s = localStorage.getItem(key) || localStorage.getItem(oldKey); if (s) try { Object.assign(targetObj, JSON.parse(s)); } catch(e) {} };
-            parseLS('pnj_imageManualDates', 'imageManualDates_v1', imageManualDates);
-            parseLS('pnj_imageManualEndDates', 'imageManualEndDates_v1', imageManualEndDates);
-            parseLS('pnj_imageManualRetouchStarts', 'imageManualRetouchStarts_v1', imageManualRetouchStarts);
-            parseLS('pnj_imageManualRetouchEnds', 'imageManualRetouchEnds_v1', imageManualRetouchEnds);
-            
-            const savedTime = localStorage.getItem('pnj_last_updated');
-            if (savedTime && window.updateLastUpdatedUI) {
-                window.updateLastUpdatedUI(savedTime);
-            }
-
-            window.renderTable(); window.renderVideoTable(); window.switchTab('tab-report');
-        }
-
-        window.exportCSV = function() {
-            let dataToExport = tableData;
-            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
-                dataToExport = tableData.filter(row => window.globalSkuFilterArray.includes(row.sku));
-            }
-            if(dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
-            
-            let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại\n";
-            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}"\n`; });
-            downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
-        }
-
-        window.exportSummaryCSV = function() {
-            const tbody = document.getElementById('summaryBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
-            let csv = "\uFEFFTháng,Nơi mượn,Lô mượn,Bắt đầu mượn,Nhận hàng,Trả hàng,Ngày mượn,Tình trạng,Tiến độ Chụp (Xong/Tổng),Tiến độ Retouch (Xong/Tổng),Trạng thái lô,Ghi chú,Tổng SKU\n";
-            Array.from(tbody.querySelectorAll('tr')).forEach(tr => { 
-                csv += Array.from(tr.querySelectorAll('td')).map(td => { 
-                    const input = td.querySelector('input'); 
-                    let val = input ? input.value : td.innerText.trim(); 
-                    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
-                        const parts = val.split('-');
-                        val = `${parts[1]}/${parts[2]}/${parts[0]}`;
-                    }
-                    return `"${val.replace(/"/g,'""')}"`; 
-                }).join(",") + "\n"; 
-            });
-            downloadCSV(csv, `PNJ_Report_${new Date().toISOString().slice(0,10)}.csv`);
-        }
-
-        window.downloadSpecificSKUs = function(idsStr, dateLabel) {
-            if (!idsStr) return;
-            const ids = idsStr.split(','); let rowsToExport = tableData.filter(r => ids.includes(r.id));
-            if(rowsToExport.length === 0) return alert("Không tìm thấy dữ liệu!");
-            let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Tình trạng chụp,Tình trạng retouch,Ghi chú\n";
-            rowsToExport.forEach(r => { csv += `"${r.sku || ''}","${r.loMuon || ''}","${r.noiMuon || ''}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`; });
-            downloadCSV(csv, `DanhSachSKU_${dateLabel}.csv`);
-        }
-
-        window.downloadLateSKUs = function() {
-            if (!window.currentGanttData || window.currentGanttData.length === 0) {
-                return alert("Không có dữ liệu trên bảng tiến độ!");
-            }
-
-            let lateSKURows = [];
-
-            window.currentGanttData.forEach(g => {
-                if (g.isChupLate || g.isRetouchLate) {
-                    // Lọc ra các dòng thuộc lô này
-                    let rowsInGroup = tableData.filter(r => g.ids.includes(r.id));
-                    
-                    rowsInGroup.forEach(r => {
-                        let cDone = r.ttChup && r.ttChup.toLowerCase().includes('done');
-                        let rDone = r.ttRetouch && r.ttRetouch.toLowerCase().includes('done');
-                        
-                        let isThisRowLateChup = g.isChupLate && !cDone;
-                        let isThisRowLateRetouch = g.isRetouchLate && !rDone;
-                        
-                        // Chỉ lấy những mã thực sự chưa xong
-                        if (isThisRowLateChup || isThisRowLateRetouch) {
-                            let status = [];
-                            if (isThisRowLateChup) status.push("Trễ Chụp");
-                            if (isThisRowLateRetouch) status.push("Trễ Retouch");
-                            
-                            lateSKURows.push({
-                                ...r,
-                                lateStatus: status.join(', ')
-                            });
-                        }
-                    });
-                }
-            });
-
-            if (lateSKURows.length === 0) {
-                return alert("Tuyệt vời! Không có mã SKU nào đang bị trễ hạn trong danh sách hiện tại.");
-            }
-
-            let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Ngày nhận,Tình trạng trễ,TT Chụp,TT Retouch,Ghi chú\n";
-            lateSKURows.forEach(r => {
-                csv += `"${r.sku || ''}","${r.loMuon || ''}","${r.noiMuon || ''}","${formatDateForExport(r.ngayNhan)}","${r.lateStatus}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`;
-            });
-            downloadCSV(csv, `DanhSachSKU_TreHan_${new Date().toISOString().slice(0,10)}.csv`);
-        }
-
-        function downloadCSV(content, filename) { const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = filename; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
-
-        window.importCSV = function(event) {
-            const file = event.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const lines = e.target.result.replace(/^\uFEFF/, '').split('\n');
-                if (lines.length < 2) return alert("File rỗng!");
-                if (tableData.length > 0 && !confirm("Bạn có muốn ghi đè lên dữ liệu hiện tại không?")) return;
-                const newData = [];
-                for (let i = 1; i < lines.length; i++) {
-                    const c = lines[i].trim().split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"').trim());
-                    if (c.length >= 4 && c[0]) {
-                        if (c.length >= 15) {
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'' });
-                        } else {
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ttChup: c[9]||'', ttRetouch: c[10]||'', note: c[11]||'', phanLoai: c[12]||'' });
-                        }
-                    }
-                }
-                if (newData.length > 0) { tableData = newData; window.saveData(); window.renderTable(); window.switchTab('tab-database'); }
-                event.target.value = '';
-            };
-            reader.readAsText(file);
-        }
-
-        window.saveData = function() {
-            if (window.saveDataToCloud) { window.saveDataToCloud(); } else { window.saveDataLocal(); }
         }
     </script>
 </body>
