@@ -118,14 +118,14 @@
                 <button onclick="switchTab('tab-report')" id="btn-tab-report" class="bg-pnjBlue text-white py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-md">
                     <i class="fas fa-chart-pie text-pnjGold"></i> Report
                 </button>
-                <button onclick="switchTab('tab-summary')" id="btn-tab-summary" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
-                    <i class="fas fa-layer-group text-gray-400"></i> Mượn hàng
-                </button>
                 <button onclick="switchTab('tab-image')" id="btn-tab-image" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
                     <i class="fas fa-image text-gray-400"></i> Sản xuất hình ảnh
                 </button>
                 <button onclick="switchTab('tab-video')" id="btn-tab-video" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
                     <i class="fas fa-video text-gray-400"></i> Sản xuất video
+                </button>
+                <button onclick="switchTab('tab-summary')" id="btn-tab-summary" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
+                    <i class="fas fa-layer-group text-gray-400"></i> Mượn hàng
                 </button>
                 <div class="w-px bg-gray-300 my-2 mx-1"></div>
                 <button onclick="switchTab('tab-database')" id="btn-tab-database" class="text-gray-600 hover:bg-pnjGold/20 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all">
@@ -134,7 +134,141 @@
             </nav>
         </div>
 
-        <!-- GLOBAL SKU FILTER -->
+        <!-- ==================== TAB QUY TRÌNH ==================== -->
+        <div id="tab-process" class="hidden">
+            <!-- Flow 1: Mượn hàng -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
+                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-share-alt mr-3 text-pnjGold"></i> FLOW THỜI GIAN MƯỢN HÀNG</h3>
+                <div class="flex flex-col xl:flex-row items-center justify-between gap-4">
+                    
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">1. Check tồn</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Thứ 2 hàng tuần)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-1" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-1" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">2. Trình EO</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Đề xuất mượn)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-2" value="3" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">3. Soạn hàng</p>
+                        <p class="text-[10px] text-transparent mb-3 select-none">.</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">4. KCS</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Kiểm tra CL)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-4" value="4" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-4" value="7" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">5. Nhận hàng</p>
+                        <p class="text-[10px] text-transparent mb-3 select-none">.</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f1-min-5" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f1-max-5" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+
+                    <div class="xl:ml-2 bg-[#F8F9FA] border border-gray-200 rounded-xl p-5 text-center w-full xl:w-56 shadow-sm">
+                        <p class="font-bold text-xs text-[#1C3B5E] uppercase mb-2">Tổng Thời Gian</p>
+                        <div class="flex items-baseline justify-center gap-2">
+                            <span class="text-3xl font-black text-pnjGold" id="f1-total-min">14</span>
+                            <span class="text-gray-400 font-bold mx-1">-</span>
+                            <span class="text-3xl font-black text-pnjGold" id="f1-total-max">19</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-gray-500 uppercase mt-2">Ngày làm việc</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flow 2: Sản xuất hình ảnh -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
+                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH</h3>
+                <div class="flex flex-col lg:flex-row items-center justify-start gap-4">
+                    
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">1. Chụp hình</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Studio/Outsource)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f2-min-1" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f2-max-1" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden lg:block"></i><i class="fas fa-arrow-down text-gray-300 lg:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">2. Retouch</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Hậu kỳ hình ảnh)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f2-min-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f2-max-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-300 hidden lg:block"></i><i class="fas fa-arrow-down text-gray-300 lg:hidden py-1"></i>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
+                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">3. Onsite</p>
+                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Tại địa điểm)</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <input type="number" id="f2-min-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <span class="text-gray-400 font-bold">-</span>
+                            <input type="number" id="f2-max-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 hidden lg:block border-transparent"></div> <!-- Spacer -->
+                    
+                    <div class="lg:ml-2 bg-[#F8F9FA] border border-gray-200 rounded-xl p-5 text-center w-full lg:w-56 shadow-sm">
+                        <p class="font-bold text-xs text-[#1C3B5E] uppercase mb-2">Tổng Thời Gian</p>
+                        <div class="flex items-baseline justify-center gap-2">
+                            <span class="text-3xl font-black text-pnjGold" id="f2-total-min">15</span>
+                            <span class="text-gray-400 font-bold mx-1">-</span>
+                            <span class="text-3xl font-black text-pnjGold" id="f2-total-max">15</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-gray-500 uppercase mt-2">Ngày làm việc</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng Ghi chú -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-[#1C3B5E] text-lg uppercase flex items-center"><i class="fas fa-edit mr-3 text-pnjGold"></i> Bảng Ghi Chú Quy Trình</h3>
+                    <button onclick="saveData()" class="bg-gray-100 hover:bg-pnjGold/20 text-pnjBlue px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"><i class="fas fa-save text-pnjGold"></i> Lưu Ghi chú</button>
+                </div>
+                <textarea id="process-notes" rows="8" class="w-full border border-gray-200 bg-gray-50/50 rounded-xl p-4 text-sm focus:bg-white focus:border-pnjGold focus:ring-2 focus:ring-pnjGold/20 outline-none resize-y leading-relaxed text-gray-700" onchange="saveProcessFlowSettings()" placeholder="Nhập các quy định, lưu ý về năng suất, thời gian, cách thức mượn hàng hoặc sản xuất tại đây..."></textarea>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 1: REPORT DASHBOARD ==================== -->
         <div id="tab-report">
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-3 items-center">
                 <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
@@ -169,16 +303,8 @@
                     </div>
                 </div>
 
-                <div class="w-px h-6 bg-gray-300 mx-1 hidden md:block"></div>
-                
-                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
-                <div class="flex-grow min-w-[150px] max-w-xs relative">
-                    <textarea id="sku-input-report" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-2 py-1.5 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[34px]" placeholder="Dán mã SKU..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter('sku-input-report');}"></textarea>
-                </div>
-                <button onclick="window.applyGlobalSkuFilter('sku-input-report')" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
-
                 <div class="flex-grow"></div>
-                <button onclick="clearReportFilters(); window.clearGlobalSkuFilter();" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
+                <button onclick="clearReportFilters()" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -258,169 +384,11 @@
             </div>
         </div>
 
-        <!-- ==================== TAB 2: SUMMARY ==================== -->
-        <div id="tab-summary" class="hidden">
-            
-            <!-- START: MODULE FLOW MƯỢN HÀNG (GIỮ NGUYÊN NHƯ CŨ) -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6">
-                <h3 class="font-bold text-pnjBlue text-lg uppercase mb-4"><i class="fas fa-project-diagram mr-2 text-pnjGold"></i> Flow Thời Gian Mượn Hàng</h3>
-                
-                <div class="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-3">
-                    
-                    <!-- Step 1 -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
-                        <p class="font-bold text-sm text-pnjBlue mb-1">1. Check tồn</p>
-                        <p class="text-[10px] text-gray-500 mb-2 uppercase">(Thứ 2 hàng tuần)</p>
-                        <div class="flex items-center justify-center gap-1 text-xs">
-                            <input type="number" id="flow-min-1" value="1" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                            <span class="text-gray-400">-</span>
-                            <input type="number" id="flow-max-1" value="1" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden md:block"></i><i class="fas fa-arrow-down text-gray-300 md:hidden py-1"></i>
-
-                    <!-- Step 2 -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
-                        <p class="font-bold text-sm text-pnjBlue mb-1">2. Trình EO</p>
-                        <p class="text-[10px] text-gray-500 mb-2 uppercase">(Đề xuất mượn)</p>
-                        <div class="flex items-center justify-center gap-1 text-xs">
-                            <input type="number" id="flow-min-2" value="3" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                            <span class="text-gray-400">-</span>
-                            <input type="number" id="flow-max-2" value="5" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden md:block"></i><i class="fas fa-arrow-down text-gray-300 md:hidden py-1"></i>
-
-                    <!-- Step 3 -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
-                        <p class="font-bold text-sm text-pnjBlue mb-1">3. Soạn hàng</p>
-                        <p class="text-[10px] text-transparent mb-2 select-none">.</p>
-                        <div class="flex items-center justify-center gap-1 text-xs">
-                            <input type="number" id="flow-min-3" value="5" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                            <span class="text-gray-400">-</span>
-                            <input type="number" id="flow-max-3" value="5" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden md:block"></i><i class="fas fa-arrow-down text-gray-300 md:hidden py-1"></i>
-
-                    <!-- Step 4 -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
-                        <p class="font-bold text-sm text-pnjBlue mb-1">4. KCS</p>
-                        <p class="text-[10px] text-gray-500 mb-2 uppercase">(Kiểm tra CL)</p>
-                        <div class="flex items-center justify-center gap-1 text-xs">
-                            <input type="number" id="flow-min-4" value="4" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                            <span class="text-gray-400">-</span>
-                            <input type="number" id="flow-max-4" value="7" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden md:block"></i><i class="fas fa-arrow-down text-gray-300 md:hidden py-1"></i>
-
-                    <!-- Step 5 -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center flex-1 w-full shadow-sm">
-                        <p class="font-bold text-sm text-pnjBlue mb-1">5. Nhận hàng</p>
-                        <p class="text-[10px] text-transparent mb-2 select-none">.</p>
-                        <div class="flex items-center justify-center gap-1 text-xs">
-                            <input type="number" id="flow-min-5" value="1" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                            <span class="text-gray-400">-</span>
-                            <input type="number" id="flow-max-5" value="1" min="0" class="w-12 text-center border border-gray-300 p-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none" onchange="calculateFlowTotal()">
-                        </div>
-                    </div>
-
-                    <!-- RESULT -->
-                    <div class="md:ml-2 bg-pnjBlue/5 border border-pnjBlue/20 rounded-xl p-4 text-center w-full md:w-auto shadow-inner min-w-[140px]">
-                        <p class="font-bold text-xs text-pnjBlue uppercase mb-1 whitespace-nowrap">Tổng Thời Gian</p>
-                        <div class="flex items-baseline justify-center gap-1">
-                            <span class="text-2xl font-black text-pnjGold" id="flow-total-min">14</span>
-                            <span class="text-gray-500 font-bold mx-1">-</span>
-                            <span class="text-2xl font-black text-pnjGold" id="flow-total-max">19</span>
-                        </div>
-                        <p class="text-[10px] font-bold text-gray-500 uppercase mt-1">Ngày làm việc</p>
-                    </div>
-
-                </div>
-            </div>
-            <!-- END: MODULE FLOW MƯỢN HÀNG -->
-
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="bg-white p-5 border-b border-gray-200 flex flex-col md:flex-row justify-between md:items-center gap-4">
-                    <span class="font-bold text-pnjBlue text-lg uppercase"><i class="fas fa-layer-group mr-2 text-pnjGold"></i> Mượn hàng</span>
-                    <div class="flex gap-2">
-                        <button onclick="saveData()" class="bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold shadow-md transition-colors flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
-                        <button onclick="exportSummaryCSV()" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"><i class="fas fa-file-excel text-pnjGold"></i> Xuất Excel Báo Cáo</button>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-50 p-4 border-b border-gray-200 flex flex-wrap gap-3 items-center">
-                    <span class="text-sm font-bold text-pnjBlue uppercase"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
-                    <div class="relative inline-block text-left" id="wrap-filter-month">
-                        <button onclick="toggleFilterDropdown('dropdown-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[120px]">
-                            <span id="label-month" class="truncate font-medium">Tất cả Tháng</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
-                        </button>
-                        <div id="dropdown-month" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
-                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-month" checked onchange="toggleAllCheckboxes('month', this.checked)"><span>Chọn tất cả</span></label></div>
-                            <div id="list-month" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
-                        </div>
-                    </div>
-                    <div class="relative inline-block text-left" id="wrap-filter-noiMuon">
-                        <button onclick="toggleFilterDropdown('dropdown-noiMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
-                            <span id="label-noiMuon" class="truncate font-medium">Tất cả Nơi mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
-                        </button>
-                        <div id="dropdown-noiMuon" class="hidden absolute z-50 mt-1 w-56 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
-                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-noiMuon" checked onchange="toggleAllCheckboxes('noiMuon', this.checked)"><span>Chọn tất cả</span></label></div>
-                            <div id="list-noiMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
-                        </div>
-                    </div>
-                    <div class="relative inline-block text-left" id="wrap-filter-ttMuon">
-                        <button onclick="toggleFilterDropdown('dropdown-ttMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
-                            <span id="label-ttMuon" class="truncate font-medium">Tất cả TT Mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
-                        </button>
-                        <div id="dropdown-ttMuon" class="hidden absolute z-50 mt-1 w-64 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
-                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-ttMuon" checked onchange="toggleAllCheckboxes('ttMuon', this.checked)"><span>Chọn tất cả</span></label></div>
-                            <div id="list-ttMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="w-px h-6 bg-gray-300 mx-1 hidden lg:block"></div>
-                    
-                    <span class="text-sm font-bold text-pnjBlue uppercase"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
-                    <div class="flex-grow min-w-[130px] max-w-xs relative">
-                        <textarea id="sku-input-summary" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-2 py-1.5 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[34px]" placeholder="Dán mã SKU..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter('sku-input-summary');}"></textarea>
-                    </div>
-                    <button onclick="window.applyGlobalSkuFilter('sku-input-summary')" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
-
-                    <button onclick="clearSummaryFilters(); window.clearGlobalSkuFilter();" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
-                </div>
-
-                <div class="overflow-x-auto table-container max-h-[65vh]">
-                    <table class="w-full text-sm text-left whitespace-nowrap">
-                        <thead class="text-xs text-white uppercase bg-pnjBlue sticky top-0 z-10 font-medium tracking-wide">
-                            <tr>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center rounded-tl-lg">Tháng</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Nơi mượn</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[200px]">Lô mượn</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center min-w-[140px]">Bắt đầu mượn</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center min-w-[140px]">Nhận hàng</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center min-w-[140px]">Trả hàng</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center text-pnjGold">Ngày mượn</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">Tình trạng</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Tiến độ Chụp</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Tiến độ Retouch</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Trạng thái lô</th>
-                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[200px]">Ghi chú</th>
-                                <th class="px-4 py-4 text-right bg-[#002244] text-pnjGold rounded-tr-lg">Tổng SKU</th>
-                            </tr>
-                        </thead>
-                        <tbody id="summaryBody" class="divide-y divide-gray-200"></tbody>
-                    </table>
-                </div>
-                <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end text-gray-800 text-base font-bold">
-                    <div>Tổng tất cả SKU: <span id="summaryGrandTotal" class="text-pnjBlue text-2xl ml-2 font-black">0</span></div>
-                </div>
-            </div>
-        </div>
-
         <!-- ==================== TAB 3: HÌNH ẢNH ==================== -->
         <div id="tab-image" class="hidden">
+            <!-- DEADLINE ALERTS CONTAINER -->
+            <div id="deadline-alerts-container"></div>
+            
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-3 items-center">
                 <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
                 
@@ -456,6 +424,16 @@
                         <div id="list-img-loMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                     </div>
                 </div>
+
+                <div class="relative inline-block text-left" id="wrap-filter-img-status">
+                    <button onclick="toggleFilterDropdown('dropdown-img-status')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[140px] flex justify-between items-center">
+                        <span id="label-img-status" class="truncate font-medium">Tất cả Trạng thái</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
+                    </button>
+                    <div id="dropdown-img-status" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-xl rounded-lg border border-gray-200 top-full left-0">
+                        <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-img-status" checked onchange="toggleAllCheckboxes('img-status', this.checked)"><span>Chọn tất cả</span></label></div>
+                        <div id="list-img-status" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
+                    </div>
+                </div>
                 
                 <label class="flex items-center space-x-1 text-xs text-red-600 bg-red-50 px-2 py-1.5 rounded border border-red-100 font-bold cursor-pointer hover:bg-red-100 transition-colors shadow-sm ml-1">
                     <input type="checkbox" id="filter-img-late" onchange="window.renderImageTrackingTable()" class="rounded text-red-600 focus:ring-red-500 w-3 h-3 cursor-pointer">
@@ -466,16 +444,8 @@
                     <i class="fas fa-file-excel text-pnjGold"></i><span>Tải tất cả</span>
                 </button>
                 
-                <div class="w-full xl:w-px xl:h-6 xl:bg-gray-300 xl:mx-1"></div>
-
-                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider hidden xl:block"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
-                <div class="flex-grow min-w-[130px] max-w-xs relative">
-                    <textarea id="sku-input-image" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-2 py-1.5 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[34px]" placeholder="Dán mã SKU..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter('sku-input-image');}"></textarea>
-                </div>
-                <button onclick="window.applyGlobalSkuFilter('sku-input-image')" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
-
                 <div class="flex-grow"></div>
-                <button onclick="window.clearImageFilters(); window.clearGlobalSkuFilter();" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100">Xóa lọc</button>
+                <button onclick="window.clearImageFilters()" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100">Xóa lọc</button>
             </div>
 
             <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6 hidden">
@@ -624,141 +594,91 @@
             </div>
         </div>
 
-        <!-- ==================== TAB QUY TRÌNH ==================== -->
-        <div id="tab-process" class="hidden">
-            <!-- Flow 1: Mượn hàng -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-share-alt mr-3 text-pnjGold"></i> FLOW THỜI GIAN MƯỢN HÀNG</h3>
-                <div class="flex flex-col xl:flex-row items-center justify-between gap-4">
-                    
-                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
-                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">1. Check tồn</p>
-                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Thứ 2 hàng tuần)</p>
-                        <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f1-min-1" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                            <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f1-max-1" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
-
-                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
-                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">2. Trình EO</p>
-                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Đề xuất mượn)</p>
-                        <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f1-min-2" value="3" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                            <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f1-max-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
-
-                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
-                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">3. Soạn hàng</p>
-                        <p class="text-[10px] text-transparent mb-3 select-none">.</p>
-                        <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f1-min-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                            <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f1-max-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
-
-                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
-                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">4. KCS</p>
-                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Kiểm tra CL)</p>
-                        <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f1-min-4" value="4" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                            <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f1-max-4" value="7" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden xl:block"></i><i class="fas fa-arrow-down text-gray-300 xl:hidden py-1"></i>
-
-                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
-                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">5. Nhận hàng</p>
-                        <p class="text-[10px] text-transparent mb-3 select-none">.</p>
-                        <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f1-min-5" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                            <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f1-max-5" value="1" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                        </div>
-                    </div>
-
-                    <div class="xl:ml-2 bg-[#F8F9FA] border border-gray-200 rounded-xl p-5 text-center w-full xl:w-56 shadow-sm">
-                        <p class="font-bold text-xs text-[#1C3B5E] uppercase mb-2">Tổng Thời Gian</p>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-3xl font-black text-pnjGold" id="f1-total-min">14</span>
-                            <span class="text-gray-400 font-bold mx-1">-</span>
-                            <span class="text-3xl font-black text-pnjGold" id="f1-total-max">19</span>
-                        </div>
-                        <p class="text-[10px] font-bold text-gray-500 uppercase mt-2">Ngày làm việc</p>
+        <!-- ==================== TAB 5: MƯỢN HÀNG (SUMMARY) ==================== -->
+        <div id="tab-summary" class="hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="bg-white p-5 border-b border-gray-200 flex flex-col md:flex-row justify-between md:items-center gap-4">
+                    <span class="font-bold text-pnjBlue text-lg uppercase"><i class="fas fa-layer-group mr-2 text-pnjGold"></i> Mượn hàng</span>
+                    <div class="flex gap-2">
+                        <button onclick="saveData()" class="bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold shadow-md transition-colors flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
+                        <button onclick="exportSummaryCSV()" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"><i class="fas fa-file-excel text-pnjGold"></i> Xuất Excel Báo Cáo</button>
                     </div>
                 </div>
-            </div>
+                
+                <div class="bg-gray-50 p-4 border-b border-gray-200 flex flex-wrap gap-3 items-center">
+                    <span class="text-sm font-bold text-pnjBlue uppercase"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
+                    <div class="relative inline-block text-left" id="wrap-filter-month">
+                        <button onclick="toggleFilterDropdown('dropdown-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[120px]">
+                            <span id="label-month" class="truncate font-medium">Tất cả Tháng</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
+                        </button>
+                        <div id="dropdown-month" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-month" checked onchange="toggleAllCheckboxes('month', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div id="list-month" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
+                        </div>
+                    </div>
+                    <div class="relative inline-block text-left" id="wrap-filter-noiMuon">
+                        <button onclick="toggleFilterDropdown('dropdown-noiMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
+                            <span id="label-noiMuon" class="truncate font-medium">Tất cả Nơi mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
+                        </button>
+                        <div id="dropdown-noiMuon" class="hidden absolute z-50 mt-1 w-56 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-noiMuon" checked onchange="toggleAllCheckboxes('noiMuon', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div id="list-noiMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
+                        </div>
+                    </div>
+                    <div class="relative inline-block text-left" id="wrap-filter-ttMuon">
+                        <button onclick="toggleFilterDropdown('dropdown-ttMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
+                            <span id="label-ttMuon" class="truncate font-medium">Tất cả TT Mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
+                        </button>
+                        <div id="dropdown-ttMuon" class="hidden absolute z-50 mt-1 w-64 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-ttMuon" checked onchange="toggleAllCheckboxes('ttMuon', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div id="list-ttMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
+                        </div>
+                    </div>
 
-            <!-- Flow 2: Sản xuất hình ảnh -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH (GÓI MƯỢN 160SKU)</h3>
-                <div class="flex flex-col lg:flex-row items-center justify-start gap-4">
-                    
-                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
-                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">1. Chụp hình</p>
-                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Studio/Outsource)</p>
-                        <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f2-min-1" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                            <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f2-max-1" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden lg:block"></i><i class="fas fa-arrow-down text-gray-300 lg:hidden py-1"></i>
-
-                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
-                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">2. Retouch</p>
-                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Hậu kỳ hình ảnh)</p>
-                        <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f2-min-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                            <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f2-max-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                        </div>
-                    </div>
-                    <i class="fas fa-arrow-right text-gray-300 hidden lg:block"></i><i class="fas fa-arrow-down text-gray-300 lg:hidden py-1"></i>
-
-                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
-                        <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">3. Onsite</p>
-                        <p class="text-[10px] text-gray-500 mb-3 uppercase">(Tại địa điểm)</p>
-                        <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f2-min-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
-                            <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f2-max-3" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                    <div class="relative inline-block text-left" id="wrap-filter-status">
+                        <button onclick="toggleFilterDropdown('dropdown-status')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
+                            <span id="label-status" class="truncate font-medium">Tất cả Trạng thái</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
+                        </button>
+                        <div id="dropdown-status" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-status" checked onchange="toggleAllCheckboxes('status', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div id="list-status" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                         </div>
                     </div>
                     
-                    <div class="flex-1 hidden lg:block border-transparent"></div> <!-- Spacer -->
+                    <div class="w-px h-6 bg-gray-300 mx-1 hidden lg:block"></div>
                     
-                    <div class="lg:ml-2 bg-[#F8F9FA] border border-gray-200 rounded-xl p-5 text-center w-full lg:w-56 shadow-sm">
-                        <p class="font-bold text-xs text-[#1C3B5E] uppercase mb-2">Tổng Thời Gian</p>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-3xl font-black text-pnjGold" id="f2-total-min">15</span>
-                            <span class="text-gray-400 font-bold mx-1">-</span>
-                            <span class="text-3xl font-black text-pnjGold" id="f2-total-max">15</span>
-                        </div>
-                        <p class="text-[10px] font-bold text-gray-500 uppercase mt-2">Ngày làm việc</p>
-                    </div>
+                    <button onclick="clearSummaryFilters();" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
                 </div>
-            </div>
 
-            <!-- Bảng Ghi chú -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-[#1C3B5E] text-lg uppercase flex items-center"><i class="fas fa-edit mr-3 text-pnjGold"></i> Bảng Ghi Chú Quy Trình</h3>
-                    <button onclick="saveData()" class="bg-gray-100 hover:bg-pnjGold/20 text-pnjBlue px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"><i class="fas fa-save text-pnjGold"></i> Lưu Ghi chú</button>
+                <div class="overflow-x-auto table-container max-h-[65vh]">
+                    <table class="w-full text-sm text-left whitespace-nowrap">
+                        <thead class="text-xs text-white uppercase bg-pnjBlue sticky top-0 z-10 font-medium tracking-wide">
+                            <tr>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center rounded-tl-lg">Tháng</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Nơi mượn</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[200px]">Lô mượn</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center min-w-[140px]">Bắt đầu mượn</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center min-w-[140px]">Nhận hàng</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center min-w-[140px]">Trả hàng</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center text-pnjGold">Ngày mượn</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">Tình trạng</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Tiến độ Chụp</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Tiến độ Retouch</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Trạng thái lô</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[200px]">Ghi chú</th>
+                                <th class="px-4 py-4 text-right bg-[#002244] text-pnjGold rounded-tr-lg">Tổng SKU</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryBody" class="divide-y divide-gray-200"></tbody>
+                    </table>
                 </div>
-                <textarea id="process-notes" rows="8" class="w-full border border-gray-200 bg-gray-50/50 rounded-xl p-4 text-sm focus:bg-white focus:border-pnjGold focus:ring-2 focus:ring-pnjGold/20 outline-none resize-y leading-relaxed text-gray-700" onchange="saveProcessFlowSettings()" placeholder="Nhập các quy định, lưu ý về năng suất, thời gian, cách thức mượn hàng hoặc sản xuất tại đây..."></textarea>
+                <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end text-gray-800 text-base font-bold">
+                    <div>Tổng tất cả SKU: <span id="summaryGrandTotal" class="text-pnjBlue text-2xl ml-2 font-black">0</span></div>
+                </div>
             </div>
         </div>
 
-        <!-- ==================== TAB 5: DATABASE GỐC ==================== -->
+        <!-- ==================== TAB 6: DATABASE GỐC ==================== -->
         <div id="tab-database" class="hidden">
             <div class="flex flex-wrap gap-3 mb-6 bg-white p-4 rounded-xl border border-gray-200 shadow-sm items-center">
                 <button onclick="addNewRow()" class="bg-pnjBlue/10 text-pnjBlue hover:bg-pnjBlue/20 px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Dòng</button>
@@ -769,15 +689,6 @@
                 </label>
                 <button onclick="exportCSV()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-download text-pnjBlue"></i> Xuất CSV</button>
                 
-                <div class="w-px h-8 bg-gray-300 mx-2 hidden lg:block"></div>
-                
-                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider hidden xl:block"><i class="fas fa-search text-pnjGold mr-1"></i> Lọc SKU:</span>
-                <div class="flex-grow min-w-[150px] max-w-sm relative">
-                    <textarea id="sku-input-db" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-2 py-2 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[38px]" placeholder="Dán các mã SKU cần tìm..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter('sku-input-db');}"></textarea>
-                </div>
-                <button onclick="window.applyGlobalSkuFilter('sku-input-db')" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-2 rounded-lg font-semibold transition-colors">Tìm</button>
-                <button onclick="window.clearGlobalSkuFilter()" class="bg-gray-100 text-gray-700 hover:bg-gray-200 px-3 py-2 rounded-lg font-semibold transition-colors" title="Xóa tìm kiếm SKU"><i class="fas fa-times"></i></button>
-
                 <div class="flex-grow"></div>
                 <button onclick="clearAllData()" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2.5 rounded-lg font-semibold border border-red-100">Xóa toàn bộ</button>
             </div>
@@ -1005,41 +916,6 @@
             }
         };
 
-        // Cấu hình mảng lọc SKU toàn cục
-        window.globalSkuFilterArray = [];
-
-        window.applyGlobalSkuFilter = function(inputId) {
-            let val = '';
-            if (inputId) {
-                let el = document.getElementById(inputId);
-                if(el) val = el.value;
-            } else {
-                ['sku-input-report', 'sku-input-summary', 'sku-input-image', 'sku-input-db'].forEach(id => {
-                    let el = document.getElementById(id);
-                    if (el && el.value) val = el.value;
-                });
-            }
-
-            if (!val || !val.trim()) {
-                window.globalSkuFilterArray = [];
-            } else {
-                window.globalSkuFilterArray = val.split(/[\s,]+/).map(s => s.trim()).filter(s => s.length > 0);
-            }
-            
-            let textVal = window.globalSkuFilterArray.join(', ');
-            ['sku-input-report', 'sku-input-summary', 'sku-input-image', 'sku-input-db'].forEach(id => {
-                let el = document.getElementById(id);
-                if(el) el.value = textVal;
-            });
-            
-            // Tìm tab đang mở để render lại
-            let activeTabId = ['tab-report', 'tab-summary', 'tab-image', 'tab-video', 'tab-process', 'tab-database'].find(id => {
-                let el = document.getElementById(id);
-                return el && !el.classList.contains('hidden');
-            });
-            if (activeTabId) window.switchTab(activeTabId.replace('tab-', 'tab-'));
-        }
-
         // Logic xử lý Flow mượn hàng ở Tab Summary (Bản gốc)
         window.calculateFlowTotal = function() {
             let totalMin = 0;
@@ -1085,7 +961,6 @@
         window.saveProcessFlowSettings = function() {
             let flowData = { f1: {}, f2: {}, notes: '' };
             
-            // Flow 1
             let min1 = 0, max1 = 0;
             for(let i=1; i<=5; i++) {
                 let mnEl = document.getElementById(`f1-min-${i}`);
@@ -1100,7 +975,6 @@
             if(document.getElementById('f1-total-min')) document.getElementById('f1-total-min').innerText = min1;
             if(document.getElementById('f1-total-max')) document.getElementById('f1-total-max').innerText = max1;
 
-            // Flow 2
             let min2 = 0, max2 = 0;
             for(let i=1; i<=3; i++) {
                 let mnEl = document.getElementById(`f2-min-${i}`);
@@ -1147,7 +1021,6 @@
             if (details && icon) { details.classList.toggle('hidden'); icon.classList.toggle('rotate-180'); }
         }
 
-        // JS điều khiển Thu gọn / Sổ ra cho các khối chức năng
         window.toggleSection = function(contentId, iconId) {
             const content = document.getElementById(contentId);
             const icon = document.getElementById(iconId);
@@ -1164,7 +1037,7 @@
         }
 
         document.addEventListener('click', function(event) {
-            const dropdowns = ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon'];
+            const dropdowns = ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-status', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon', 'dropdown-img-status'];
             dropdowns.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.classList.contains('hidden')) {
@@ -1216,13 +1089,11 @@
             return dateStr;
         }
 
-        // Hàm format riêng cho xuất Excel (chuẩn MM/DD/YYYY)
         function formatDateForExport(dateStr) {
             if (!dateStr) return '';
-            // Kiểm tra nếu đang là định dạng YYYY-MM-DD trong database
             if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
                 const parts = dateStr.split('-');
-                return `${parts[1]}/${parts[2]}/${parts[0]}`; // Đổi thành MM/DD/YYYY
+                return `${parts[1]}/${parts[2]}/${parts[0]}`; 
             }
             return dateStr;
         }
@@ -1368,7 +1239,7 @@
 
         window.toggleFilterDropdown = function(id) {
             const el = document.getElementById(id);
-            ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon'].forEach(otherId => {
+            ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-status', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon', 'dropdown-img-status'].forEach(otherId => {
                 const otherEl = document.getElementById(otherId); if(otherEl && otherId !== id) otherEl.classList.add('hidden');
             });
             if(el) el.classList.toggle('hidden');
@@ -1395,7 +1266,7 @@
             if(!labelEl) return;
             
             let baseType = fullType.replace('report-', '').replace('img-', '');
-            let prefix = baseType === 'month' ? 'Tháng' : (baseType === 'noiMuon' ? 'Nơi mượn' : (baseType === 'loMuon' ? 'Lô mượn' : (baseType === 'phanLoai' ? 'Phân loại' : 'TT Mượn')));
+            let prefix = baseType === 'month' ? 'Tháng' : (baseType === 'noiMuon' ? 'Nơi mượn' : (baseType === 'loMuon' ? 'Lô mượn' : (baseType === 'ttMuon' ? 'TT Mượn' : (baseType === 'status' ? 'Trạng thái' : (baseType === 'phanLoai' ? 'Phân loại' : '')))));
             
             if (checkedCbs.length === cbs.length) labelEl.innerText = `Tất cả ${prefix}`;
             else if (checkedCbs.length === 0) labelEl.innerText = `Trống (${prefix})`;
@@ -1415,24 +1286,40 @@
         }
 
         function populateSummaryFilters() {
-            const curMonth = getFilterState('month'); const curNoi = getFilterState('noiMuon'); const curTT = getFilterState('ttMuon');
-            const months = new Set(); const nois = new Set(); const tts = new Set();
+            const curMonth = getFilterState('month'); const curNoi = getFilterState('noiMuon'); const curTT = getFilterState('ttMuon'); const curStatus = getFilterState('status');
+            const months = new Set(); const nois = new Set(); const tts = new Set(); const ttLos = new Set();
+            let groupsForFilter = {};
+
             tableData.forEach(row => { 
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
                 if (!row.sku && !row.loMuon && !row.noiMuon) return; 
                 months.add(row.month || 'Trống'); nois.add(row.noiMuon || 'Trống'); tts.add(row.ttMuon || 'Trống'); 
+                
+                const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const tt = row.ttMuon || 'Trống';
+                const d = calculateDays(row.ngayBatDau, row.ngayNhan); const l = row.loMuon || 'Trống';
+                const bd = row.ngayBatDau || 'Trống'; const nh = row.ngayNhan || 'Trống'; const ds = d !== '' ? d : 'Trống';
+                const tr = row.ngayTra || 'Trống';
+                const k = `${m}|${n}|${l}|${bd}|${nh}|${tr}|${ds}|${tt}`;
+                
+                if (!groupsForFilter[k]) groupsForFilter[k] = { tt, count: 0, cD: 0, rD: 0 };
+                groupsForFilter[k].count++;
+                if (row.ttChup && row.ttChup.toLowerCase().includes('done')) groupsForFilter[k].cD++;
+                if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) groupsForFilter[k].rD++;
             });
-            buildFilterDropdown(months, 'month', curMonth); buildFilterDropdown(nois, 'noiMuon', curNoi); buildFilterDropdown(tts, 'ttMuon', curTT);
+            
+            Object.values(groupsForFilter).forEach(g => {
+                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
+                ttLos.add(isHoanThanh ? 'Hoàn thành' : 'Đang xử lý');
+            });
+
+            buildFilterDropdown(months, 'month', curMonth); buildFilterDropdown(nois, 'noiMuon', curNoi); buildFilterDropdown(tts, 'ttMuon', curTT); buildFilterDropdown(ttLos, 'status', curStatus);
         }
-        window.clearSummaryFilters = function() { ['month', 'noiMuon', 'ttMuon'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
+        window.clearSummaryFilters = function() { ['month', 'noiMuon', 'ttMuon', 'status'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
 
         function populateReportFilters() {
             const curMonth = getFilterState('report-month'); const curNoi = getFilterState('report-noiMuon'); const curPhanLoai = getFilterState('report-phanLoai');
             const months = new Set(); const nois = new Set(); const phanLoais = new Set();
             tableData.forEach(row => { 
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
                 if (!row.sku && !row.loMuon && !row.noiMuon) return; 
-                
                 months.add(row.month || 'Trống'); 
                 nois.add(row.noiMuon || 'Trống'); 
                 phanLoais.add(row.phanLoai || 'Trống');
@@ -1442,153 +1329,34 @@
         window.clearReportFilters = function() { ['report-month', 'report-noiMuon', 'report-phanLoai'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
 
         function populateImageFilters() {
-            const curMonth = getFilterState('img-month'); const curNoi = getFilterState('img-noiMuon'); const curLo = getFilterState('img-loMuon');
-            const months = new Set(); const nois = new Set(); const los = new Set();
+            const curMonth = getFilterState('img-month'); const curNoi = getFilterState('img-noiMuon'); const curLo = getFilterState('img-loMuon'); const curStatus = getFilterState('img-status');
+            const months = new Set(); const nois = new Set(); const los = new Set(); const ttLos = new Set();
+            
+            let dailyGroups = {};
+
             tableData.forEach(row => { 
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
                 if (!row.loMuon) return; 
                 months.add(row.month || 'Trống'); nois.add(row.noiMuon || 'Trống'); los.add(row.loMuon); 
+                
+                let groupKey = row.ngayNhan;
+                if (!dailyGroups[groupKey]) { dailyGroups[groupKey] = { skuCount: 0, chupDone: 0, retouchDone: 0, muonDone: 0 }; }
+                let group = dailyGroups[groupKey];
+                group.skuCount++;
+                if (row.ttMuon && row.ttMuon.toLowerCase().includes('done')) group.muonDone++;
+                if (row.ttChup && row.ttChup.toLowerCase().includes('done')) group.chupDone++;
+                if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) group.retouchDone++;
             });
-            buildFilterDropdown(months, 'img-month', curMonth); buildFilterDropdown(nois, 'img-noiMuon', curNoi); buildFilterDropdown(los, 'img-loMuon', curLo);
+            
+            Object.values(dailyGroups).forEach(g => {
+                let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
+                ttLos.add(isHoanThanh ? 'Hoàn thành' : 'Đang xử lý');
+            });
+
+            buildFilterDropdown(months, 'img-month', curMonth); buildFilterDropdown(nois, 'img-noiMuon', curNoi); buildFilterDropdown(los, 'img-loMuon', curLo); buildFilterDropdown(ttLos, 'img-status', curStatus);
         }
         window.clearImageFilters = function() { 
             const lateCb = document.getElementById('filter-img-late'); if (lateCb) lateCb.checked = false;
-            ['img-month', 'img-noiMuon', 'img-loMuon'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); 
-        }
-
-        window.renderReport = function() {
-            const getV = (t) => {
-                const cbs = document.querySelectorAll(`.cb-report-${t}`);
-                if (cbs.length === 0) return ['ALL'];
-                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
-            };
-            const mF = getV('month'); 
-            const nF = getV('noiMuon');
-            const plF = getV('phanLoai');
-
-            let tMD = 0, tCD = 0, tRD = 0; 
-            let sPK = 0, sPN = 0, sPT = 0, sPC = 0, sPR = 0;
-            let chartObj = {};
-
-            const extractMonth = (dateStr) => {
-                if (dateStr && dateStr.includes('-')) {
-                    const m = parseInt(dateStr.split('-')[1], 10);
-                    if (!isNaN(m)) return m.toString();
-                }
-                return null;
-            };
-
-            tableData.forEach(row => {
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
-                if (!row.sku && !row.loMuon && !row.noiMuon) return;
-                
-                const mBase = row.month ? row.month.toString() : 'Trống'; 
-                const n = row.noiMuon || 'Trống';
-                const pl = row.phanLoai || 'Trống';
-                
-                if (!nF.includes('ALL') && !nF.includes(n)) return;
-                if (!plF.includes('ALL') && !plF.includes(pl)) return;
-
-                let iDM = row.ttMuon?.toLowerCase().includes('done'), 
-                    iCBM = row.ttMuon?.toLowerCase().includes('chuẩn bị mượn'), 
-                    iDC = row.ttChup?.toLowerCase().includes('done'), 
-                    iDR = row.ttRetouch?.toLowerCase().includes('done');
-                let nU = n.toUpperCase();
-
-                // 1. DỮ LIỆU KPI & DỰ KIẾN: Tính theo "Cột Tháng" (mBase)
-                if (mF.includes('ALL') || mF.includes(mBase)) {
-                    // Cập nhật KPI
-                    if (iDM) tMD++;
-                    if (iDC) tCD++;
-                    if (iDR) tRD++;
-
-                    // Cập nhật Thống kê dự kiến
-                    if (!iDM) {
-                        sPT++;
-                        if (nU === 'KHO') sPK++;
-                        else if (nU === 'NVT') sPN++;
-                    }
-                    if (!iDC && !iCBM) sPC++;
-                    if (iDC && !iDR) sPR++;
-                }
-
-                // 2. DỮ LIỆU CHART: Bỏ qua Cột Tháng, tính theo "Ngày thực tế"
-                const mMuon = extractMonth(row.ngayNhan) || mBase;
-                const mChup = extractMonth(row.ngayChup) || mMuon;
-                const mRetouch = extractMonth(row.ngayRetouch) || mChup;
-
-                const addToChart = (m, type) => {
-                    if (mF.includes('ALL') || mF.includes(m)) {
-                        if (!chartObj[m]) chartObj[m] = { dM: 0, dC: 0, dR: 0 };
-                        chartObj[m][type]++;
-                    }
-                };
-
-                if (iDM) addToChart(mMuon, 'dM');
-                if (iDC) addToChart(mChup, 'dC');
-                if (iDR) addToChart(mRetouch, 'dR');
-            });
-
-            // Mốc KPI Cố định
-            const KPI_TARGET = 7000;
-
-            // Hiển thị KPI Tổng
-            const kpiMuon = document.getElementById('kpi-total-muon'); if(kpiMuon) kpiMuon.innerText = tMD.toLocaleString();
-            const kpiChup = document.getElementById('kpi-total-chup'); if(kpiChup) kpiChup.innerText = tCD.toLocaleString();
-            const kpiRetouch = document.getElementById('kpi-total-retouch'); if(kpiRetouch) kpiRetouch.innerText = tRD.toLocaleString();
-
-            // Tính và hiển thị phần trăm + thanh tiến độ
-            const updatePct = (val, target, prefix) => {
-                let pct = target > 0 ? Math.min(100, (val / target) * 100) : 0;
-                let displayPct = pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(1);
-                
-                const pctEl = document.getElementById(`kpi-pct-${prefix}`);
-                if (pctEl) pctEl.innerText = `${displayPct}%`;
-                
-                const barEl = document.getElementById(`kpi-bar-${prefix}`);
-                if (barEl) barEl.style.width = `${pct}%`;
-            };
-
-            updatePct(tMD, KPI_TARGET, 'muon');
-            updatePct(tCD, KPI_TARGET, 'chup');
-            updatePct(tRD, KPI_TARGET, 'retouch');
-
-            // Hiển thị Chart
-            const canvas = document.getElementById('chartDone'); const empty = document.getElementById('emptyChartDone');
-            if(!canvas || !empty) return;
-            if (chartDoneInstance) chartDoneInstance.destroy();
-            
-            const sM = Object.keys(chartObj).sort((a,b) => {
-                if (a === 'Trống') return 1;
-                if (b === 'Trống') return -1;
-                return Number(a) - Number(b);
-            });
-
-            if (sM.length === 0) { 
-                canvas.classList.add('hidden'); empty.classList.remove('hidden'); 
-            } else {
-                canvas.classList.remove('hidden'); empty.classList.add('hidden');
-                chartDoneInstance = new Chart(canvas, { 
-                    type: 'bar', 
-                    data: { 
-                        labels: sM.map(m => m === 'Trống' ? 'Trống' : `Tháng ${m}`), 
-                        datasets: [ 
-                            { label: 'Đã Mượn', data: sM.map(m => chartObj[m].dM), backgroundColor: '#003366', borderRadius: 4 }, 
-                            { label: 'Đã Chụp', data: sM.map(m => chartObj[m].dC), backgroundColor: '#D4AF37', borderRadius: 4 }, 
-                            { label: 'Đã Retouch', data: sM.map(m => chartObj[m].dR), backgroundColor: '#9CA3AF', borderRadius: 4 } 
-                        ] 
-                    }, 
-                    options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, font: { family: "'Be Vietnam Pro', sans-serif" } } } }, scales: { x: { grid: { display: false } }, y: { border: { display: false } } } },
-                    plugins: [{ id: 'customDataLabelsReport', afterDatasetsDraw(chart) { const { ctx, data } = chart; ctx.save(); ctx.font = 'bold 11px "Be Vietnam Pro", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillStyle = '#4B5563'; data.datasets.forEach((dataset, i) => { const meta = chart.getDatasetMeta(i); if (!meta.hidden) { meta.data.forEach((bar, index) => { const value = dataset.data[index]; if (value > 0) { ctx.fillText(value, bar.x, bar.y - 4); } }); } }); ctx.restore(); } }]
-                });
-            }
-
-            // Hiển thị số liệu Dự kiến
-            const vM = document.getElementById('val-pending-m-total'); if (vM) vM.innerText = sPT || '-'; 
-            const vMK = document.getElementById('val-pending-m-kho'); if (vMK) vMK.innerText = sPK || '-'; 
-            const vMN = document.getElementById('val-pending-m-nvt'); if (vMN) vMN.innerText = sPN || '-'; 
-            const vC = document.getElementById('val-pending-c'); if (vC) vC.innerText = sPC || '-'; 
-            const vR = document.getElementById('val-pending-r'); if (vR) vR.innerText = sPR || '-';
+            ['img-month', 'img-noiMuon', 'img-loMuon', 'img-status'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); 
         }
 
         window.getGlobalSchedule = function() {
@@ -1654,9 +1422,6 @@
             const tbody = document.getElementById('tableBody'); if(!tbody) return;
             
             let dataToRender = tableData;
-            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
-                dataToRender = tableData.filter(row => window.globalSkuFilterArray.includes(row.sku));
-            }
 
             tbody.innerHTML = dataToRender.map(row => {
                 const calculatedDays = calculateDays(row.ngayBatDau, row.ngayNhan);
@@ -1741,26 +1506,21 @@
         window.renderSummary = function() {
             const tbody = document.getElementById('summaryBody'); if(!tbody) return;
             
-            // Hàm lấy danh sách filter cực kỳ an toàn, trả về ['ALL'] nếu DOM chưa có
             const getV = (t) => {
                 const cbs = document.querySelectorAll(`.cb-${t}`);
                 if (cbs.length === 0) return ['ALL'];
                 return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
             };
 
-            const mF = getV('month'); const nF = getV('noiMuon'); const tF = getV('ttMuon');
+            const mF = getV('month'); const nF = getV('noiMuon'); const tF = getV('ttMuon'); const sF = getV('status');
             const globalSchedules = window.getGlobalSchedule ? window.getGlobalSchedule() : {};
             let groups = {}; let grandTotal = 0;
             
             tableData.forEach(row => {
-                // Lọc theo SKU chung (nếu có)
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
-                
                 const m = row.month || 'Trống'; 
                 const n = row.noiMuon || 'Trống'; 
                 const tt = row.ttMuon || 'Trống';
                 
-                // Lọc an toàn, bỏ qua nếu người dùng chủ động bỏ tick
                 if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
                 if (!nF.includes('ALL') && !nF.includes(n)) return;
                 if (!tF.includes('ALL') && !tF.includes(tt)) return;
@@ -1772,14 +1532,13 @@
                 const ds = d !== '' ? d : 'Trống';
                 const tr = row.ngayTra || 'Trống';
                 
-                // Gom nhóm các dòng giống nhau
                 const k = `${m}|${n}|${l}|${bd}|${nh}|${tr}|${ds}|${tt}`;
                 
                 if (!groups[k]) {
                     groups[k] = { m, n, l, bd, nh, tr, ds, tt, count: 0, cD: 0, cND: 0, rD: 0, rND: 0, notes: new Set(), ids: [] };
                 }
                 
-                groups[k].count++; grandTotal++; groups[k].ids.push(row.id);
+                groups[k].count++; groups[k].ids.push(row.id);
                 
                 if (row.ttChup && row.ttChup.toLowerCase().includes('done')) groups[k].cD++; else groups[k].cND++;
                 if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) groups[k].rD++; else groups[k].rND++;
@@ -1788,7 +1547,6 @@
             
             let todayStr = new Date().toISOString().slice(0, 10);
 
-            // Sắp xếp an toàn, tránh lỗi khi m là "Trống" hoặc l bị trống
             let sortedGroups = Object.values(groups).sort((a,b) => {
                 if(a.m === 'Trống' && b.m !== 'Trống') return 1;
                 if(b.m === 'Trống' && a.m !== 'Trống') return -1;
@@ -1797,7 +1555,16 @@
                 return (a.l || '').localeCompare(b.l || '');
             });
 
-            tbody.innerHTML = sortedGroups.map(g => {
+            let filteredGroups = sortedGroups.filter(g => {
+                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
+                let statusLabelText = isHoanThanh ? 'Hoàn thành' : 'Đang xử lý';
+                if (!sF.includes('ALL') && !sF.includes(statusLabelText)) return false;
+                return true;
+            });
+
+            filteredGroups.forEach(g => { grandTotal += g.count; });
+
+            tbody.innerHTML = filteredGroups.map(g => {
                 let isChupLate = false;
                 let isRetouchLate = false;
                 
@@ -1837,6 +1604,130 @@
             if (sgt) sgt.innerText = grandTotal.toLocaleString();
         }
 
+        window.renderReport = function() {
+            const getV = (t) => {
+                const cbs = document.querySelectorAll(`.cb-report-${t}`);
+                if (cbs.length === 0) return ['ALL'];
+                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            };
+            const mF = getV('month'); 
+            const nF = getV('noiMuon');
+            const plF = getV('phanLoai');
+
+            let tMD = 0, tCD = 0, tRD = 0; 
+            let sPK = 0, sPN = 0, sPT = 0, sPC = 0, sPR = 0;
+            let chartObj = {};
+
+            const extractMonth = (dateStr) => {
+                if (dateStr && dateStr.includes('-')) {
+                    const m = parseInt(dateStr.split('-')[1], 10);
+                    if (!isNaN(m)) return m.toString();
+                }
+                return null;
+            };
+
+            tableData.forEach(row => {
+                if (!row.sku && !row.loMuon && !row.noiMuon) return;
+                
+                const mBase = row.month ? row.month.toString() : 'Trống'; 
+                const n = row.noiMuon || 'Trống';
+                const pl = row.phanLoai || 'Trống';
+                
+                if (!nF.includes('ALL') && !nF.includes(n)) return;
+                if (!plF.includes('ALL') && !plF.includes(pl)) return;
+
+                let iDM = row.ttMuon?.toLowerCase().includes('done'), 
+                    iCBM = row.ttMuon?.toLowerCase().includes('chuẩn bị mượn'), 
+                    iDC = row.ttChup?.toLowerCase().includes('done'), 
+                    iDR = row.ttRetouch?.toLowerCase().includes('done');
+                let nU = n.toUpperCase();
+
+                if (mF.includes('ALL') || mF.includes(mBase)) {
+                    if (iDM) tMD++;
+                    if (iDC) tCD++;
+                    if (iDR) tRD++;
+
+                    if (!iDM) {
+                        sPT++;
+                        if (nU === 'KHO') sPK++;
+                        else if (nU === 'NVT') sPN++;
+                    }
+                    if (!iDC && !iCBM) sPC++;
+                    if (iDC && !iDR) sPR++;
+                }
+
+                const mMuon = extractMonth(row.ngayNhan) || mBase;
+                const mChup = extractMonth(row.ngayChup) || mMuon;
+                const mRetouch = extractMonth(row.ngayRetouch) || mChup;
+
+                const addToChart = (m, type) => {
+                    if (mF.includes('ALL') || mF.includes(m)) {
+                        if (!chartObj[m]) chartObj[m] = { dM: 0, dC: 0, dR: 0 };
+                        chartObj[m][type]++;
+                    }
+                };
+
+                if (iDM) addToChart(mMuon, 'dM');
+                if (iDC) addToChart(mChup, 'dC');
+                if (iDR) addToChart(mRetouch, 'dR');
+            });
+
+            const KPI_TARGET = 7000;
+            const kpiMuon = document.getElementById('kpi-total-muon'); if(kpiMuon) kpiMuon.innerText = tMD.toLocaleString();
+            const kpiChup = document.getElementById('kpi-total-chup'); if(kpiChup) kpiChup.innerText = tCD.toLocaleString();
+            const kpiRetouch = document.getElementById('kpi-total-retouch'); if(kpiRetouch) kpiRetouch.innerText = tRD.toLocaleString();
+
+            const updatePct = (val, target, prefix) => {
+                let pct = target > 0 ? Math.min(100, (val / target) * 100) : 0;
+                let displayPct = pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(1);
+                
+                const pctEl = document.getElementById(`kpi-pct-${prefix}`);
+                if (pctEl) pctEl.innerText = `${displayPct}%`;
+                
+                const barEl = document.getElementById(`kpi-bar-${prefix}`);
+                if (barEl) barEl.style.width = `${pct}%`;
+            };
+
+            updatePct(tMD, KPI_TARGET, 'muon');
+            updatePct(tCD, KPI_TARGET, 'chup');
+            updatePct(tRD, KPI_TARGET, 'retouch');
+
+            const canvas = document.getElementById('chartDone'); const empty = document.getElementById('emptyChartDone');
+            if(!canvas || !empty) return;
+            if (chartDoneInstance) chartDoneInstance.destroy();
+            
+            const sM = Object.keys(chartObj).sort((a,b) => {
+                if (a === 'Trống') return 1;
+                if (b === 'Trống') return -1;
+                return Number(a) - Number(b);
+            });
+
+            if (sM.length === 0) { 
+                canvas.classList.add('hidden'); empty.classList.remove('hidden'); 
+            } else {
+                canvas.classList.remove('hidden'); empty.classList.add('hidden');
+                chartDoneInstance = new Chart(canvas, { 
+                    type: 'bar', 
+                    data: { 
+                        labels: sM.map(m => m === 'Trống' ? 'Trống' : `Tháng ${m}`), 
+                        datasets: [ 
+                            { label: 'Đã Mượn', data: sM.map(m => chartObj[m].dM), backgroundColor: '#003366', borderRadius: 4 }, 
+                            { label: 'Đã Chụp', data: sM.map(m => chartObj[m].dC), backgroundColor: '#D4AF37', borderRadius: 4 }, 
+                            { label: 'Đã Retouch', data: sM.map(m => chartObj[m].dR), backgroundColor: '#9CA3AF', borderRadius: 4 } 
+                        ] 
+                    }, 
+                    options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, font: { family: "'Be Vietnam Pro', sans-serif" } } } }, scales: { x: { grid: { display: false } }, y: { border: { display: false } } } },
+                    plugins: [{ id: 'customDataLabelsReport', afterDatasetsDraw(chart) { const { ctx, data } = chart; ctx.save(); ctx.font = 'bold 11px "Be Vietnam Pro", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillStyle = '#4B5563'; data.datasets.forEach((dataset, i) => { const meta = chart.getDatasetMeta(i); if (!meta.hidden) { meta.data.forEach((bar, index) => { const value = dataset.data[index]; if (value > 0) { ctx.fillText(value, bar.x, bar.y - 4); } }); } }); ctx.restore(); } }]
+                });
+            }
+
+            const vM = document.getElementById('val-pending-m-total'); if (vM) vM.innerText = sPT || '-'; 
+            const vMK = document.getElementById('val-pending-m-kho'); if (vMK) vMK.innerText = sPK || '-'; 
+            const vMN = document.getElementById('val-pending-m-nvt'); if (vMN) vMN.innerText = sPN || '-'; 
+            const vC = document.getElementById('val-pending-c'); if (vC) vC.innerText = sPC || '-'; 
+            const vR = document.getElementById('val-pending-r'); if (vR) vR.innerText = sPR || '-';
+        }
+
         window.renderImageTrackingTable = function() {
             const tbody = document.getElementById('imageTrackingBody'); if(!tbody) return;
             const getV = (type) => {
@@ -1844,22 +1735,15 @@
                 if (cbs.length === 0) return ['ALL'];
                 return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
             };
-            const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon');
-
-            let targetGroupKeys = new Set();
-            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
-                tableData.forEach(row => {
-                    if (window.globalSkuFilterArray.includes(row.sku)) {
-                        targetGroupKeys.add(row.ngayNhan);
-                    }
-                });
-            }
+            const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon'); const sF = getV('status');
 
             let dailyGroups = {};
             tableData.forEach(row => {
                 if (!row.ngayNhan) return; 
                 const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const l = row.loMuon || 'Trống';
-                if (!mF.includes(m.toString()) || !nF.includes(n) || !lF.includes(l)) return;
+                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
+                if (!nF.includes('ALL') && !nF.includes(n)) return;
+                if (!lF.includes('ALL') && !lF.includes(l)) return;
 
                 let groupKey = row.ngayNhan;
                 if (!dailyGroups[groupKey]) { dailyGroups[groupKey] = { groupKey: groupKey, ngayNhan: row.ngayNhan, skuCount: 0, chupDone: 0, retouchDone: 0, muonDone: 0, khoSku: 0, nvtSku: 0, otherSku: 0, items: {}, ids: [] }; }
@@ -1869,9 +1753,8 @@
                 let nUpper = n.toUpperCase();
                 if (nUpper === 'KHO') group.khoSku++; else if (nUpper === 'NVT') group.nvtSku++; else group.otherSku++;
                 let itemKey = l + '|' + n;
-                if (!group.items[itemKey]) { group.items[itemKey] = { loMuon: l, noiMuon: n, skuCount: 0, ttMuons: new Set() }; }
+                if (!group.items[itemKey]) { group.items[itemKey] = { loMuon: l, noiMuon: n, skuCount: 0 }; }
                 group.items[itemKey].skuCount++;
-                group.items[itemKey].ttMuons.add(row.ttMuon || 'Trống');
                 group.skuCount++;
                 if (row.ttMuon && row.ttMuon.toLowerCase().includes('done')) group.muonDone++;
                 if (row.ttChup && row.ttChup.toLowerCase().includes('done')) group.chupDone++;
@@ -1915,14 +1798,17 @@
                 return { ...g, manualKey, sKHO, eKHO, sNVT, eNVT, sOther, eOther, startChup: finalStartChup, endChup: finalEndChup, startRetouch: asR, endRetouch: aeR, tCD, tRD, isChupLate, isRetouchLate };
             });
 
-            // Lưu lại dữ liệu Gantt hiện tại để dùng cho tính năng tải SKU trễ hạn
             window.currentGanttData = processedGanttData;
 
             const showOnlyLate = document.getElementById('filter-img-late')?.checked;
             if (showOnlyLate) { processedGanttData = processedGanttData.filter(g => g.isChupLate || g.isRetouchLate); }
 
-            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
-                processedGanttData = processedGanttData.filter(g => targetGroupKeys.has(g.groupKey));
+            if (!sF.includes('ALL')) {
+                processedGanttData = processedGanttData.filter(g => {
+                    let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
+                    let statusLabelText = isHoanThanh ? 'Hoàn thành' : 'Đang xử lý';
+                    return sF.includes(statusLabelText);
+                });
             }
 
             let totalSKU = 0;
@@ -1930,24 +1816,16 @@
             processedGanttData.forEach(g => {
                 totalSKU += g.skuCount;
                 let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0">${i.loMuon}</div>`).join('') || '-';
-                
-                let ttMuonHTML = Object.values(g.items).map(i => {
-                    let tts = Array.from(i.ttMuons).filter(t => t !== 'Trống').join(', ');
-                    if (!tts) tts = '-';
-                    let colorClass = tts.toLowerCase().includes('done') ? 'text-emerald-600 font-bold' : 'text-amber-600 font-medium';
-                    if (tts === '-') colorClass = 'text-gray-400';
-                    return `<div class="py-1 border-b border-gray-100 last:border-0 truncate ${colorClass}">${tts}</div>`;
-                }).join('') || '-';
-
                 let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.chupDone}</span> / ${g.skuCount} ${g.isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
                 let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.retouchDone}</span> / ${g.skuCount} ${g.isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
+                let muonVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.muonDone}</span> / ${g.skuCount}</div>`;
                 
                 let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
                 let statusLabel = isHoanThanh ? '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold whitespace-nowrap">Hoàn thành</span>' : '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold whitespace-nowrap">Đang xử lý</span>';
 
                 html += `
                     <tr class="hover:bg-gray-50 transition-colors bg-white">
-                        <td class="px-4 py-3 border-r border-gray-100 text-center min-w-[140px]">${ttMuonHTML}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center">${muonVisual}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue">${formatDateToDisplay(g.ngayNhan)}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-sm text-gray-600 min-w-[250px] whitespace-normal">${loListHTML}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue bg-pnjBlue/5">${g.skuCount}</td>
@@ -1960,7 +1838,7 @@
                         <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
-                        <td class="px-2 py-2 text-center cursor-pointer hover:bg-pnjBlueLight transition-colors" title="Tải FULL danh sách SKU đang hiển thị" onclick="window.downloadAllImageTrackingSKUs()"><i class="fas fa-download text-pnjGold bg-[#002244] p-1 rounded"></i></td>
+                        <td class="px-2 py-2 text-center"><button onclick="downloadSpecificSKUs('${g.ids.join(',')}', '${g.ngayNhan}')" class="bg-gray-100 hover:bg-pnjBlue hover:text-white text-pnjBlue p-2 rounded transition-colors shadow-sm" title="Tải mã SKU 13 của lô này"><i class="fas fa-file-csv"></i></button></td>
                     </tr>`;
             });
             tbody.innerHTML = html || '<tr><td colspan="14" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu phù hợp.</td></tr>';
@@ -1972,6 +1850,7 @@
             if (elTotal2) elTotal2.innerText = totalSKU.toLocaleString();
 
             window.renderGanttChart(processedGanttData);
+            if (window.renderDeadlineAlerts) window.renderDeadlineAlerts(processedGanttData);
         }
 
         window.renderGanttChart = function(ganttData) {
@@ -1985,10 +1864,11 @@
 
             let html = '<table class="text-sm text-left whitespace-nowrap border-collapse border border-gray-200" style="table-layout: fixed; min-width: 100%;">';
             html += '<thead class="text-xs text-gray-700 bg-gray-50 sticky top-0" style="z-index: 30;"><tr>';
-            html += '<th class="px-3 py-2 border border-gray-200 bg-gray-50" style="min-width: 150px; max-width: 150px; position: sticky; left: 0; z-index: 30;" rowspan="2">Lô</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 100px; max-width: 100px; position: sticky; left: 150px; z-index: 30;" rowspan="2">Ngày nhận</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 90px; max-width: 90px; position: sticky; left: 250px; z-index: 30;" rowspan="2">Nơi mượn</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 60px; max-width: 60px; position: sticky; left: 340px; z-index: 30;" rowspan="2">SL</th>';
+            html += '<th class="px-2 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 80px; max-width: 80px; position: sticky; left: 0; z-index: 30;" rowspan="2">Tổng<br>ngày</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 bg-gray-50" style="min-width: 150px; max-width: 150px; position: sticky; left: 80px; z-index: 30;" rowspan="2">Lô</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 100px; max-width: 100px; position: sticky; left: 230px; z-index: 30;" rowspan="2">Ngày nhận</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 90px; max-width: 90px; position: sticky; left: 330px; z-index: 30;" rowspan="2">Nơi mượn</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 60px; max-width: 60px; position: sticky; left: 420px; z-index: 30;" rowspan="2">SL</th>';
             
             timelineDates.forEach(d => {
                 let isW = isWeekend(d); let isH = isHoliday(d);
@@ -2007,6 +1887,7 @@
             
             ganttData.forEach(g => {
                 let isManualOverride = !!(imageManualDates[g.manualKey] || imageManualEndDates[g.manualKey]);
+                let totalDays = getWorkingDays(g.ngayNhan, g.endRetouch);
                 
                 Object.values(g.items).forEach(item => {
                     let nUpper = item.noiMuon.toUpperCase(); let iStart = null, iEnd = null;
@@ -2014,10 +1895,11 @@
                     else { iStart = g.startChup; iEnd = g.endChup; }
 
                     html += `<tr>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 font-medium bg-white truncate" style="position: sticky; left: 0; z-index: 10;" title="${item.loMuon}">${item.loMuon}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center text-gray-500 bg-white" style="position: sticky; left: 150px; z-index: 10;">${formatDateToDisplay(g.ngayNhan)}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 250px; z-index: 10;">${item.noiMuon}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 340px; z-index: 10;">${item.skuCount}</td>`;
+                    html += `<td class="px-2 py-2 border border-gray-200 text-center font-bold text-pnjGold bg-pnjGold/5" style="position: sticky; left: 0; z-index: 10;">${totalDays}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 font-medium bg-white truncate" style="position: sticky; left: 80px; z-index: 10;" title="${item.loMuon}">${item.loMuon}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center text-gray-500 bg-white" style="position: sticky; left: 230px; z-index: 10;">${formatDateToDisplay(g.ngayNhan)}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 330px; z-index: 10;">${item.noiMuon}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 420px; z-index: 10;">${item.skuCount}</td>`;
                     
                     timelineDates.forEach(d => {
                         let isW = isWeekend(d); let isH = isHoliday(d);
@@ -2030,9 +1912,10 @@
 
                 html += `<tr class="bg-gray-50 font-bold">`;
                 html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 0; z-index: 10;"></td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 150px; z-index: 10;"></td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 text-right text-[#1C3B5E] bg-gray-50" style="position: sticky; left: 250px; z-index: 10;">Total</td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 text-center text-pnjBlue bg-gray-50" style="position: sticky; left: 340px; z-index: 10;">${g.skuCount}</td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 80px; z-index: 10;"></td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 230px; z-index: 10;"></td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 text-right text-[#1C3B5E] bg-gray-50" style="position: sticky; left: 330px; z-index: 10;">Total</td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 text-center text-pnjBlue bg-gray-50" style="position: sticky; left: 420px; z-index: 10;">${g.skuCount}</td>`;
                 
                 timelineDates.forEach(d => {
                     let isW = isWeekend(d); let isH = isHoliday(d);
@@ -2046,37 +1929,67 @@
             container.innerHTML = html;
         }
 
+        window.renderDeadlineAlerts = function(ganttData) {
+            const container = document.getElementById('deadline-alerts-container');
+            if (!container) return;
+            
+            let today = new Date();
+            let tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            let todayStr = getLocalDateStr(today);
+            let tomorrowStr = getLocalDateStr(tomorrow);
+            
+            let alerts = [];
+            
+            ganttData.forEach(g => {
+                let isChupDone = g.chupDone === g.skuCount;
+                let isRetouchDone = g.retouchDone === g.skuCount;
+                
+                let loList = Object.values(g.items).map(i => i.loMuon).join(', ');
+                
+                if (!isChupDone) {
+                    if (g.endChup === todayStr) alerts.push({ type: 'warning', msg: `Hôm nay là hạn chót CHỤP HÌNH của lô: <b>${loList}</b> (${g.skuCount} SKU)` });
+                    else if (g.endChup === tomorrowStr) alerts.push({ type: 'info', msg: `Ngày mai là hạn chót CHỤP HÌNH của lô: <b>${loList}</b> (${g.skuCount} SKU)` });
+                }
+                
+                if (!isRetouchDone) {
+                    if (g.endRetouch === todayStr) alerts.push({ type: 'warning', msg: `Hôm nay là hạn chót RETOUCH của lô: <b>${loList}</b> (${g.skuCount} SKU)` });
+                    else if (g.endRetouch === tomorrowStr) alerts.push({ type: 'info', msg: `Ngày mai là hạn chót RETOUCH của lô: <b>${loList}</b> (${g.skuCount} SKU)` });
+                }
+            });
+            
+            if (alerts.length === 0) {
+                container.innerHTML = '';
+                container.classList.add('hidden');
+                return;
+            }
+            
+            let html = '<div class="bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-sm mb-4"><h4 class="font-bold text-amber-800 mb-2 flex items-center gap-2"><i class="fas fa-bell text-amber-500"></i> Cảnh báo Deadline sắp tới</h4><ul class="space-y-1.5">';
+            alerts.forEach(a => {
+                let icon = a.type === 'warning' ? '<i class="fas fa-exclamation-triangle text-red-500 w-4"></i>' : '<i class="fas fa-clock text-blue-500 w-4"></i>';
+                let textClass = a.type === 'warning' ? 'text-red-700' : 'text-blue-700';
+                html += `<li class="text-sm ${textClass} flex items-start gap-2 mt-1">${icon} <span class="pt-0.5">${a.msg}</span></li>`;
+            });
+            html += '</ul></div>';
+            
+            container.innerHTML = html;
+            container.classList.remove('hidden');
+        }
+
         window.getLatestEndChup = function(noiMuonTarget) {
-            if (!noiMuonTarget) return {};
-            let nUpper = noiMuonTarget.toUpperCase();
-            let maxEndDate = null; let conflictDate = null;
-            let dailyGroups = {};
-            tableData.forEach(row => {
-                if (!row.ngayNhan || !row.noiMuon) return;
-                let dateKey = row.ngayNhan;
-                if (!dailyGroups[dateKey]) { dailyGroups[dateKey] = { ngayNhan: dateKey, khoSku: 0, nvtSku: 0, otherSku: 0 }; }
-                let n = row.noiMuon.toUpperCase();
-                if (n === 'KHO') dailyGroups[dateKey].khoSku++; else if (n === 'NVT') dailyGroups[dateKey].nvtSku++; else dailyGroups[dateKey].otherSku++;
+            let latest = { date: null, conflictDate: null };
+            let schedules = window.getGlobalSchedule ? window.getGlobalSchedule() : {};
+            Object.keys(schedules).forEach(dateKey => {
+                const groupRows = tableData.filter(r => r.ngayNhan === dateKey && (r.noiMuon||'').toUpperCase() === noiMuonTarget.toUpperCase());
+                if (groupRows.length > 0) {
+                    if (!latest.date || schedules[dateKey].endChup > latest.date) {
+                        latest.date = schedules[dateKey].endChup;
+                        latest.conflictDate = dateKey;
+                    }
+                }
             });
-
-            let sortedDates = Object.values(dailyGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan));
-            let globalNextFree = null;
-
-            sortedDates.forEach(g => {
-                let skuCount = 0;
-                if (nUpper === 'KHO') skuCount = g.khoSku; else if (nUpper === 'NVT') skuCount = g.nvtSku; else skuCount = g.otherSku;
-                if(skuCount === 0) return;
-                let baseStart = addWorkingDays(g.ngayNhan, 1);
-                let startChup = baseStart;
-                if (globalNextFree && startChup < globalNextFree) { startChup = globalNextFree; }
-                let s = imageManualDates[g.ngayNhan] || startChup; 
-                let rD = Math.ceil(skuCount / 32); let dD = Math.max(0, rD - 1);
-                let eC = addWorkingDays(s, dD);
-                let aeC = imageManualEndDates[g.ngayNhan] || eC;
-                globalNextFree = addWorkingDays(aeC, 1);
-                if (!maxEndDate || aeC > maxEndDate) { maxEndDate = aeC; conflictDate = g.ngayNhan; }
-            });
-            return { date: maxEndDate, conflictDate: conflictDate };
+            return latest;
         }
 
         window.calculateSimulation = function() {
@@ -2088,7 +2001,7 @@
 
             if (noi) {
                 let latest = window.getLatestEndChup(noi);
-                if (latest.date && latest.date >= baseStart) {
+                if (latest && latest.date && latest.date >= baseStart) {
                     actualStart = addWorkingDays(latest.date, 1);
                     warnText.innerHTML = `Lưu ý: <b>${noi}</b> đang bị kẹt lịch chụp của nhóm nhận ngày <b>${formatDateToDisplay(latest.conflictDate)}</b> cho đến hết ngày <b>${formatDateToDisplay(latest.date)}</b>.<br>Hệ thống tự động dời ngày chụp dự kiến mới sang: <b>${formatDateToDisplay(actualStart)}</b>.`;
                     warnArea.classList.remove('hidden');
@@ -2139,15 +2052,37 @@
                 window.updateLastUpdatedUI(savedTime);
             }
 
-            window.renderTable(); window.renderVideoTable(); window.switchTab('tab-report');
+            if (window.renderTable) window.renderTable(); 
+            if (window.renderVideoTable) window.renderVideoTable(); 
+            if (window.switchTab) window.switchTab('tab-report');
+        }
+
+        window.saveData = function() {
+            window.saveDataLocal();
+            // Kiểm tra trạng thái đăng nhập trực tiếp từ bộ nhớ cục bộ để tránh lỗi khác Scope (Module)
+            const isLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
+            if (isLoggedIn && window.saveDataToCloud) {
+                window.saveDataToCloud();
+            }
+        }
+
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         }
 
         window.exportCSV = function() {
             let dataToExport = tableData;
-            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
-                dataToExport = tableData.filter(row => window.globalSkuFilterArray.includes(row.sku));
-            }
-            if(dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
+            if (dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
             
             let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại\n";
             dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}"\n`; });
@@ -2213,8 +2148,6 @@
             downloadCSV(csv, `DanhSachSKU_SanXuatHinhAnh_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
-        function downloadCSV(content, filename) { const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = filename; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
-
         window.importCSV = function(event) {
             const file = event.target.files[0]; if (!file) return;
             const reader = new FileReader();
@@ -2237,10 +2170,6 @@
                 event.target.value = '';
             };
             reader.readAsText(file);
-        }
-
-        window.saveData = function() {
-            if (window.saveDataToCloud) { window.saveDataToCloud(); } else { window.saveDataLocal(); }
         }
     </script>
 </body>
