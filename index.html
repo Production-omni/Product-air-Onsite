@@ -1753,8 +1753,9 @@
                 let nUpper = n.toUpperCase();
                 if (nUpper === 'KHO') group.khoSku++; else if (nUpper === 'NVT') group.nvtSku++; else group.otherSku++;
                 let itemKey = l + '|' + n;
-                if (!group.items[itemKey]) { group.items[itemKey] = { loMuon: l, noiMuon: n, skuCount: 0 }; }
+                if (!group.items[itemKey]) { group.items[itemKey] = { loMuon: l, noiMuon: n, skuCount: 0, ttMuons: new Set() }; }
                 group.items[itemKey].skuCount++;
+                group.items[itemKey].ttMuons.add(row.ttMuon || 'Trống');
                 group.skuCount++;
                 if (row.ttMuon && row.ttMuon.toLowerCase().includes('done')) group.muonDone++;
                 if (row.ttChup && row.ttChup.toLowerCase().includes('done')) group.chupDone++;
@@ -1816,16 +1817,24 @@
             processedGanttData.forEach(g => {
                 totalSKU += g.skuCount;
                 let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0">${i.loMuon}</div>`).join('') || '-';
+                
+                let ttMuonHTML = Object.values(g.items).map(i => {
+                    let tts = Array.from(i.ttMuons).filter(t => t !== 'Trống').join(', ');
+                    if (!tts) tts = '-';
+                    let colorClass = tts.toLowerCase().includes('done') ? 'text-emerald-600 font-bold' : 'text-amber-600 font-medium';
+                    if (tts === '-') colorClass = 'text-gray-400';
+                    return `<div class="py-1 border-b border-gray-100 last:border-0 truncate ${colorClass}" title="${tts}">${tts}</div>`;
+                }).join('') || '-';
+
                 let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.chupDone}</span> / ${g.skuCount} ${g.isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
                 let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.retouchDone}</span> / ${g.skuCount} ${g.isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
-                let muonVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.muonDone}</span> / ${g.skuCount}</div>`;
                 
                 let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
                 let statusLabel = isHoanThanh ? '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold whitespace-nowrap">Hoàn thành</span>' : '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold whitespace-nowrap">Đang xử lý</span>';
 
                 html += `
                     <tr class="hover:bg-gray-50 transition-colors bg-white">
-                        <td class="px-4 py-3 border-r border-gray-100 text-center">${muonVisual}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center min-w-[140px]">${ttMuonHTML}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue">${formatDateToDisplay(g.ngayNhan)}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-sm text-gray-600 min-w-[250px] whitespace-normal">${loListHTML}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue bg-pnjBlue/5">${g.skuCount}</td>
