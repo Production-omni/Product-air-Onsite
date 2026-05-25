@@ -50,8 +50,9 @@
             padding: 8px 10px; border-radius: 6px; outline: none;
             text-overflow: ellipsis; transition: all 0.2s ease; font-size: 0.875rem;
         }
-        input:hover, select:hover, textarea:hover { background: #f8fafc; border-color: #e2e8f0; }
-        input:focus, select:focus, textarea:focus { border-color: #D4AF37; background: white; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
+        input:hover:not(:disabled), select:hover:not(:disabled), textarea:hover:not(:disabled) { background: #f8fafc; border-color: #e2e8f0; }
+        input:focus:not(:disabled), select:focus:not(:disabled), textarea:focus:not(:disabled) { border-color: #D4AF37; background: white; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
+        input:disabled, select:disabled, textarea:disabled { color: #4b5563; cursor: not-allowed; }
         
         .sticky-col { position: sticky; left: 0; background-color: white; z-index: 10; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
         th.sticky-col { background-color: #003366; z-index: 20; }
@@ -61,13 +62,14 @@
 </head>
 <body class="bg-pnjBg text-gray-800 font-sans min-h-screen">
 
-    <!-- LOGIN OVERLAY -->
-    <div id="login-overlay" class="fixed inset-0 bg-pnjBlue flex flex-col items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
+    <!-- LOGIN MODAL -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex flex-col items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md relative animate-[fadeIn_0.3s_ease-out]">
+            <button onclick="document.getElementById('login-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-times fa-lg"></i></button>
             <div class="text-center mb-8">
                 <div class="w-16 h-16 bg-pnjBlue text-pnjGold rounded-xl flex items-center justify-center font-bold text-3xl shadow-md mx-auto mb-4 border border-pnjGold/30">P</div>
-                <h2 class="text-2xl font-bold text-pnjBlue uppercase">Đăng nhập hệ thống</h2>
-                <p class="text-gray-500 text-sm mt-2">Dành cho Quản trị viên (Admin)</p>
+                <h2 class="text-2xl font-bold text-pnjBlue uppercase">Đăng nhập Admin</h2>
+                <p class="text-gray-500 text-sm mt-2">Mở khóa quyền chỉnh sửa dữ liệu</p>
             </div>
             <div class="space-y-4">
                 <div>
@@ -85,7 +87,7 @@
     </div>
 
     <!-- MAIN APP CONTAINER -->
-    <div id="app-content" class="hidden">
+    <div id="app-content">
 
     <!-- Header cố định trên cùng -->
     <header class="glass-header sticky top-0 z-40 px-4 md:px-6 py-4 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
@@ -99,10 +101,14 @@
         
         <div class="flex items-center gap-4">
             <div id="toast" class="bg-emerald-500 text-white px-5 py-2.5 rounded-lg shadow-lg transform transition-all duration-300 opacity-0 translate-y-[-10px] flex items-center gap-2 font-medium text-sm">
-                <i class="fas fa-check-circle text-lg"></i> Dữ liệu đã được đồng bộ lên Cloud!
+                <i class="fas fa-check-circle text-lg"></i> Dữ liệu đã được lưu!
             </div>
-            <button onclick="handleLogout()" class="bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 px-4 py-2.5 rounded-lg font-bold text-sm transition-colors flex items-center gap-2 shadow-sm">
-                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            
+            <button id="btn-show-login" onclick="document.getElementById('login-modal').classList.remove('hidden')" class="bg-pnjBlue text-white hover:bg-pnjBlueLight border border-pnjBlue px-4 py-2.5 rounded-lg font-bold text-sm transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fas fa-user-shield"></i> Admin
+            </button>
+            <button id="btn-logout" onclick="handleLogout()" class="hidden bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 px-4 py-2.5 rounded-lg font-bold text-sm transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất Admin
             </button>
         </div>
     </header>
@@ -262,7 +268,7 @@
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-bold text-[#1C3B5E] text-lg uppercase flex items-center"><i class="fas fa-edit mr-3 text-pnjGold"></i> Bảng Ghi Chú Quy Trình</h3>
-                    <button onclick="saveData()" class="bg-gray-100 hover:bg-pnjGold/20 text-pnjBlue px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"><i class="fas fa-save text-pnjGold"></i> Lưu Ghi chú</button>
+                    <button onclick="saveData()" class="admin-only bg-gray-100 hover:bg-pnjGold/20 text-pnjBlue px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"><i class="fas fa-save text-pnjGold"></i> Lưu Ghi chú</button>
                 </div>
                 <textarea id="process-notes" rows="8" class="w-full border border-gray-200 bg-gray-50/50 rounded-xl p-4 text-sm focus:bg-white focus:border-pnjGold focus:ring-2 focus:ring-pnjGold/20 outline-none resize-y leading-relaxed text-gray-700" onchange="saveProcessFlowSettings()" placeholder="Nhập các quy định, lưu ý về năng suất, thời gian, cách thức mượn hàng hoặc sản xuất tại đây..."></textarea>
             </div>
@@ -386,8 +392,6 @@
 
         <!-- ==================== TAB 3: HÌNH ẢNH ==================== -->
         <div id="tab-image" class="hidden">
-            <!-- DEADLINE ALERTS CONTAINER -->
-            <div id="deadline-alerts-container"></div>
             
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-3 items-center">
                 <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
@@ -445,6 +449,18 @@
                 </button>
                 
                 <div class="flex-grow"></div>
+
+                <!-- Nút chuông cảnh báo -->
+                <div class="relative hidden" id="alert-btn-container">
+                    <button onclick="document.getElementById('deadline-alerts-panel').classList.toggle('hidden'); event.stopPropagation();" class="relative bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors shadow-sm mr-2">
+                        <i class="fas fa-bell"></i> Cảnh báo
+                        <span id="alert-badge" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-black shadow-sm border border-white">0</span>
+                    </button>
+                    <div id="deadline-alerts-panel" onclick="event.stopPropagation()" class="hidden absolute top-full right-2 mt-2 w-[400px] max-w-[85vw] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+                         <!-- Content rendered by JS -->
+                    </div>
+                </div>
+
                 <button onclick="window.clearImageFilters()" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100">Xóa lọc</button>
             </div>
 
@@ -477,7 +493,7 @@
                         <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300 transform -rotate-90" id="icon-image-tracking"></i>
                         <span><i class="fas fa-calendar-alt mr-2 text-pnjGold"></i> Bảng Theo Dõi Tiến Độ</span>
                     </span>
-                    <button onclick="clearImageManualDates(); event.stopPropagation();" class="bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2"><i class="fas fa-sync-alt"></i> Reset lịch thủ công</button>
+                    <button onclick="clearImageManualDates(); event.stopPropagation();" class="admin-only bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hidden"><i class="fas fa-sync-alt"></i> Reset lịch thủ công</button>
                 </div>
                 
                 <!-- Bọc nội dung vào div hidden mặc định -->
@@ -570,15 +586,15 @@
                     <div class="bg-[#1C3B5E] p-4 border-b border-[#112640] flex justify-between items-center">
                         <span class="font-bold text-white text-base uppercase flex items-center gap-2"><i class="fas fa-video text-pnjGold"></i> Bảng Theo Dõi Sản Xuất Video</span>
                         <div class="flex gap-2">
-                            <button onclick="addNewVideoRow()" class="bg-white/10 text-white hover:bg-white/20 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Lô Video</button>
-                            <button onclick="saveData()" class="bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
+                            <button onclick="addNewVideoRow()" class="admin-only hidden bg-white/10 text-white hover:bg-white/20 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Lô Video</button>
+                            <button onclick="saveData()" class="admin-only hidden bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
                         </div>
                     </div>
                     <div class="overflow-x-auto flex-grow">
                         <table class="w-full text-sm text-left whitespace-nowrap">
                             <thead class="text-xs text-gray-600 uppercase bg-[#F8F5EE] border-b border-[#E8E2D2]">
                                 <tr>
-                                    <th class="px-2 py-3 w-10 text-center"><i class="fas fa-cog"></i></th>
+                                    <th class="admin-only hidden px-2 py-3 w-10 text-center"><i class="fas fa-cog"></i></th>
                                     <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Tháng</th>
                                     <th class="px-4 py-3 font-bold border-r border-[#E8E2D2]">Lô Video</th>
                                     <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">SL Thực Tế</th>
@@ -600,7 +616,7 @@
                 <div class="bg-white p-5 border-b border-gray-200 flex flex-col md:flex-row justify-between md:items-center gap-4">
                     <span class="font-bold text-pnjBlue text-lg uppercase"><i class="fas fa-layer-group mr-2 text-pnjGold"></i> Mượn hàng</span>
                     <div class="flex gap-2">
-                        <button onclick="saveData()" class="bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold shadow-md transition-colors flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
+                        <button onclick="saveData()" class="admin-only hidden bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold shadow-md transition-colors flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
                         <button onclick="exportSummaryCSV()" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"><i class="fas fa-file-excel text-pnjGold"></i> Xuất Excel Báo Cáo</button>
                     </div>
                 </div>
@@ -681,16 +697,16 @@
         <!-- ==================== TAB 6: DATABASE GỐC ==================== -->
         <div id="tab-database" class="hidden">
             <div class="flex flex-wrap gap-3 mb-6 bg-white p-4 rounded-xl border border-gray-200 shadow-sm items-center">
-                <button onclick="addNewRow()" class="bg-pnjBlue/10 text-pnjBlue hover:bg-pnjBlue/20 px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Dòng</button>
-                <button onclick="saveData()" class="bg-pnjGold text-white hover:bg-pnjGoldLight px-6 py-2.5 rounded-lg font-bold shadow-md flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
-                <div class="w-px h-8 bg-gray-300 mx-2 hidden md:block"></div>
-                <label class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold cursor-pointer flex items-center gap-2">
+                <button onclick="addNewRow()" class="admin-only hidden bg-pnjBlue/10 text-pnjBlue hover:bg-pnjBlue/20 px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Dòng</button>
+                <button onclick="saveData()" class="admin-only hidden bg-pnjGold text-white hover:bg-pnjGoldLight px-6 py-2.5 rounded-lg font-bold shadow-md flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
+                <div class="admin-only hidden w-px h-8 bg-gray-300 mx-2 md:block"></div>
+                <label class="admin-only hidden bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold cursor-pointer flex items-center gap-2">
                     <i class="fas fa-upload text-pnjBlue"></i> Nhập CSV<input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="importCSV(event)">
                 </label>
                 <button onclick="exportCSV()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-download text-pnjBlue"></i> Xuất CSV</button>
                 
                 <div class="flex-grow"></div>
-                <button onclick="clearAllData()" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2.5 rounded-lg font-semibold border border-red-100">Xóa toàn bộ</button>
+                <button onclick="clearAllData()" class="admin-only hidden text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2.5 rounded-lg font-semibold border border-red-100">Xóa toàn bộ</button>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -698,7 +714,7 @@
                     <table class="w-full text-sm text-left whitespace-nowrap">
                         <thead class="text-xs text-white uppercase bg-pnjBlue sticky top-0 z-10 font-medium tracking-wide">
                             <tr>
-                                <th class="px-2 py-4 border-r border-pnjBlueLight w-12 text-center"><i class="fas fa-cog"></i></th>
+                                <th class="admin-only hidden px-2 py-4 border-r border-pnjBlueLight w-12 text-center"><i class="fas fa-cog"></i></th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight sticky-col bg-[#002244] text-pnjGold min-w-[150px]">Mã SKU 13</th>
                                 <th class="px-2 py-4 border-r border-pnjBlueLight min-w-[80px]">Tháng</th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[120px]">Nơi mượn</th>
@@ -776,18 +792,12 @@
         };
         const authPromise = initAuth();
 
-        let isFakeLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
-        const loginOverlay = document.getElementById('login-overlay');
-        const appContent = document.getElementById('app-content');
-
-        if (isFakeLoggedIn) {
-            if(loginOverlay) loginOverlay.classList.add('hidden');
-            if(appContent) appContent.classList.remove('hidden');
-            setTimeout(() => { if(window.loadDataFromCloud) window.loadDataFromCloud(); }, 500); 
-        } else {
-            if(loginOverlay) loginOverlay.classList.remove('hidden');
-            if(appContent) appContent.classList.add('hidden');
-        }
+        // Kiểm tra biến môi trường Global
+        window.isFakeLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
+        window.applyAdminState();
+        
+        // Luôn load dữ liệu khi vào trang
+        setTimeout(() => { if(window.loadDataFromCloud) window.loadDataFromCloud(); }, 500);
 
         window.handleLogin = async function() {
             const username = document.getElementById('admin-username').value;
@@ -803,10 +813,11 @@
 
             if (username === 'admin' && pass === 'admin123') {
                 localStorage.setItem('pnj_admin_logged_in', 'true');
-                isFakeLoggedIn = true;
-                if(loginOverlay) loginOverlay.classList.add('hidden');
-                if(appContent) appContent.classList.remove('hidden');
-                if(window.loadDataFromCloud) window.loadDataFromCloud();
+                window.isFakeLoggedIn = true;
+                const modal = document.getElementById('login-modal');
+                if(modal) modal.classList.add('hidden');
+                window.applyAdminState();
+                alert("Đăng nhập Admin thành công!");
             } else {
                 errEl.innerText = "Sai tài khoản hoặc mật khẩu!";
                 errEl.classList.remove('hidden');
@@ -814,18 +825,17 @@
         };
 
         window.handleLogout = async function() {
-            if(confirm("Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?")) {
+            if(confirm("Bạn có chắc chắn muốn thoát quyền Admin?")) {
                 localStorage.removeItem('pnj_admin_logged_in');
-                isFakeLoggedIn = false;
-                window.tableData = [];
-                window.videoData = [];
-                if(loginOverlay) loginOverlay.classList.remove('hidden');
-                if(appContent) appContent.classList.add('hidden');
+                window.isFakeLoggedIn = false;
+                window.applyAdminState();
+                if(window.loadDataFromCloud) window.loadDataFromCloud(); 
+                alert("Đã thoát quyền Admin. Bạn đang xem dữ liệu ở chế độ Chỉ đọc (Read-only).");
             }
         };
 
         window.saveDataToCloud = async function() {
-            if (!isFakeLoggedIn) { alert("Vui lòng đăng nhập để lưu dữ liệu!"); return; }
+            if (!window.isFakeLoggedIn) { alert("Vui lòng đăng nhập Admin để lưu dữ liệu!"); return; }
             try {
                 await authPromise;
                 const now = new Date().toISOString();
@@ -856,7 +866,6 @@
         };
 
         window.loadDataFromCloud = async function() {
-            if (!isFakeLoggedIn) return;
             try {
                 await authPromise;
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data');
@@ -883,7 +892,11 @@
                     
                     if (window.renderTable) window.renderTable(); 
                     if (window.renderVideoTable) window.renderVideoTable(); 
-                    if (window.switchTab) window.switchTab('tab-report');
+                    if (window.switchTab) {
+                        const currentTab = document.querySelector('nav button.bg-pnjBlue');
+                        if (currentTab) window.switchTab(currentTab.id.replace('btn-', ''));
+                        else window.switchTab('tab-report');
+                    }
                 } else {
                     if(window.loadDataLocal) window.loadDataLocal();
                 }
@@ -903,6 +916,41 @@
         var imageManualRetouchEnds = {}; 
         var chartDoneInstance = null;
         var chartVideoInstance = null;
+
+        window.applyAdminState = function() {
+            const showLoginBtn = document.getElementById('btn-show-login');
+            const logoutBtn = document.getElementById('btn-logout');
+            
+            if (window.isFakeLoggedIn) {
+                if(showLoginBtn) showLoginBtn.classList.add('hidden');
+                if(logoutBtn) logoutBtn.classList.remove('hidden');
+            } else {
+                if(showLoginBtn) showLoginBtn.classList.remove('hidden');
+                if(logoutBtn) logoutBtn.classList.add('hidden');
+            }
+            
+            document.querySelectorAll('.admin-only').forEach(el => {
+                if(window.isFakeLoggedIn) {
+                    el.classList.remove('hidden');
+                    // Ensure block/flex classes are restored if it's a spacer line
+                    if (el.tagName === 'DIV' && el.classList.contains('md:block')) {
+                        el.style.display = ''; 
+                    }
+                }
+                else el.classList.add('hidden');
+            });
+
+            const staticInputs = document.querySelectorAll('#tab-process input, #tab-process textarea');
+            staticInputs.forEach(el => el.disabled = !window.isFakeLoggedIn);
+
+            const simInputs = document.querySelectorAll('#tab-image #calc-noi, #tab-image #calc-ngay, #tab-image #calc-sku');
+            simInputs.forEach(el => el.disabled = !window.isFakeLoggedIn);
+
+            if (window.renderTable) window.renderTable();
+            if (window.renderVideoTable) window.renderVideoTable();
+            if (window.renderSummary) window.renderSummary();
+            if (window.renderImageTrackingTable) window.renderImageTrackingTable();
+        };
         
         window.updateLastUpdatedUI = function(isoString) {
             const el = document.getElementById('last-update-time');
@@ -916,7 +964,6 @@
             }
         };
 
-        // Logic xử lý Flow mượn hàng ở Tab Summary (Bản gốc)
         window.calculateFlowTotal = function() {
             let totalMin = 0;
             let totalMax = 0;
@@ -938,7 +985,7 @@
             if(tMin) tMin.innerText = totalMin;
             if(tMax) tMax.innerText = totalMax;
             
-            localStorage.setItem('pnj_flow_settings', JSON.stringify(flowData));
+            if(window.isFakeLoggedIn) localStorage.setItem('pnj_flow_settings', JSON.stringify(flowData));
         };
 
         window.loadFlowSettings = function() {
@@ -957,8 +1004,8 @@
             window.calculateFlowTotal();
         };
 
-        // Logic xử lý Tab Quy trình (Process) - Độc lập
         window.saveProcessFlowSettings = function() {
+            if(!window.isFakeLoggedIn) return; // Prevent users from saving changes
             let flowData = { f1: {}, f2: {}, notes: '' };
             
             let min1 = 0, max1 = 0;
@@ -1012,7 +1059,11 @@
                     if(data.notes !== undefined && document.getElementById('process-notes')) document.getElementById('process-notes').value = data.notes;
                 }
             } catch(e) {}
+            // Recalculate totals but don't save if not admin
+            let oldSaveState = window.isFakeLoggedIn;
+            window.isFakeLoggedIn = true; 
             window.saveProcessFlowSettings(); 
+            window.isFakeLoggedIn = oldSaveState;
         };
 
         function togglePendingDetails() {
@@ -1045,6 +1096,14 @@
                     if (!el.contains(event.target) && !btn.contains(event.target)) el.classList.add('hidden');
                 }
             });
+
+            const alertPanel = document.getElementById('deadline-alerts-panel');
+            const alertBtn = document.getElementById('alert-btn-container');
+            if (alertPanel && !alertPanel.classList.contains('hidden')) {
+                if (!alertPanel.contains(event.target) && (!alertBtn || !alertBtn.contains(event.target))) {
+                    alertPanel.classList.add('hidden');
+                }
+            }
         });
 
         window.switchTab = function(tabId) {
@@ -1166,14 +1225,15 @@
             return dates;
         }
 
-        window.addNewRow = function() { tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '' }); window.renderTable(); }
-        window.addNewVideoRow = function() { videoData.unshift({ id: generateId(), month: '', loVideo: '', slThucTe: 0, ttQuay: '', ttDung: '', ghiChu: '' }); window.renderVideoTable(); }
-        window.deleteRow = function(id) { if(confirm('Xóa dòng này?')) { tableData = tableData.filter(row => row.id !== id); window.renderTable(); } }
-        window.deleteVideoRow = function(id) { if(confirm('Xóa dòng này?')) { videoData = videoData.filter(row => row.id !== id); window.renderVideoTable(); } }
-        window.clearAllData = function() { if(confirm("Xóa toàn bộ Database?")) { tableData = []; window.renderTable(); saveData(); } }
-        window.clearImageManualDates = function() { if(confirm("Xóa lịch chỉnh tay?")) { imageManualDates = {}; imageManualEndDates = {}; imageManualRetouchStarts = {}; imageManualRetouchEnds = {}; window.renderImageTrackingTable(); saveData(); } }
+        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '' }); window.renderTable(); }
+        window.addNewVideoRow = function() { if(!window.isFakeLoggedIn) return; videoData.unshift({ id: generateId(), month: '', loVideo: '', slThucTe: 0, ttQuay: '', ttDung: '', ghiChu: '' }); window.renderVideoTable(); }
+        window.deleteRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { tableData = tableData.filter(row => row.id !== id); window.renderTable(); } }
+        window.deleteVideoRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { videoData = videoData.filter(row => row.id !== id); window.renderVideoTable(); } }
+        window.clearAllData = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa toàn bộ Database?")) { tableData = []; window.renderTable(); saveData(); } }
+        window.clearImageManualDates = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa lịch chỉnh tay?")) { imageManualDates = {}; imageManualEndDates = {}; imageManualRetouchStarts = {}; imageManualRetouchEnds = {}; window.renderImageTrackingTable(); saveData(); } }
 
         window.updateCell = function(id, field, value) {
+            if(!window.isFakeLoggedIn) return;
             const rowIndex = tableData.findIndex(row => row.id === id);
             if (rowIndex > -1) {
                 tableData[rowIndex][field] = value;
@@ -1186,6 +1246,7 @@
         }
 
         window.updateSummaryGroup = function(idsStr, field, value) {
+            if(!window.isFakeLoggedIn) return;
             const ids = idsStr.split(','); let needsRender = false;
             ids.forEach(id => {
                 const rowIndex = tableData.findIndex(row => row.id === id);
@@ -1195,14 +1256,15 @@
         }
 
         window.updateVideoCell = function(id, field, value) { 
+            if(!window.isFakeLoggedIn) return;
             const rowIndex = videoData.findIndex(row => row.id === id); 
             if (rowIndex > -1) { videoData[rowIndex][field] = value; window.renderVideoDashboard(); }
         }
         
-        window.updateImageManualDate = function(key, value) { if (value) imageManualDates[key] = value; else delete imageManualDates[key]; window.renderImageTrackingTable(); saveData(); }
-        window.updateImageManualEndDate = function(key, value) { if (value) imageManualEndDates[key] = value; else delete imageManualEndDates[key]; window.renderImageTrackingTable(); saveData(); }
-        window.updateImageManualRetouchStart = function(key, value) { if (value) imageManualRetouchStarts[key] = value; else delete imageManualRetouchStarts[key]; window.renderImageTrackingTable(); saveData(); }
-        window.updateImageManualRetouchEnd = function(key, value) { if (value) imageManualRetouchEnds[key] = value; else delete imageManualRetouchEnds[key]; window.renderImageTrackingTable(); saveData(); }
+        window.updateImageManualDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualDates[key] = value; else delete imageManualDates[key]; window.renderImageTrackingTable(); saveData(); }
+        window.updateImageManualEndDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualEndDates[key] = value; else delete imageManualEndDates[key]; window.renderImageTrackingTable(); saveData(); }
+        window.updateImageManualRetouchStart = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchStarts[key] = value; else delete imageManualRetouchStarts[key]; window.renderImageTrackingTable(); saveData(); }
+        window.updateImageManualRetouchEnd = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchEnds[key] = value; else delete imageManualRetouchEnds[key]; window.renderImageTrackingTable(); saveData(); }
 
         function getFilterState(fullType) {
             const cbs = document.querySelectorAll(`.cb-${fullType}`); 
@@ -1427,22 +1489,22 @@
                 const calculatedDays = calculateDays(row.ngayBatDau, row.ngayNhan);
                 return `
                     <tr class="hover:bg-gray-50 transition-colors group bg-white">
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><button onclick="deleteRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
-                        <td class="px-2 py-1 border-r border-gray-100 sticky-col bg-white"><input type="text" value="${row.sku}" onchange="updateCell('${row.id}', 'sku', this.value)" class="font-bold text-pnjBlue" placeholder="Nhập SKU"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="number" min="1" max="12" value="${row.month}" onchange="updateCell('${row.id}', 'month', this.value)" class="text-center font-medium"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.noiMuon}" onchange="updateCell('${row.id}', 'noiMuon', this.value)" list="noiMuonList"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loMuon}" onchange="updateCell('${row.id}', 'loMuon', this.value)"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttMuon}" onchange="updateCell('${row.id}', 'ttMuon', this.value)" list="ttMuonList" class="${row.ttMuon?.includes('Done') ? 'text-emerald-600 font-medium' : ''}"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayChup || ''}" onchange="updateCell('${row.id}', 'ngayChup', this.value)" class="text-xs text-gray-500"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttChup}" onchange="updateCell('${row.id}', 'ttChup', this.value)" list="ttChupList" class="${row.ttChup?.includes('Done') ? 'text-emerald-600 font-medium' : ''}"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayRetouch || ''}" onchange="updateCell('${row.id}', 'ngayRetouch', this.value)" class="text-xs text-gray-500"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttRetouch}" onchange="updateCell('${row.id}', 'ttRetouch', this.value)" list="ttRetouchList" class="${row.ttRetouch?.includes('Done') ? 'text-emerald-600 font-medium' : ''}"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.phanLoai || ''}" onchange="updateCell('${row.id}', 'phanLoai', this.value)" list="phanLoaiList"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayBatDau}" onchange="updateCell('${row.id}', 'ngayBatDau', this.value)" class="text-xs"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayNhan}" onchange="updateCell('${row.id}', 'ngayNhan', this.value)" class="text-xs"></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayTra}" onchange="updateCell('${row.id}', 'ngayTra', this.value)" class="text-xs"></td>
+                        <td class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} px-2 py-2 border-r border-gray-100 text-center"><button onclick="deleteRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
+                        <td class="px-2 py-1 border-r border-gray-100 sticky-col bg-white"><input type="text" value="${row.sku}" onchange="updateCell('${row.id}', 'sku', this.value)" class="font-bold text-pnjBlue" placeholder="Nhập SKU" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="number" min="1" max="12" value="${row.month}" onchange="updateCell('${row.id}', 'month', this.value)" class="text-center font-medium" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.noiMuon}" onchange="updateCell('${row.id}', 'noiMuon', this.value)" list="noiMuonList" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loMuon}" onchange="updateCell('${row.id}', 'loMuon', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttMuon}" onchange="updateCell('${row.id}', 'ttMuon', this.value)" list="ttMuonList" class="${row.ttMuon?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayChup || ''}" onchange="updateCell('${row.id}', 'ngayChup', this.value)" class="text-xs text-gray-500" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttChup}" onchange="updateCell('${row.id}', 'ttChup', this.value)" list="ttChupList" class="${row.ttChup?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayRetouch || ''}" onchange="updateCell('${row.id}', 'ngayRetouch', this.value)" class="text-xs text-gray-500" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttRetouch}" onchange="updateCell('${row.id}', 'ttRetouch', this.value)" list="ttRetouchList" class="${row.ttRetouch?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.phanLoai || ''}" onchange="updateCell('${row.id}', 'phanLoai', this.value)" list="phanLoaiList" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayBatDau}" onchange="updateCell('${row.id}', 'ngayBatDau', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayNhan}" onchange="updateCell('${row.id}', 'ngayNhan', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayTra}" onchange="updateCell('${row.id}', 'ngayTra', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-2 py-1 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5" id="days_${row.id}">${calculatedDays !== '' ? calculatedDays : '-'}</td>
-                        <td class="px-1 py-1"><input type="text" value="${row.note}" onchange="updateCell('${row.id}', 'note', this.value)"></td>
+                        <td class="px-1 py-1"><input type="text" value="${row.note}" onchange="updateCell('${row.id}', 'note', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     </tr>`;
             }).join('');
             const totalCount = document.getElementById('totalRowsCount');
@@ -1459,13 +1521,13 @@
 
                 return `
                 <tr class="hover:bg-gray-50 transition-colors group">
-                    <td class="px-2 py-2 text-center border-r border-gray-100"><button onclick="deleteVideoRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
-                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${row.month}" onchange="updateVideoCell('${row.id}', 'month', this.value)" class="text-center font-bold text-gray-700 bg-transparent border-none"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loVideo || ''}" onchange="updateVideoCell('${row.id}', 'loVideo', this.value)" class="font-bold text-[#1C3B5E] bg-transparent border-none" placeholder="VD: Video-Jan"></td>
-                    <td class="px-1 py-1 border-r border-gray-100 w-24"><input type="number" value="${row.slThucTe || ''}" onchange="updateVideoCell('${row.id}', 'slThucTe', this.value)" class="text-center font-bold text-red-500 bg-transparent border-none" placeholder="0"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttQuay || ''}" list="ttQuayList" onchange="updateVideoCell('${row.id}', 'ttQuay', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tQClass}" placeholder="VD: Đã xong"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttDung || ''}" list="ttDungList" onchange="updateVideoCell('${row.id}', 'ttDung', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tDClass}" placeholder="VD: Đang dựng"></td>
-                    <td class="px-1 py-1"><input type="text" value="${row.ghiChu || ''}" onchange="updateVideoCell('${row.id}', 'ghiChu', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..."></td>
+                    <td class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} px-2 py-2 text-center border-r border-gray-100"><button onclick="deleteVideoRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
+                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${row.month}" onchange="updateVideoCell('${row.id}', 'month', this.value)" class="text-center font-bold text-gray-700 bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loVideo || ''}" onchange="updateVideoCell('${row.id}', 'loVideo', this.value)" class="font-bold text-[#1C3B5E] bg-transparent border-none" placeholder="VD: Video-Jan" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100 w-24"><input type="number" value="${row.slThucTe || ''}" onchange="updateVideoCell('${row.id}', 'slThucTe', this.value)" class="text-center font-bold text-red-500 bg-transparent border-none" placeholder="0" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttQuay || ''}" list="ttQuayList" onchange="updateVideoCell('${row.id}', 'ttQuay', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tQClass}" placeholder="VD: Đã xong" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttDung || ''}" list="ttDungList" onchange="updateVideoCell('${row.id}', 'ttDung', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tDClass}" placeholder="VD: Đang dựng" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1"><input type="text" value="${row.ghiChu || ''}" onchange="updateVideoCell('${row.id}', 'ghiChu', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                 </tr>`;
             }).join('');
             window.renderVideoDashboard();
@@ -1584,18 +1646,18 @@
 
                 return `
                 <tr class="hover:bg-gray-50 transition-colors bg-white">
-                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full min-w-[150px]"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full"></td>
+                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full min-w-[150px]" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.ds}</td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}"></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
                     <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
                     <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${Array.from(g.notes).join('; ')}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'note', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..."></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${Array.from(g.notes).join('; ')}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'note', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-4 py-3 text-right font-black text-pnjBlue bg-pnjBlue/5">${g.count}</td>
                 </tr>`;
             }).join('');
@@ -1838,11 +1900,11 @@
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue">${formatDateToDisplay(g.ngayNhan)}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-sm text-gray-600 min-w-[250px] whitespace-normal">${loListHTML}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue bg-pnjBlue/5">${g.skuCount}</td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startChup}" onchange="updateImageManualDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none"></td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endChup}" onchange="updateImageManualEndDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none"></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startChup}" onchange="updateImageManualDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endChup}" onchange="updateImageManualEndDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.tCD}</td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startRetouch}" onchange="updateImageManualRetouchStart('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none"></td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endRetouch}" onchange="updateImageManualRetouchEnd('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none"></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startRetouch}" onchange="updateImageManualRetouchStart('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endRetouch}" onchange="updateImageManualRetouchEnd('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-gray-700 bg-gray-100">${g.tRD}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
@@ -1935,8 +1997,11 @@
         }
 
         window.renderDeadlineAlerts = function(ganttData) {
-            const container = document.getElementById('deadline-alerts-container');
-            if (!container) return;
+            const btnContainer = document.getElementById('alert-btn-container');
+            const panel = document.getElementById('deadline-alerts-panel');
+            const badge = document.getElementById('alert-badge');
+            
+            if (!btnContainer || !panel || !badge) return;
             
             let today = new Date();
             let todayStr = getLocalDateStr(today);
@@ -1944,18 +2009,15 @@
             let alerts = [];
             
             ganttData.forEach(g => {
-                // Yêu cầu 1: Chỉ xét cảnh báo khi lô này đã hoàn tất "Done mượn" 100%
                 let isMuonDone = g.muonDone > 0 && g.muonDone === g.skuCount;
                 if (!isMuonDone) return;
 
-                // Yêu cầu 2: Chỉ xét những lô chưa hoàn thành Chụp / Retouch
                 let isChupDone = g.chupDone === g.skuCount;
                 let isRetouchDone = g.retouchDone === g.skuCount;
                 
                 let loList = Object.values(g.items).map(i => i.loMuon).join(', ');
                 
                 if (!isChupDone) {
-                    // Yêu cầu 3: Chỉ báo những lô hạn chót là Hôm nay (hoặc đã Trễ)
                     if (g.endChup < todayStr) {
                         alerts.push({ type: 'danger', msg: `ĐÃ TRỄ HẠN CHỤP HÌNH lô: <b class="text-red-800">${loList}</b> (${g.skuCount} SKU) - Deadline: ${formatDateToDisplay(g.endChup)}` });
                     } else if (g.endChup === todayStr) {
@@ -1973,32 +2035,38 @@
             });
             
             if (alerts.length === 0) {
-                container.innerHTML = '';
-                container.classList.add('hidden');
+                btnContainer.classList.add('hidden');
+                btnContainer.classList.remove('block');
+                panel.classList.add('hidden');
                 return;
             }
             
-            // Sắp xếp ưu tiên: Trễ hạn (danger) hiện lên đầu -> Hôm nay (warning)
+            btnContainer.classList.remove('hidden');
+            btnContainer.classList.add('block');
+            badge.innerText = alerts.length;
+            
             const sortOrder = { 'danger': 1, 'warning': 2 };
             alerts.sort((a, b) => sortOrder[a.type] - sortOrder[b.type]);
             
-            let html = '<div class="bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-sm mb-4"><h4 class="font-bold text-amber-800 mb-2 flex items-center gap-2"><i class="fas fa-bell text-amber-500"></i> Cảnh báo Deadline Sản xuất</h4><ul class="space-y-1.5">';
+            let html = '<div class="bg-amber-50 p-4 border-b border-amber-200 flex justify-between items-center"><h4 class="font-bold text-amber-800 flex items-center gap-2"><i class="fas fa-bell text-amber-500 text-lg"></i> Thông báo Deadline</h4><span class="bg-amber-200 text-amber-800 text-xs font-bold px-2 py-1 rounded-full">' + alerts.length + ' thông báo</span></div><div class="max-h-[60vh] overflow-y-auto p-4"><ul class="space-y-3">';
             alerts.forEach(a => {
                 let icon = '';
                 let textClass = '';
+                let bgClass = '';
                 if (a.type === 'danger') {
-                    icon = '<i class="fas fa-exclamation-circle text-red-600 w-4"></i>';
-                    textClass = 'text-red-700 font-bold';
+                    icon = '<i class="fas fa-exclamation-circle text-red-600 mt-0.5"></i>';
+                    textClass = 'text-red-800';
+                    bgClass = 'bg-red-50 border border-red-100';
                 } else if (a.type === 'warning') {
-                    icon = '<i class="fas fa-exclamation-triangle text-amber-600 w-4"></i>';
-                    textClass = 'text-amber-700 font-medium';
+                    icon = '<i class="fas fa-exclamation-triangle text-amber-600 mt-0.5"></i>';
+                    textClass = 'text-amber-800';
+                    bgClass = 'bg-amber-50 border border-amber-100';
                 }
-                html += `<li class="text-sm ${textClass} flex items-start gap-2 mt-1">${icon} <span class="pt-0.5">${a.msg}</span></li>`;
+                html += `<li class="text-sm ${textClass} ${bgClass} p-3 rounded-lg flex items-start gap-2 shadow-sm">${icon} <span class="leading-relaxed">${a.msg}</span></li>`;
             });
             html += '</ul></div>';
             
-            container.innerHTML = html;
-            container.classList.remove('hidden');
+            panel.innerHTML = html;
         }
 
         window.getLatestEndChup = function(noiMuonTarget) {
@@ -2078,14 +2146,17 @@
 
             if (window.renderTable) window.renderTable(); 
             if (window.renderVideoTable) window.renderVideoTable(); 
-            if (window.switchTab) window.switchTab('tab-report');
+            if (window.switchTab) {
+                const currentTab = document.querySelector('nav button.bg-pnjBlue');
+                if (currentTab) window.switchTab(currentTab.id.replace('btn-', ''));
+                else window.switchTab('tab-report');
+            }
         }
 
         window.saveData = function() {
+            if (!window.isFakeLoggedIn) return; // Prevent saving if not logged in
             window.saveDataLocal();
-            // Kiểm tra trạng thái đăng nhập trực tiếp từ bộ nhớ cục bộ để tránh lỗi khác Scope (Module)
-            const isLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
-            if (isLoggedIn && window.saveDataToCloud) {
+            if (window.saveDataToCloud) {
                 window.saveDataToCloud();
             }
         }
@@ -2173,6 +2244,7 @@
         }
 
         window.importCSV = function(event) {
+            if(!window.isFakeLoggedIn) return; // Bảo vệ hàm import
             const file = event.target.files[0]; if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
