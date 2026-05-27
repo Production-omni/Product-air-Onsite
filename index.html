@@ -1674,22 +1674,36 @@
             let todayStr = new Date().toISOString().slice(0, 10);
 
             let sortedGroups = Object.values(groups).sort((a,b) => {
-                // Ưu tiên 1: Sắp xếp theo Tháng (m) từ nhỏ đến lớn (1 -> 12)
-                if(a.m === 'Trống' && b.m !== 'Trống') return 1;
-                if(b.m === 'Trống' && a.m !== 'Trống') return -1;
-                if(a.m !== 'Trống' && b.m !== 'Trống') {
-                    let mDiff = parseInt(a.m) - parseInt(b.m);
-                    if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
-                }
+                let m1 = parseInt(a.m);
+                let m2 = parseInt(b.m);
                 
-                // Ưu tiên 2: Ngày bắt đầu mượn (bd) từ cũ đến mới (đối với các lô cùng tháng)
-                if (a.bd === 'Trống' && b.bd !== 'Trống') return 1;
-                if (b.bd === 'Trống' && a.bd !== 'Trống') return -1;
-                if (a.bd !== 'Trống' && b.bd !== 'Trống' && a.bd !== b.bd) {
-                    return a.bd.localeCompare(b.bd);
+                let isEarlyA = !isNaN(m1) && m1 >= 1 && m1 <= 3;
+                let isEarlyB = !isNaN(m2) && m2 >= 1 && m2 <= 3;
+
+                // Ưu tiên 1: Tháng 1, 2, 3 lên đầu
+                if (isEarlyA && !isEarlyB) return -1;
+                if (!isEarlyA && isEarlyB) return 1;
+
+                // Ưu tiên 2: Nếu cùng thuộc nhóm tháng 1, 2, 3 thì xếp theo tháng (1 -> 2 -> 3)
+                if (isEarlyA && isEarlyB && m1 !== m2) {
+                    return m1 - m2;
                 }
 
-                // Ưu tiên 3: Tên lô mượn
+                // Ưu tiên 3: Sắp xếp theo Ngày nhận hàng (nh) từ cũ đến mới
+                if (a.nh === 'Trống' && b.nh !== 'Trống') return 1;
+                if (b.nh === 'Trống' && a.nh !== 'Trống') return -1;
+                if (a.nh !== 'Trống' && b.nh !== 'Trống' && a.nh !== b.nh) {
+                    return a.nh.localeCompare(b.nh);
+                }
+                
+                // Ưu tiên 4: Nếu trùng ngày nhận hàng (hoặc trống cả 2), xếp theo Tháng
+                if(a.m === 'Trống' && b.m !== 'Trống') return 1;
+                if(b.m === 'Trống' && a.m !== 'Trống') return -1;
+                if(a.m !== 'Trống' && b.m !== 'Trống' && m1 !== m2) {
+                    return m1 - m2;
+                }
+
+                // Ưu tiên 5: Tên lô mượn
                 return (a.l || '').localeCompare(b.l || '');
             });
 
