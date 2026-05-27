@@ -1660,13 +1660,14 @@
                 const k = `${m}|${n}|${l}|${bd}|${nh}|${tr}|${ds}|${tt}`;
                 
                 if (!groups[k]) {
-                    groups[k] = { m, n, l, bd, nh, tr, ds, tt, count: 0, cD: 0, cND: 0, rD: 0, rND: 0, notes: new Set(), ids: [] };
+                    groups[k] = { m, n, l, bd, nh, tr, ds, tt, count: 0, cD: 0, cND: 0, rD: 0, rND: 0, daTraCount: 0, notes: new Set(), ids: [] };
                 }
                 
                 groups[k].count++; groups[k].ids.push(row.id);
                 
                 if (row.ttChup && row.ttChup.toLowerCase().includes('done')) groups[k].cD++; else groups[k].cND++;
                 if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) groups[k].rD++; else groups[k].rND++;
+                if (row.daTra) groups[k].daTraCount++; // Tính tổng SKU đã đánh dấu trả
                 if (row.note && row.note.trim()) groups[k].notes.add(row.note.trim());
             });
             
@@ -1706,6 +1707,7 @@
                 
                 let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
                 let isChuanBi = g.tt.toLowerCase().includes('chuẩn bị') || g.tt === 'Trống' || g.tt === '';
+                let isDaTra = g.count > 0 && g.daTraCount === g.count; // Xác định lô đã trả
 
                 let statusLabelText = 'Đang xử lý';
                 let statusClass = 'bg-amber-100 text-amber-700';
@@ -1730,7 +1732,20 @@
                     <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full min-w-[150px]" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    
+                    <!-- Khối hiển thị Ngày trả hàng & Checkbox Đã trả -->
+                    <td class="px-2 py-1 border-r border-gray-100 min-w-[150px]">
+                        <div class="flex items-center justify-center gap-1.5 w-full">
+                            <input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none ${isDaTra ? 'text-emerald-600 font-bold' : 'text-gray-500'} text-center flex-grow p-0 outline-none transition-colors" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
+                            <div class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} flex items-center pr-1" title="Đánh dấu lô này Đã Trả Hàng">
+                                <input type="checkbox" ${isDaTra ? 'checked' : ''} onchange="updateSummaryGroup('${g.ids.join(',')}', 'daTra', this.checked)" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 cursor-pointer shadow-sm transition-all hover:scale-110" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
+                            </div>
+                            <div class="${window.isFakeLoggedIn ? 'hidden' : ''} flex items-center pr-1" title="${isDaTra ? 'Đã trả hàng' : 'Chưa trả'}">
+                                ${isDaTra ? '<i class="fas fa-check-circle text-emerald-500 text-sm"></i>' : '<div class="w-3.5 h-3.5"></div>'}
+                            </div>
+                        </div>
+                    </td>
+
                     <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.ds}</td>
                     <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
