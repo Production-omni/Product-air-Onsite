@@ -945,14 +945,19 @@
         var chartDoneInstance = null;
         var chartVideoInstance = null;
         window.globalSkuFilterArray = [];
+        window.globalSkuFilterArrayLower = []; // Thêm mảng chuẩn hóa
 
         window.applyGlobalSkuFilter = function(val) {
             const searchText = val !== undefined ? val : (document.getElementById('search-sku-report')?.value || '');
             
             if (!searchText.trim()) {
                 window.globalSkuFilterArray = [];
+                window.globalSkuFilterArrayLower = [];
             } else {
+                // Tách theo khoảng trắng, dấu phẩy, dấu tab, xuống dòng...
                 window.globalSkuFilterArray = searchText.split(/[\s,]+/).map(s => s.trim()).filter(s => s);
+                // Chuyển toàn bộ về chữ thường để so sánh không phân biệt hoa/thường
+                window.globalSkuFilterArrayLower = window.globalSkuFilterArray.map(s => s.toLowerCase());
             }
             
             // Sync các ô input để giao diện đồng nhất khi chuyển tab
@@ -965,6 +970,13 @@
             if (window.renderSummary) window.renderSummary();
             if (window.renderReport) window.renderReport();
             if (window.renderImageTrackingTable) window.renderImageTrackingTable();
+        };
+
+        // Hàm kiểm tra SKU thông minh mới (So sánh tương đối và không phân biệt hoa thường)
+        window.isSkuMatched = function(rowSku) {
+            if (!window.globalSkuFilterArrayLower || window.globalSkuFilterArrayLower.length === 0) return true;
+            const target = (rowSku || '').toLowerCase();
+            return window.globalSkuFilterArrayLower.some(f => target.includes(f));
         };
 
         window.applyAdminState = function() {
@@ -1542,8 +1554,8 @@
             const tbody = document.getElementById('tableBody'); if(!tbody) return;
             
             let dataToRender = tableData;
-            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
-                dataToRender = tableData.filter(row => window.globalSkuFilterArray.includes(row.sku));
+            if (window.globalSkuFilterArrayLower && window.globalSkuFilterArrayLower.length > 0) {
+                dataToRender = tableData.filter(row => window.isSkuMatched(row.sku));
             }
 
             tbody.innerHTML = dataToRender.map(row => {
@@ -1640,7 +1652,7 @@
             let groups = {}; let grandTotal = 0;
             
             tableData.forEach(row => {
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
+                if (!window.isSkuMatched(row.sku)) return;
 
                 const m = row.month || 'Trống'; 
                 const n = row.noiMuon || 'Trống'; 
@@ -1809,7 +1821,7 @@
             };
 
             tableData.forEach(row => {
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
+                if (!window.isSkuMatched(row.sku)) return;
                 if (!row.sku && !row.loMuon && !row.noiMuon) return;
                 
                 const mBase = row.month ? row.month.toString() : 'Trống'; 
@@ -1922,7 +1934,7 @@
 
             let dailyGroups = {};
             tableData.forEach(row => {
-                if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0 && !window.globalSkuFilterArray.includes(row.sku)) return;
+                if (!window.isSkuMatched(row.sku)) return;
                 if (!row.ngayNhan) return; 
                 const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const l = row.loMuon || 'Trống';
                 if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
@@ -2313,8 +2325,8 @@
 
         window.exportCSV = function() {
             let dataToExport = tableData;
-            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
-                dataToExport = tableData.filter(row => window.globalSkuFilterArray.includes(row.sku));
+            if (window.globalSkuFilterArrayLower && window.globalSkuFilterArrayLower.length > 0) {
+                dataToExport = tableData.filter(row => window.isSkuMatched(row.sku));
             }
             if (dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
             
