@@ -1674,10 +1674,22 @@
             let todayStr = new Date().toISOString().slice(0, 10);
 
             let sortedGroups = Object.values(groups).sort((a,b) => {
+                // Ưu tiên 1: Sắp xếp theo Tháng (m) từ nhỏ đến lớn (1 -> 12)
                 if(a.m === 'Trống' && b.m !== 'Trống') return 1;
                 if(b.m === 'Trống' && a.m !== 'Trống') return -1;
-                let mDiff = parseInt(a.m) - parseInt(b.m);
-                if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
+                if(a.m !== 'Trống' && b.m !== 'Trống') {
+                    let mDiff = parseInt(a.m) - parseInt(b.m);
+                    if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
+                }
+                
+                // Ưu tiên 2: Ngày bắt đầu mượn (bd) từ cũ đến mới (đối với các lô cùng tháng)
+                if (a.bd === 'Trống' && b.bd !== 'Trống') return 1;
+                if (b.bd === 'Trống' && a.bd !== 'Trống') return -1;
+                if (a.bd !== 'Trống' && b.bd !== 'Trống' && a.bd !== b.bd) {
+                    return a.bd.localeCompare(b.bd);
+                }
+
+                // Ưu tiên 3: Tên lô mượn
                 return (a.l || '').localeCompare(b.l || '');
             });
 
