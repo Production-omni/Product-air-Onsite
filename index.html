@@ -787,9 +787,13 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         let firebaseConfig;
-        if (typeof __firebase_config !== 'undefined') {
-            firebaseConfig = JSON.parse(__firebase_config);
-        } else {
+        try {
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                firebaseConfig = JSON.parse(__firebase_config);
+            } else {
+                throw new Error("Missing config");
+            }
+        } catch (e) {
             firebaseConfig = {
                 apiKey: "",
                 authDomain: "product-air-onsite.firebaseapp.com",
@@ -804,7 +808,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : "product-air-onsite";
+        const appId = typeof __app_id !== 'undefined' && __app_id ? __app_id : "product-air-onsite";
         
         let currentUser = null;
         let unsubscribeSnapshot = null;
@@ -917,8 +921,10 @@
                 if(window.saveDataLocal) window.saveDataLocal(); 
             }
         };
+    </script>
 
-        window.handleLogin = async function() {
+    <script>
+        window.handleLogin = function() {
             const username = document.getElementById('admin-username').value;
             const pass = document.getElementById('admin-pass').value;
             const errEl = document.getElementById('login-error');
@@ -934,8 +940,11 @@
                 localStorage.setItem('pnj_admin_logged_in', 'true');
                 window.isFakeLoggedIn = true;
                 const modal = document.getElementById('login-modal');
-                if(modal) modal.classList.add('hidden');
-                window.applyAdminState();
+                if(modal) {
+                    modal.classList.add('hidden');
+                    document.getElementById('admin-pass').value = ''; // xóa mật khẩu
+                }
+                if (window.applyAdminState) window.applyAdminState();
                 alert("Đăng nhập Admin thành công!");
             } else {
                 errEl.innerText = "Sai tài khoản hoặc mật khẩu!";
@@ -943,18 +952,16 @@
             }
         };
 
-        window.handleLogout = async function() {
+        window.handleLogout = function() {
             if(confirm("Bạn có chắc chắn muốn thoát quyền Admin?")) {
                 localStorage.removeItem('pnj_admin_logged_in');
                 window.isFakeLoggedIn = false;
-                window.applyAdminState();
+                if (window.applyAdminState) window.applyAdminState();
                 if(window.listenToCloudData) window.listenToCloudData(); 
                 alert("Đã thoát quyền Admin. Bạn đang xem dữ liệu ở chế độ Chỉ đọc (Read-only).");
             }
         };
-    </script>
 
-    <script>
         var tableData = [];
         var videoData = [];
         var imageManualDates = {}; 
