@@ -639,8 +639,16 @@
                             <tbody id="imageTrackingBody" class="divide-y divide-gray-200"></tbody>
                         </table>
                     </div>
-                    <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end text-gray-800 text-base font-bold">
-                        <div>Tổng SKU: <span id="imageTrackingGrandTotal" class="text-pnjBlue text-2xl ml-2 font-black">0</span></div>
+                    <div class="bg-gray-50 p-4 border-t border-gray-200 flex flex-wrap justify-between items-center text-gray-800 text-base font-bold gap-4">
+                        <div class="flex items-center gap-3">
+                            <span class="text-gray-500 uppercase text-xs font-black tracking-wider">Cần xử lý:</span>
+                            <div class="flex gap-2 text-sm">
+                                <span class="text-amber-700 bg-amber-50 px-3 py-1.5 rounded border border-amber-200 shadow-sm flex items-center gap-2">Chưa chụp: <span id="imageTrackingChuaChup" class="font-black text-lg">0</span></span>
+                                <span class="text-pink-700 bg-pink-50 px-3 py-1.5 rounded border border-pink-200 shadow-sm flex items-center gap-2">Chưa retouch: <span id="imageTrackingChuaRetouch" class="font-black text-lg">0</span></span>
+                            </div>
+                            <span class="text-gray-400 italic text-xs font-normal ml-2">(*Bỏ qua Dự kiến mượn)</span>
+                        </div>
+                        <div class="text-right">Tổng SKU: <span id="imageTrackingGrandTotal" class="text-pnjBlue text-2xl ml-2 font-black">0</span></div>
                     </div>
                 </div>
             </div>
@@ -2019,9 +2027,18 @@
             }
 
             let totalSKU = 0;
+            let totalChuaChup = 0;
+            let totalChuaRetouch = 0;
 
             processedGanttData.forEach(g => {
                 totalSKU += g.skuCount;
+                
+                // Loại trừ hàng dự kiến mượn (chưa done mượn nào)
+                if (g.muonDone > 0) {
+                    totalChuaChup += Math.max(0, g.skuCount - g.chupDone);
+                    totalChuaRetouch += Math.max(0, g.skuCount - g.retouchDone);
+                }
+
                 let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0">${i.loMuon}</div>`).join('') || '-';
                 
                 let ttMuonHTML = Object.values(g.items).map(i => {
@@ -2071,6 +2088,12 @@
 
             const elTotal1 = document.getElementById('imageTrackingGrandTotal');
             if (elTotal1) elTotal1.innerText = totalSKU.toLocaleString();
+            
+            const elChuaChup = document.getElementById('imageTrackingChuaChup');
+            if (elChuaChup) elChuaChup.innerText = totalChuaChup.toLocaleString();
+
+            const elChuaRetouch = document.getElementById('imageTrackingChuaRetouch');
+            if (elChuaRetouch) elChuaRetouch.innerText = totalChuaRetouch.toLocaleString();
             
             const elTotal2 = document.getElementById('ganttGrandTotal');
             if (elTotal2) elTotal2.innerText = totalSKU.toLocaleString();
