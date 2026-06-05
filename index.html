@@ -58,6 +58,11 @@
         th.sticky-col { background-color: #003366; z-index: 20; }
         .glass-header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; }
         input[type="checkbox"] { width: auto; accent-color: #003366; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
 <body class="bg-pnjBg text-gray-800 font-sans min-h-screen">
@@ -108,7 +113,7 @@
                 <i class="fas fa-user-shield"></i> Admin
             </button>
             <button id="btn-logout" onclick="handleLogout()" class="hidden bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 px-4 py-2.5 rounded-lg font-bold text-sm transition-colors flex items-center gap-2 shadow-sm">
-                <i class="fas fa-sign-out-alt"></i> Đăng xuất Admin
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
             </button>
         </div>
     </header>
@@ -215,7 +220,7 @@
 
             <!-- Flow 2: Sản xuất hình ảnh -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH (Gói hàng 160m)</h3>
+                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH</h3>
                 <div class="flex flex-col lg:flex-row items-center justify-start gap-4">
                     
                     <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
@@ -309,15 +314,15 @@
                     </div>
                 </div>
 
-                <div class="flex-grow"></div>
-                
-                <div class="relative flex items-center" title="Tra cứu nhanh nhiều mã SKU (cách nhau bằng dấu phẩy hoặc khoảng trắng)">
+                <div class="w-px h-6 bg-gray-300 mx-2 hidden md:block"></div>
+                <div class="relative flex items-center flex-grow max-w-[250px]" title="Tra cứu nhanh nhiều mã SKU (dán từ Excel, cách nhau bằng phẩy/khoảng trắng)">
                     <i class="fas fa-search absolute left-3 text-gray-400"></i>
-                    <input type="text" id="search-sku-report" oninput="window.applyGlobalSkuFilter(this.value)" class="pl-8 pr-8 py-1.5 w-48 md:w-64 border border-gray-300 rounded-lg text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
-                    <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+                    <input type="text" id="sku-input-report" oninput="window.applyGlobalSkuFilter('sku-input-report')" class="w-full border border-gray-300 rounded-lg pl-9 pr-8 py-1.5 text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
+                    <button onclick="document.getElementById('sku-input-report').value=''; window.applyGlobalSkuFilter('sku-input-report')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
                 </div>
 
-                <button onclick="clearReportFilters()" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
+                <div class="flex-grow"></div>
+                <button onclick="clearReportFilters(); window.clearGlobalSkuFilter();" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -448,17 +453,16 @@
                         </div>
                     </div>
                     
-                    <div class="flex-grow"></div>
-                    
-                    <div class="relative flex items-center" title="Tra cứu nhanh nhiều mã SKU (cách nhau bằng dấu phẩy hoặc khoảng trắng)">
+                    <div class="w-px h-6 bg-gray-300 mx-2 hidden md:block"></div>
+                    <div class="relative flex items-center flex-grow max-w-[250px]" title="Tra cứu nhanh nhiều mã SKU (dán từ Excel, cách nhau bằng phẩy/khoảng trắng)">
                         <i class="fas fa-search absolute left-3 text-gray-400"></i>
-                        <input type="text" id="search-sku-summary" oninput="window.applyGlobalSkuFilter(this.value)" class="pl-8 pr-8 py-1.5 w-48 md:w-64 border border-gray-300 rounded-lg text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
-                        <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+                        <input type="text" id="sku-input-summary" oninput="window.applyGlobalSkuFilter('sku-input-summary')" class="w-full border border-gray-300 rounded-lg pl-9 pr-8 py-1.5 text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
+                        <button onclick="document.getElementById('sku-input-summary').value=''; window.applyGlobalSkuFilter('sku-input-summary')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
                     </div>
 
-                    <div class="w-px h-6 bg-gray-300 mx-1 hidden lg:block"></div>
+                    <div class="flex-grow"></div>
                     
-                    <button onclick="clearSummaryFilters();" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors"><i class="fas fa-times-circle"></i> Xóa lọc</button>
+                    <button onclick="clearSummaryFilters(); window.clearGlobalSkuFilter();" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
                 </div>
 
                 <div class="overflow-x-auto table-container max-h-[65vh]">
@@ -491,6 +495,8 @@
 
         <!-- ==================== TAB 3: HÌNH ẢNH ==================== -->
         <div id="tab-image" class="hidden">
+            <!-- DEADLINE ALERTS CONTAINER -->
+            <div id="deadline-alerts-container"></div>
             
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-3 items-center">
                 <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
@@ -547,33 +553,16 @@
                     <i class="fas fa-file-excel text-pnjGold"></i><span>Tải tất cả</span>
                 </button>
                 
+                <div class="w-px h-6 bg-gray-300 mx-2 hidden md:block"></div>
+                <div class="relative flex items-center flex-grow max-w-[250px]" title="Tra cứu nhanh nhiều mã SKU (dán từ Excel, cách nhau bằng phẩy/khoảng trắng)">
+                    <i class="fas fa-search absolute left-3 text-gray-400"></i>
+                    <input type="text" id="sku-input-image" oninput="window.applyGlobalSkuFilter('sku-input-image')" class="w-full border border-gray-300 rounded-lg pl-9 pr-8 py-1.5 text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
+                    <button onclick="document.getElementById('sku-input-image').value=''; window.applyGlobalSkuFilter('sku-input-image')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+                </div>
+
                 <div class="flex-grow"></div>
 
-                <div class="relative flex items-center" title="Tra cứu nhanh nhiều mã SKU (cách nhau bằng dấu phẩy hoặc khoảng trắng)">
-                    <i class="fas fa-search absolute left-3 text-gray-400"></i>
-                    <input type="text" id="search-sku-img" oninput="window.applyGlobalSkuFilter(this.value)" class="pl-8 pr-8 py-1.5 w-48 md:w-64 border border-gray-300 rounded-lg text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
-                    <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
-                </div>
-
                 <!-- Nút chuông cảnh báo -->
-                <div class="relative hidden" id="alert-btn-container">
-                    <button onclick="document.getElementById('deadline-alerts-panel').classList.toggle('hidden'); event.stopPropagation();" class="relative bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors shadow-sm mr-2">
-                        <i class="fas fa-bell"></i> Cảnh báo
-                        <span id="alert-badge" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-black shadow-sm border border-white">0</span>
-                    </button>
-                    <div id="deadline-alerts-panel" onclick="event.stopPropagation()" class="hidden absolute top-full right-2 mt-2 w-[400px] max-w-[85vw] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
-                         <!-- Content rendered by JS -->
-                    </div>
-                </div>
-
-                <button onclick="window.clearImageFilters()" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100">Xóa lọc</button>
-            </div>
-
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6 hidden">
-                <h3 class="font-bold text-pnjBlue text-lg uppercase mb-4"><i class="fas fa-calculator mr-2 text-pnjGold"></i> Bảng Tính Ngày Dự Kiến</h3>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nơi mượn</label>
                         <select id="calc-noi" class="border border-gray-300 w-full rounded-lg px-3 py-2 text-sm bg-gray-50"><option value="">-- Bỏ qua --</option><option value="KHO">KHO</option><option value="NVT">NVT</option></select>
                     </div>
                     <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Ngày nhận hàng</label><input type="date" id="calc-ngay" class="border border-gray-300 w-full rounded-lg px-3 py-2 text-sm bg-gray-50"></div>
@@ -633,7 +622,7 @@
                                     <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Tiến độ Chụp</th>
                                     <th class="px-4 py-4 border-r border-pnjBlueLight text-center">Tiến độ Retouch</th>
                                     <th class="px-4 py-4 border-r border-pnjBlueLight text-center min-w-[120px]">Trạng thái lô</th>
-                                    <th class="px-2 py-4 text-center" title="Tải SKU 13 của lô"><i class="fas fa-download text-pnjGold"></i></th>
+                                    <th class="px-2 py-4 text-center cursor-pointer hover:bg-pnjBlueLight transition-colors" title="Tải FULL danh sách SKU đang hiển thị" onclick="window.downloadAllImageTrackingSKUs()"><i class="fas fa-download text-pnjGold bg-[#002244] p-1 rounded"></i></th>
                                 </tr>
                             </thead>
                             <tbody id="imageTrackingBody" class="divide-y divide-gray-200"></tbody>
@@ -734,14 +723,14 @@
                 </label>
                 <button onclick="exportCSV()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-download text-pnjBlue"></i> Xuất CSV</button>
                 
-                <div class="flex-grow"></div>
-
-                <div class="relative flex items-center" title="Tra cứu nhanh nhiều mã SKU (cách nhau bằng dấu phẩy hoặc khoảng trắng)">
+                <div class="w-px h-8 bg-gray-300 mx-2 hidden md:block"></div>
+                <div class="relative flex items-center flex-grow max-w-[250px]" title="Tra cứu nhanh nhiều mã SKU (dán từ Excel, cách nhau bằng phẩy/khoảng trắng)">
                     <i class="fas fa-search absolute left-3 text-gray-400"></i>
-                    <input type="text" id="search-sku-database" oninput="window.applyGlobalSkuFilter(this.value)" class="pl-8 pr-8 py-2 w-48 md:w-64 border border-gray-300 rounded-lg text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
-                    <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+                    <input type="text" id="sku-input-db" oninput="window.applyGlobalSkuFilter('sku-input-db')" class="w-full border border-gray-300 rounded-lg pl-9 pr-8 py-2 text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
+                    <button onclick="document.getElementById('sku-input-db').value=''; window.applyGlobalSkuFilter('sku-input-db')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
                 </div>
 
+                <div class="flex-grow"></div>
                 <button onclick="clearAllData()" class="admin-only hidden text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2.5 rounded-lg font-semibold border border-red-100">Xóa toàn bộ</button>
             </div>
 
@@ -760,6 +749,8 @@
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">TT Chụp</th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[140px]">Ngày retouch</th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">TT Retouch</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">Video review</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">Hình ảnh review</th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[120px]">Phân loại</th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[140px]">BĐ mượn</th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[140px]">Nhận hàng</th>
@@ -962,28 +953,48 @@
         var chartDoneInstance = null;
         var chartVideoInstance = null;
         window.globalSkuFilterArray = [];
-        window.globalSkuFilterArrayLower = []; 
+        window.globalSkuFilterArrayLower = [];
 
-        window.applyGlobalSkuFilter = function(val) {
-            const searchText = val !== undefined ? val : (document.getElementById('search-sku-report')?.value || '');
-            
-            if (!searchText.trim()) {
+        window.applyGlobalSkuFilter = function(inputId) {
+            let val = '';
+            if (inputId) {
+                let el = document.getElementById(inputId);
+                if(el) val = el.value;
+            } else {
+                ['sku-input-report', 'sku-input-summary', 'sku-input-image', 'sku-input-db'].forEach(id => {
+                    let el = document.getElementById(id);
+                    if (el && el.value) val = el.value;
+                });
+            }
+
+            if (!val || !val.trim()) {
                 window.globalSkuFilterArray = [];
                 window.globalSkuFilterArrayLower = [];
             } else {
-                window.globalSkuFilterArray = searchText.split(/[\s,]+/).map(s => s.trim()).filter(s => s);
+                window.globalSkuFilterArray = val.split(/[\s,]+/).map(s => s.trim()).filter(s => s);
                 window.globalSkuFilterArrayLower = window.globalSkuFilterArray.map(s => s.toLowerCase());
             }
             
-            ['search-sku-report', 'search-sku-img', 'search-sku-summary', 'search-sku-database'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el && el.value !== searchText) el.value = searchText;
+            let textVal = window.globalSkuFilterArray.join(', ');
+            ['sku-input-report', 'sku-input-summary', 'sku-input-image', 'sku-input-db'].forEach(id => {
+                let el = document.getElementById(id);
+                if(el && el.id !== inputId) el.value = textVal;
             });
             
             if (window.renderTable) window.renderTable();
             if (window.renderSummary) window.renderSummary();
             if (window.renderReport) window.renderReport();
             if (window.renderImageTrackingTable) window.renderImageTrackingTable();
+        };
+
+        window.clearGlobalSkuFilter = function() {
+            window.globalSkuFilterArray = [];
+            window.globalSkuFilterArrayLower = [];
+            ['sku-input-report', 'sku-input-summary', 'sku-input-image', 'sku-input-db'].forEach(id => {
+                let el = document.getElementById(id);
+                if(el) el.value = '';
+            });
+            window.applyGlobalSkuFilter();
         };
 
         window.isSkuMatched = function(rowSku) {
@@ -1299,7 +1310,7 @@
             return dates;
         }
 
-        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '' }); window.renderTable(); }
+        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', videoReview: '', hinhAnhReview: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '' }); window.renderTable(); }
         window.addNewVideoRow = function() { if(!window.isFakeLoggedIn) return; videoData.unshift({ id: generateId(), month: '', loVideo: '', slThucTe: 0, ttQuay: '', ttDung: '', ghiChu: '' }); window.renderVideoTable(); }
         window.deleteRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { tableData = tableData.filter(row => row.id !== id); window.renderTable(); } }
         window.deleteVideoRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { videoData = videoData.filter(row => row.id !== id); window.renderVideoTable(); } }
@@ -1506,10 +1517,17 @@
             ['img-month', 'img-noiMuon', 'img-loMuon', 'img-status'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); 
         }
 
+        // --- Thuật toán tính deadline tự động ---
+        function getProcessDays(skuCount) {
+            if (!skuCount || skuCount <= 0) return 0;
+            if (skuCount <= 160) return 7;
+            let extra = skuCount - 160;
+            return 7 + Math.ceil(extra / 50) * 2;
+        }
+
         window.getGlobalSchedule = function() {
             let dailyGroups = {};
             tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return;
                 if (!row.ngayNhan) return; 
                 let dateKey = row.ngayNhan;
                 if (!dailyGroups[dateKey]) { dailyGroups[dateKey] = { ngayNhan: dateKey, skuCount: 0, khoSku: 0, nvtSku: 0, otherSku: 0 }; }
@@ -1528,21 +1546,21 @@
                 let sKHO = null, eKHO = null;
                 if (g.khoSku > 0) {
                     sKHO = (globalNextFreeChupKHO && baseStart < globalNextFreeChupKHO) ? globalNextFreeChupKHO : baseStart;
-                    eKHO = addWorkingDays(sKHO, Math.max(0, Math.ceil(g.khoSku * 7 / 160) - 1));
+                    eKHO = addWorkingDays(sKHO, Math.max(0, getProcessDays(g.khoSku) - 1));
                     globalNextFreeChupKHO = addWorkingDays(eKHO, 1);
                 }
 
                 let sNVT = null, eNVT = null;
                 if (g.nvtSku > 0) {
                     sNVT = (globalNextFreeChupNVT && baseStart < globalNextFreeChupNVT) ? globalNextFreeChupNVT : baseStart;
-                    eNVT = addWorkingDays(sNVT, Math.max(0, Math.ceil(g.nvtSku * 7 / 160) - 1));
+                    eNVT = addWorkingDays(sNVT, Math.max(0, getProcessDays(g.nvtSku) - 1));
                     globalNextFreeChupNVT = addWorkingDays(eNVT, 1);
                 }
 
                 let sOther = null, eOther = null;
                 if (g.otherSku > 0) {
                     sOther = (globalNextFreeChupOther && baseStart < globalNextFreeChupOther) ? globalNextFreeChupOther : baseStart;
-                    eOther = addWorkingDays(sOther, Math.max(0, Math.ceil(g.otherSku * 7 / 160) - 1));
+                    eOther = addWorkingDays(sOther, Math.max(0, getProcessDays(g.otherSku) - 1));
                     globalNextFreeChupOther = addWorkingDays(eOther, 1);
                 }
 
@@ -1558,7 +1576,7 @@
                 let sR = addWorkingDays(finalStartChup, 2); 
                 if (globalNextFreeRetouch && sR < globalNextFreeRetouch) sR = globalNextFreeRetouch;
                 let asR = imageManualRetouchStarts[manualKey] || sR;
-                let eR = addWorkingDays(asR, Math.max(0, Math.ceil(g.skuCount * 7 / 160) - 1)); 
+                let eR = addWorkingDays(asR, Math.max(0, getProcessDays(g.skuCount) - 1)); 
                 let aeR = imageManualRetouchEnds[manualKey] || eR;
                 globalNextFreeRetouch = addWorkingDays(aeR, 1);
                 schedules[g.ngayNhan] = { endChup: finalEndChup, endRetouch: aeR };
@@ -1588,6 +1606,8 @@
                         <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttChup}" onchange="updateCell('${row.id}', 'ttChup', this.value)" list="ttChupList" class="${row.ttChup?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayRetouch || ''}" onchange="updateCell('${row.id}', 'ngayRetouch', this.value)" class="text-xs text-gray-500" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttRetouch}" onchange="updateCell('${row.id}', 'ttRetouch', this.value)" list="ttRetouchList" class="${row.ttRetouch?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.videoReview || ''}" onchange="updateCell('${row.id}', 'videoReview', this.value)" placeholder="Video link..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.hinhAnhReview || ''}" onchange="updateCell('${row.id}', 'hinhAnhReview', this.value)" placeholder="Hình ảnh link..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.phanLoai || ''}" onchange="updateCell('${row.id}', 'phanLoai', this.value)" list="phanLoaiList" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayBatDau}" onchange="updateCell('${row.id}', 'ngayBatDau', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayNhan}" onchange="updateCell('${row.id}', 'ngayNhan', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
@@ -1669,7 +1689,8 @@
             
             tableData.forEach(row => {
                 if (!window.isSkuMatched(row.sku)) return;
-
+                if (!row.sku && !row.loMuon && !row.noiMuon) return; 
+                
                 const m = row.month || 'Trống'; 
                 const n = row.noiMuon || 'Trống'; 
                 const tt = row.ttMuon || 'Trống';
@@ -1708,30 +1729,22 @@
                 let isEarlyA = !isNaN(m1) && m1 >= 1 && m1 <= 3;
                 let isEarlyB = !isNaN(m2) && m2 >= 1 && m2 <= 3;
 
-                // Ưu tiên 1: Tháng 1, 2, 3 lên đầu
                 if (isEarlyA && !isEarlyB) return -1;
                 if (!isEarlyA && isEarlyB) return 1;
+                if (isEarlyA && isEarlyB && m1 !== m2) return m1 - m2;
 
-                // Ưu tiên 2: Nếu cùng thuộc nhóm tháng 1, 2, 3 thì xếp theo tháng (1 -> 2 -> 3)
-                if (isEarlyA && isEarlyB && m1 !== m2) {
-                    return m1 - m2;
-                }
-
-                // Ưu tiên 3: Sắp xếp theo Ngày nhận hàng (nh) từ cũ đến mới
                 if (a.nh === 'Trống' && b.nh !== 'Trống') return 1;
                 if (b.nh === 'Trống' && a.nh !== 'Trống') return -1;
                 if (a.nh !== 'Trống' && b.nh !== 'Trống' && a.nh !== b.nh) {
                     return a.nh.localeCompare(b.nh);
                 }
                 
-                // Ưu tiên 4: Nếu trùng ngày nhận hàng (hoặc trống cả 2), xếp theo Tháng
                 if(a.m === 'Trống' && b.m !== 'Trống') return 1;
                 if(b.m === 'Trống' && a.m !== 'Trống') return -1;
                 if(a.m !== 'Trống' && b.m !== 'Trống' && m1 !== m2) {
                     return m1 - m2;
                 }
 
-                // Ưu tiên 5: Tên lô mượn
                 return (a.l || '').localeCompare(b.l || '');
             });
 
@@ -1947,9 +1960,17 @@
             };
             const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon'); const sF = getV('status');
 
+            let targetGroupKeys = new Set();
+            if (window.globalSkuFilterArrayLower && window.globalSkuFilterArrayLower.length > 0) {
+                tableData.forEach(row => {
+                    if (window.isSkuMatched(row.sku)) {
+                        targetGroupKeys.add(row.ngayNhan);
+                    }
+                });
+            }
+
             let dailyGroups = {};
             tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return;
                 if (!row.ngayNhan) return; 
                 const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const l = row.loMuon || 'Trống';
                 if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
@@ -2015,6 +2036,10 @@
 
             const showOnlyLate = document.getElementById('filter-img-late')?.checked;
             if (showOnlyLate) { processedGanttData = processedGanttData.filter(g => g.isChupLate || g.isRetouchLate); }
+
+            if (window.globalSkuFilterArrayLower && window.globalSkuFilterArrayLower.length > 0) {
+                processedGanttData = processedGanttData.filter(g => targetGroupKeys.has(g.groupKey));
+            }
 
             if (!sF.includes('ALL')) {
                 processedGanttData = processedGanttData.filter(g => {
@@ -2360,8 +2385,8 @@
             }
             if (dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
             
-            let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại\n";
-            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}"\n`; });
+            let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Video review,Hình ảnh review,Ghi chú,Phân loại\n";
+            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.videoReview||'').replace(/"/g,'""')}","${(r.hinhAnhReview||'').replace(/"/g,'""')}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}"\n`; });
             downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
@@ -2424,6 +2449,52 @@
             downloadCSV(csv, `DanhSachSKU_SanXuatHinhAnh_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
+        window.downloadLateSKUs = function() {
+            if (!window.currentGanttData || window.currentGanttData.length === 0) {
+                return alert("Không có dữ liệu trên bảng tiến độ!");
+            }
+
+            let lateSKURows = [];
+            let todayStr = new Date().toISOString().slice(0, 10);
+
+            window.currentGanttData.forEach(g => {
+                if (g.isChupLate || g.isRetouchLate) {
+                    let rowsInGroup = tableData.filter(r => g.ids.includes(r.id));
+                    
+                    rowsInGroup.forEach(r => {
+                        let cDone = r.ttChup && r.ttChup.toLowerCase().includes('done');
+                        let rDone = r.ttRetouch && r.ttRetouch.toLowerCase().includes('done');
+                        
+                        let isThisRowLateChup = todayStr > g.endChup && !cDone;
+                        let isThisRowLateRetouch = todayStr > g.endRetouch && !rDone;
+                        
+                        if (isThisRowLateChup || isThisRowLateRetouch) {
+                            let statusArr = [];
+                            if (isThisRowLateChup) statusArr.push("Trễ Chụp");
+                            if (isThisRowLateRetouch) statusArr.push("Trễ Retouch");
+                            
+                            lateSKURows.push({
+                                ...r,
+                                deadlineChup: formatDateForExport(g.endChup),
+                                deadlineRetouch: formatDateForExport(g.endRetouch),
+                                lateStatus: statusArr.join(', ')
+                            });
+                        }
+                    });
+                }
+            });
+
+            if (lateSKURows.length === 0) {
+                return alert("Tuyệt vời! Không có mã SKU nào đang bị trễ hạn trong danh sách hiện tại.");
+            }
+
+            let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Ngày nhận,Deadline Chụp,Deadline Retouch,Tình trạng trễ,TT Chụp,TT Retouch,Ghi chú\n";
+            lateSKURows.forEach(r => {
+                csv += `"${r.sku || ''}","${r.loMuon || ''}","${r.noiMuon || ''}","${formatDateForExport(r.ngayNhan)}","${r.deadlineChup}","${r.deadlineRetouch}","${r.lateStatus}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`;
+            });
+            downloadCSV(csv, `DanhSachSKU_TreHan_${new Date().toISOString().slice(0,10)}.csv`);
+        }
+
         window.importCSV = function(event) {
             if(!window.isFakeLoggedIn) return; // Bảo vệ hàm import
             const file = event.target.files[0]; if (!file) return;
@@ -2436,7 +2507,9 @@
                 for (let i = 1; i < lines.length; i++) {
                     const c = lines[i].trim().split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"').trim());
                     if (c.length >= 4 && c[0]) {
-                        if (c.length >= 15) {
+                        if (c.length >= 17) {
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', videoReview: c[13]||'', hinhAnhReview: c[14]||'', note: c[15]||'', phanLoai: c[16]||'' });
+                        } else if (c.length >= 15) {
                             newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'' });
                         } else {
                             newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ttChup: c[9]||'', ttRetouch: c[10]||'', note: c[11]||'', phanLoai: c[12]||'' });
