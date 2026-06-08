@@ -215,7 +215,7 @@
 
             <!-- Flow 2: Sản xuất hình ảnh -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH (Gói hàng 160m)</h3>
+                <h3 class="font-bold text-[#1C3B5E] text-lg uppercase mb-6 flex items-center"><i class="fas fa-camera-retro mr-3 text-pnjGold"></i> FLOW SẢN XUẤT HÌNH ẢNH</h3>
                 <div class="flex flex-col lg:flex-row items-center justify-start gap-4">
                     
                     <div class="bg-white border border-gray-200 rounded-xl p-4 text-center flex-1 w-full shadow-sm hover:border-pnjGold/50 transition-colors">
@@ -311,13 +311,15 @@
 
                 <div class="flex-grow"></div>
                 
-                <div class="relative flex items-center" title="Tra cứu nhanh nhiều mã SKU (cách nhau bằng dấu phẩy hoặc khoảng trắng)">
-                    <i class="fas fa-search absolute left-3 text-gray-400"></i>
-                    <input type="text" id="search-sku-report" oninput="window.applyGlobalSkuFilter(this.value)" class="pl-8 pr-8 py-1.5 w-48 md:w-64 border border-gray-300 rounded-lg text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
-                    <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+                <div class="w-px h-6 bg-gray-300 mx-1 hidden md:block"></div>
+                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider hidden xl:block"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
+                <div class="flex-grow min-w-[130px] max-w-xs relative">
+                    <textarea id="search-sku-report" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-8 py-1.5 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[34px]" placeholder="Dán mã SKU..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter(this.value);}"></textarea>
+                    <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 top-1.5 text-gray-400 hover:text-red-500" title="Xóa tìm kiếm"><i class="fas fa-times"></i></button>
                 </div>
+                <button onclick="window.applyGlobalSkuFilter(document.getElementById('search-sku-report').value)" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
 
-                <button onclick="clearReportFilters()" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
+                <button onclick="clearReportFilters(); window.applyGlobalSkuFilter('');" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100 ml-2"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -448,17 +450,16 @@
                         </div>
                     </div>
                     
-                    <div class="flex-grow"></div>
-                    
-                    <div class="relative flex items-center" title="Tra cứu nhanh nhiều mã SKU (cách nhau bằng dấu phẩy hoặc khoảng trắng)">
-                        <i class="fas fa-search absolute left-3 text-gray-400"></i>
-                        <input type="text" id="search-sku-summary" oninput="window.applyGlobalSkuFilter(this.value)" class="pl-8 pr-8 py-1.5 w-48 md:w-64 border border-gray-300 rounded-lg text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
-                        <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
-                    </div>
-
                     <div class="w-px h-6 bg-gray-300 mx-1 hidden lg:block"></div>
                     
-                    <button onclick="clearSummaryFilters();" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors"><i class="fas fa-times-circle"></i> Xóa lọc</button>
+                    <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider hidden xl:block"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
+                    <div class="flex-grow min-w-[130px] max-w-xs relative">
+                        <textarea id="search-sku-summary" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-8 py-1.5 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[34px]" placeholder="Dán mã SKU..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter(this.value);}"></textarea>
+                        <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 top-1.5 text-gray-400 hover:text-red-500" title="Xóa tìm kiếm"><i class="fas fa-times"></i></button>
+                    </div>
+                    <button onclick="window.applyGlobalSkuFilter(document.getElementById('search-sku-summary').value)" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
+
+                    <button onclick="clearSummaryFilters(); window.applyGlobalSkuFilter('');" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
                 </div>
 
                 <div class="overflow-x-auto table-container max-h-[65vh]">
@@ -549,24 +550,26 @@
                 
                 <div class="flex-grow"></div>
 
-                <div class="relative flex items-center" title="Tra cứu nhanh nhiều mã SKU (cách nhau bằng dấu phẩy hoặc khoảng trắng)">
-                    <i class="fas fa-search absolute left-3 text-gray-400"></i>
-                    <input type="text" id="search-sku-img" oninput="window.applyGlobalSkuFilter(this.value)" class="pl-8 pr-8 py-1.5 w-48 md:w-64 border border-gray-300 rounded-lg text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
-                    <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+                <div class="w-px h-6 bg-gray-300 mx-1 hidden lg:block"></div>
+                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider hidden xl:block"><i class="fas fa-search text-pnjGold mr-1"></i> SKU:</span>
+                <div class="flex-grow min-w-[130px] max-w-xs relative">
+                    <textarea id="search-sku-img" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-8 py-1.5 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[34px]" placeholder="Dán mã SKU..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter(this.value);}"></textarea>
+                    <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 top-1.5 text-gray-400 hover:text-red-500" title="Xóa tìm kiếm"><i class="fas fa-times"></i></button>
                 </div>
+                <button onclick="window.applyGlobalSkuFilter(document.getElementById('search-sku-img').value)" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
 
                 <!-- Nút chuông cảnh báo -->
                 <div class="relative hidden" id="alert-btn-container">
-                    <button onclick="document.getElementById('deadline-alerts-panel').classList.toggle('hidden'); event.stopPropagation();" class="relative bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors shadow-sm mr-2">
+                    <button onclick="document.getElementById('deadline-alerts-panel').classList.toggle('hidden'); event.stopPropagation();" class="relative bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors shadow-sm ml-2">
                         <i class="fas fa-bell"></i> Cảnh báo
                         <span id="alert-badge" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-black shadow-sm border border-white">0</span>
                     </button>
-                    <div id="deadline-alerts-panel" onclick="event.stopPropagation()" class="hidden absolute top-full right-2 mt-2 w-[400px] max-w-[85vw] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+                    <div id="deadline-alerts-panel" onclick="event.stopPropagation()" class="hidden absolute top-full right-0 mt-2 w-[400px] max-w-[85vw] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
                          <!-- Content rendered by JS -->
                     </div>
                 </div>
 
-                <button onclick="window.clearImageFilters()" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100">Xóa lọc</button>
+                <button onclick="window.clearImageFilters(); window.applyGlobalSkuFilter('');" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100 ml-2">Xóa lọc</button>
             </div>
 
             <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6 hidden">
@@ -609,8 +612,8 @@
                             <div>
                                 <b>Năng suất:</b> gói 160m (không bao gồm T7, CN)<br>
                                 <ul class="list-disc list-inside ml-4 mt-1 mb-1 text-gray-700">
-                                    <li><b>Chụp hình:</b> 7 ngày (xuất hình cuốn chiếu)</li>
-                                    <li><b>Retouch:</b> 7 ngày (xuất hình cuốn chiếu)</li>
+                                    <li><b>Chụp hình:</b> 5 ngày (xuất hình cuốn chiếu)</li>
+                                    <li><b>Retouch:</b> 5 ngày (xuất hình cuốn chiếu)</li>
                                 </ul>
                                 <b>Lưu ý:</b> Áp dụng theo thứ tự ưu tiên nối tiếp. Nếu kho đang tiến hành chụp một lô hàng, lô tiếp theo sẽ được xếp lịch chụp ngay sau khi lô trước đó hoàn thành.
                             </div>
@@ -670,10 +673,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+            
+        </div> <!-- Kết thúc khu vực TAB HÌNH ẢNH -->
 
         <!-- ==================== TAB 4: VIDEO ==================== -->
         <div id="tab-video" class="hidden">
+            
+            <!-- START: VIDEO DASHBOARD (NEW) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="bg-[#1C3B5E] text-white rounded-xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
                     <div class="absolute right-[-20px] bottom-[-20px] opacity-10"><i class="fas fa-video fa-6x"></i></div>
@@ -721,6 +727,36 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- NEW SECTION: BẢNG REVIEW TỰ ĐỘNG -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+                <div class="bg-[#1C3B5E] p-4 border-b border-[#112640] flex justify-between items-center">
+                    <span class="font-bold text-white text-base uppercase tracking-wide flex items-center gap-2">
+                        <i class="fas fa-star text-pnjGold"></i> Theo Dõi Tiến Độ Review (Tự Động)
+                    </span>
+                    <button onclick="exportReviewCSV()" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 border border-pnjGold/30">
+                        <i class="fas fa-file-excel text-pnjGold"></i> Xuất Báo Cáo
+                    </button>
+                </div>
+                <div class="overflow-x-auto flex-grow">
+                    <table class="w-full text-sm text-left whitespace-nowrap">
+                        <thead class="text-xs text-gray-600 uppercase bg-[#F8F5EE] border-b border-[#E8E2D2]">
+                            <tr>
+                                <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Tháng</th>
+                                <th class="px-4 py-3 font-bold border-r border-[#E8E2D2]">Lô mượn</th>
+                                <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Tổng mượn</th>
+                                <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Video Review</th>
+                                <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Hình ảnh Review</th>
+                                <th class="px-4 py-3 font-bold text-center">Trạng thái quay</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reviewSummaryBody" class="divide-y divide-gray-100 bg-white">
+                            <!-- Generated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
         <!-- ==================== TAB 6: DATABASE GỐC ==================== -->
@@ -736,13 +772,15 @@
                 
                 <div class="flex-grow"></div>
 
-                <div class="relative flex items-center" title="Tra cứu nhanh nhiều mã SKU (cách nhau bằng dấu phẩy hoặc khoảng trắng)">
-                    <i class="fas fa-search absolute left-3 text-gray-400"></i>
-                    <input type="text" id="search-sku-database" oninput="window.applyGlobalSkuFilter(this.value)" class="pl-8 pr-8 py-2 w-48 md:w-64 border border-gray-300 rounded-lg text-sm bg-white focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none transition-all shadow-inner" placeholder="Tra cứu SKU...">
-                    <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+                <div class="w-px h-8 bg-gray-300 mx-2 hidden lg:block"></div>
+                <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider hidden xl:block"><i class="fas fa-search text-pnjGold mr-1"></i> Lọc SKU:</span>
+                <div class="flex-grow min-w-[150px] max-w-sm relative">
+                    <textarea id="search-sku-database" rows="1" class="w-full border border-gray-300 rounded-lg pl-3 pr-8 py-2 text-sm focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none resize-none h-[38px]" placeholder="Dán các mã SKU cần tìm..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.applyGlobalSkuFilter(this.value);}"></textarea>
+                    <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 top-2.5 text-gray-400 hover:text-red-500" title="Xóa tìm kiếm"><i class="fas fa-times"></i></button>
                 </div>
+                <button onclick="window.applyGlobalSkuFilter(document.getElementById('search-sku-database').value)" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-2.5 rounded-lg font-semibold transition-colors">Tìm</button>
 
-                <button onclick="clearAllData()" class="admin-only hidden text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2.5 rounded-lg font-semibold border border-red-100">Xóa toàn bộ</button>
+                <button onclick="clearAllData()" class="admin-only hidden text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2.5 rounded-lg font-semibold border border-red-100 ml-2">Xóa toàn bộ</button>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -765,7 +803,9 @@
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[140px]">Nhận hàng</th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[140px]">Trả hàng</th>
                                 <th class="px-2 py-4 border-r border-pnjBlueLight min-w-[80px] text-center text-pnjGold">Số ngày</th>
-                                <th class="px-4 py-4 min-w-[250px]">Ghi chú</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[250px]">Ghi chú</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">Video review</th>
+                                <th class="px-4 py-4 min-w-[150px]">Hình ảnh review</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody" class="divide-y divide-gray-200"></tbody>
@@ -792,56 +832,71 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-        // =========================================================================
-        // CẤU HÌNH FIREBASE THẬT TỪ PNJ (PRODUCT AIR ONSITE)
-        // =========================================================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyBW_picOLzLjkU-JT3PrfwDpFbUN5Cw9ag",
-            authDomain: "product-air-onsite.firebaseapp.com",
-            projectId: "product-air-onsite",
-            storageBucket: "product-air-onsite.firebasestorage.app",
-            messagingSenderId: "669904152111",
-            appId: "1:669904152111:web:3d4d53af1fb082c83608da",
-            measurementId: "G-NDXY6R3LVF"
-        };
-        // =========================================================================
+        let firebaseConfig;
+        try {
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                firebaseConfig = JSON.parse(__firebase_config);
+            } else {
+                throw new Error("Missing config");
+            }
+        } catch (e) {
+            firebaseConfig = {
+                apiKey: "",
+                authDomain: "product-air-onsite.firebaseapp.com",
+                projectId: "product-air-onsite",
+                storageBucket: "product-air-onsite.firebasestorage.app",
+                messagingSenderId: "669904152111",
+                appId: "1:669904152111:web:3d4d53af1fb082c83608da",
+                measurementId: "G-NDXY6R3LVF"
+            };
+        }
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' && __app_id ? __app_id : "product-air-onsite";
         
-        // Khai báo một đường dẫn cứng để bất kỳ ai mở file cũng truy cập chung 1 kho dữ liệu
-        const SHARED_DOC_PATH = doc(db, 'artifacts', 'pnj-production-2026', 'public', 'data', 'dashboard', 'main_data');
-
+        let currentUser = null;
         let unsubscribeSnapshot = null;
 
-        // Khởi tạo luồng: Đăng nhập Ẩn danh (Background) -> Đọc dữ liệu Realtime
-        const setupApp = async () => {
+        const initAuth = async () => {
             try {
-                // Ép buộc kết nối bằng quyền Ẩn danh cho tất cả mọi người mở file
-                await signInAnonymously(auth);
-                window.listenToCloudData();
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
             } catch (error) {
-                console.error("Lỗi kết nối Firebase (Vui lòng kiểm tra đã bật Anonymous trong Authentication chưa):", error);
-                document.getElementById('last-update-time').innerHTML = `<i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>Lỗi kết nối Cloud`;
-                if(window.loadDataLocal) window.loadDataLocal(); // Chạy offline nếu rớt mạng
+                console.error("Firebase Auth Error:", error);
             }
         };
 
-        // Kiểm tra quyền Admin Local
+        const setupApp = async () => {
+            await initAuth();
+            onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                if (user) {
+                    window.listenToCloudData();
+                } else {
+                    if(window.loadDataLocal) window.loadDataLocal();
+                }
+            });
+        };
+
         window.isFakeLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
         window.applyAdminState();
         
-        // Bắt đầu chạy
         setupApp();
 
         window.listenToCloudData = function() {
+            if (!currentUser) return;
             if (unsubscribeSnapshot) unsubscribeSnapshot();
             
-            // Lắng nghe dữ liệu thay đổi trên Cloud (Bất kỳ ai lưu thì màn hình người khác sẽ nhảy số)
-            unsubscribeSnapshot = onSnapshot(SHARED_DOC_PATH, (docSnap) => {
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data');
+            
+            unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     window.tableData = data.tableData || [];
@@ -870,25 +925,23 @@
                         else window.switchTab('tab-report');
                     }
                 } else {
-                    // Nếu là lần chạy đầu tiên, database trống trơn
                     if (window.tableData && window.tableData.length === 0 && window.loadDataLocal) {
                         window.loadDataLocal();
                     }
                 }
             }, (error) => {
-                console.warn("Lỗi đồng bộ Cloud Real-time:", error);
-                document.getElementById('last-update-time').innerHTML = `<i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>Lỗi đồng bộ`;
+                console.warn("Lỗi đồng bộ Cloud:", error);
+                if (window.loadDataLocal) window.loadDataLocal();
             });
         };
 
         window.saveDataToCloud = async function() {
             if (!window.isFakeLoggedIn) { alert("Vui lòng đăng nhập Admin để lưu dữ liệu!"); return; }
-            
+            if (!currentUser) { alert("Đang kết nối hệ thống máy chủ, vui lòng thử lại sau giây lát."); return; }
             try {
                 const now = new Date().toISOString();
-                
-                // Đẩy thẳng dữ liệu lên Database của PNJ
-                await setDoc(SHARED_DOC_PATH, {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data'); 
+                await setDoc(docRef, {
                     tableData: window.tableData || [],
                     videoData: window.videoData || [],
                     imageManualDates: window.imageManualDates || {},
@@ -909,7 +962,7 @@
                 }
             } catch(e) {
                 console.warn("Lưu Cloud thất bại:", e.message);
-                alert("Lưu Cloud thất bại! Vui lòng kiểm tra lại kết nối mạng hoặc quyền Firestore.");
+                alert("Lưu Cloud thất bại: Hệ thống sẽ tự động lưu tạm trên máy của bạn.");
                 if(window.saveDataLocal) window.saveDataLocal(); 
             }
         };
@@ -934,7 +987,7 @@
                 const modal = document.getElementById('login-modal');
                 if(modal) {
                     modal.classList.add('hidden');
-                    document.getElementById('admin-pass').value = ''; // xóa mật khẩu
+                    document.getElementById('admin-pass').value = ''; 
                 }
                 if (window.applyAdminState) window.applyAdminState();
                 alert("Đăng nhập Admin thành công!");
@@ -949,6 +1002,7 @@
                 localStorage.removeItem('pnj_admin_logged_in');
                 window.isFakeLoggedIn = false;
                 if (window.applyAdminState) window.applyAdminState();
+                if(window.listenToCloudData) window.listenToCloudData(); 
                 alert("Đã thoát quyền Admin. Bạn đang xem dữ liệu ở chế độ Chỉ đọc (Read-only).");
             }
         };
@@ -1079,7 +1133,7 @@
         };
 
         window.saveProcessFlowSettings = function() {
-            if(!window.isFakeLoggedIn) return; // Prevent users from saving changes
+            if(!window.isFakeLoggedIn) return; 
             let flowData = { f1: {}, f2: {}, notes: '' };
             
             let min1 = 0, max1 = 0;
@@ -1133,7 +1187,6 @@
                     if(data.notes !== undefined && document.getElementById('process-notes')) document.getElementById('process-notes').value = data.notes;
                 }
             } catch(e) {}
-            // Recalculate totals but don't save if not admin
             let oldSaveState = window.isFakeLoggedIn;
             window.isFakeLoggedIn = true; 
             window.saveProcessFlowSettings(); 
@@ -1192,7 +1245,7 @@
 
             if(tabId === 'tab-summary') { populateSummaryFilters(); window.renderSummary(); window.loadFlowSettings(); }
             else if (tabId === 'tab-report') { populateReportFilters(); window.renderReport(); }
-            else if (tabId === 'tab-video') { window.renderVideoTable(); }
+            else if (tabId === 'tab-video') { window.renderVideoTable(); window.renderReviewTable(); }
             else if (tabId === 'tab-image') { populateImageFilters(); window.renderImageTrackingTable(); }
             else if (tabId === 'tab-process') { window.loadProcessFlowSettings(); }
             else if (tabId === 'tab-database') { window.renderTable(); }
@@ -1257,7 +1310,7 @@
             if (isNaN(start.getTime()) || isNaN(end.getTime()) || start > end) return 0;
             let count = 0; let d = new Date(start);
             while (d <= end) {
-                let ds = getLocalDateStr(d);
+                let ds = d.toISOString().split('T')[0];
                 let day = d.getDay();
                 if (day !== 0 && day !== 6 && !isHoliday(ds)) count++;
                 d.setDate(d.getDate() + 1);
@@ -1269,15 +1322,15 @@
             if (!dateStr) return '';
             let d = new Date(dateStr);
             if (isNaN(d.getTime())) return '';
-            while (d.getDay() === 0 || d.getDay() === 6 || isHoliday(getLocalDateStr(d))) {
+            while (d.getDay() === 0 || d.getDay() === 6 || isHoliday(d.toISOString().split('T')[0])) {
                 d.setDate(d.getDate() + 1);
             }
             while (days > 0) {
                 d.setDate(d.getDate() + 1);
-                let ds = getLocalDateStr(d);
+                let ds = d.toISOString().split('T')[0];
                 if (d.getDay() !== 0 && d.getDay() !== 6 && !isHoliday(ds)) days--;
             }
-            return getLocalDateStr(d);
+            return d.toISOString().split('T')[0];
         }
 
         function calculateDays(startDate, receiveDate) {
@@ -1299,12 +1352,19 @@
             return dates;
         }
 
-        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '' }); window.renderTable(); }
+        function getProcessDays(skuCount) {
+            if (!skuCount || skuCount <= 0) return 0;
+            if (skuCount <= 160) return 5;
+            let extra = skuCount - 160;
+            return 5 + Math.ceil(extra / 50) * 2;
+        }
+
+        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '', videoReview: '', imageReview: '' }); window.renderTable(); }
         window.addNewVideoRow = function() { if(!window.isFakeLoggedIn) return; videoData.unshift({ id: generateId(), month: '', loVideo: '', slThucTe: 0, ttQuay: '', ttDung: '', ghiChu: '' }); window.renderVideoTable(); }
         window.deleteRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { tableData = tableData.filter(row => row.id !== id); window.renderTable(); } }
         window.deleteVideoRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { videoData = videoData.filter(row => row.id !== id); window.renderVideoTable(); } }
-        window.clearAllData = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa toàn bộ Database?")) { tableData = []; window.renderTable(); saveData(); } }
-        window.clearImageManualDates = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa lịch chỉnh tay?")) { imageManualDates = {}; imageManualEndDates = {}; imageManualRetouchStarts = {}; imageManualRetouchEnds = {}; window.renderImageTrackingTable(); saveData(); } }
+        window.clearAllData = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa toàn bộ Database?")) { tableData = []; window.renderTable(); window.saveData(); } }
+        window.clearImageManualDates = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa lịch chỉnh tay?")) { imageManualDates = {}; imageManualEndDates = {}; imageManualRetouchStarts = {}; imageManualRetouchEnds = {}; window.renderImageTrackingTable(); window.saveData(); } }
 
         window.updateCell = function(id, field, value) {
             if(!window.isFakeLoggedIn) return;
@@ -1335,10 +1395,20 @@
             if (rowIndex > -1) { videoData[rowIndex][field] = value; window.renderVideoDashboard(); }
         }
         
-        window.updateImageManualDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualDates[key] = value; else delete imageManualDates[key]; window.renderImageTrackingTable(); saveData(); }
-        window.updateImageManualEndDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualEndDates[key] = value; else delete imageManualEndDates[key]; window.renderImageTrackingTable(); saveData(); }
-        window.updateImageManualRetouchStart = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchStarts[key] = value; else delete imageManualRetouchStarts[key]; window.renderImageTrackingTable(); saveData(); }
-        window.updateImageManualRetouchEnd = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchEnds[key] = value; else delete imageManualRetouchEnds[key]; window.renderImageTrackingTable(); saveData(); }
+        window.updateImageManualDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualDates[key] = value; else delete imageManualDates[key]; window.renderImageTrackingTable(); window.saveData(); }
+        window.updateImageManualEndDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualEndDates[key] = value; else delete imageManualEndDates[key]; window.renderImageTrackingTable(); window.saveData(); }
+        window.updateImageManualRetouchStart = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchStarts[key] = value; else delete imageManualRetouchStarts[key]; window.renderImageTrackingTable(); window.saveData(); }
+        window.updateImageManualRetouchEnd = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchEnds[key] = value; else delete imageManualRetouchEnds[key]; window.renderImageTrackingTable(); window.saveData(); }
+
+        window.saveData = function() {
+            if (!window.isFakeLoggedIn) {
+                alert("Vui lòng đăng nhập Admin để lưu dữ liệu!");
+                return;
+            }
+            if (window.saveDataToCloud) {
+                window.saveDataToCloud();
+            }
+        };
 
         function getFilterState(fullType) {
             const cbs = document.querySelectorAll(`.cb-${fullType}`); 
@@ -1420,7 +1490,9 @@
                 else { label.classList.add('hidden'); label.classList.remove('flex'); }
             });
         }
-
+    </script>
+    
+    <script>
         function populateSummaryFilters() {
             const curMonth = getFilterState('month'); const curNoi = getFilterState('noiMuon'); const curTT = getFilterState('ttMuon'); const curStatus = getFilterState('status');
             const months = new Set(); const nois = new Set(); const tts = new Set(); const ttLos = new Set();
@@ -1528,21 +1600,21 @@
                 let sKHO = null, eKHO = null;
                 if (g.khoSku > 0) {
                     sKHO = (globalNextFreeChupKHO && baseStart < globalNextFreeChupKHO) ? globalNextFreeChupKHO : baseStart;
-                    eKHO = addWorkingDays(sKHO, Math.max(0, Math.ceil(g.khoSku * 7 / 160) - 1));
+                    eKHO = addWorkingDays(sKHO, Math.max(0, getProcessDays(g.khoSku) - 1));
                     globalNextFreeChupKHO = addWorkingDays(eKHO, 1);
                 }
 
                 let sNVT = null, eNVT = null;
                 if (g.nvtSku > 0) {
                     sNVT = (globalNextFreeChupNVT && baseStart < globalNextFreeChupNVT) ? globalNextFreeChupNVT : baseStart;
-                    eNVT = addWorkingDays(sNVT, Math.max(0, Math.ceil(g.nvtSku * 7 / 160) - 1));
+                    eNVT = addWorkingDays(sNVT, Math.max(0, getProcessDays(g.nvtSku) - 1));
                     globalNextFreeChupNVT = addWorkingDays(eNVT, 1);
                 }
 
                 let sOther = null, eOther = null;
                 if (g.otherSku > 0) {
                     sOther = (globalNextFreeChupOther && baseStart < globalNextFreeChupOther) ? globalNextFreeChupOther : baseStart;
-                    eOther = addWorkingDays(sOther, Math.max(0, Math.ceil(g.otherSku * 7 / 160) - 1));
+                    eOther = addWorkingDays(sOther, Math.max(0, getProcessDays(g.otherSku) - 1));
                     globalNextFreeChupOther = addWorkingDays(eOther, 1);
                 }
 
@@ -1558,7 +1630,7 @@
                 let sR = addWorkingDays(finalStartChup, 2); 
                 if (globalNextFreeRetouch && sR < globalNextFreeRetouch) sR = globalNextFreeRetouch;
                 let asR = imageManualRetouchStarts[manualKey] || sR;
-                let eR = addWorkingDays(asR, Math.max(0, Math.ceil(g.skuCount * 7 / 160) - 1)); 
+                let eR = addWorkingDays(asR, Math.max(0, getProcessDays(g.skuCount) - 1)); 
                 let aeR = imageManualRetouchEnds[manualKey] || eR;
                 globalNextFreeRetouch = addWorkingDays(aeR, 1);
                 schedules[g.ngayNhan] = { endChup: finalEndChup, endRetouch: aeR };
@@ -1594,10 +1666,15 @@
                         <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayTra}" onchange="updateCell('${row.id}', 'ngayTra', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-2 py-1 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5" id="days_${row.id}">${calculatedDays !== '' ? calculatedDays : '-'}</td>
                         <td class="px-1 py-1"><input type="text" value="${row.note}" onchange="updateCell('${row.id}', 'note', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.videoReview || ''}" onchange="updateCell('${row.id}', 'videoReview', this.value)" placeholder="Link video..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1"><input type="text" value="${row.imageReview || ''}" onchange="updateCell('${row.id}', 'imageReview', this.value)" placeholder="Link hình ảnh..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     </tr>`;
             }).join('');
             const totalCount = document.getElementById('totalRowsCount');
             if (totalCount) totalCount.innerText = dataToRender.length.toLocaleString();
+            
+            // Sync review table if open
+            if(window.renderReviewTable) window.renderReviewTable();
         }
 
         window.renderVideoTable = function() {
@@ -1654,6 +1731,50 @@
             }
         }
 
+        window.renderReviewTable = function() {
+            const tbody = document.getElementById('reviewSummaryBody');
+            if (!tbody) return;
+
+            let groups = {};
+            tableData.forEach(row => {
+                if (!row.loMuon) return;
+                const m = row.month || 'Trống';
+                const l = row.loMuon;
+                const k = `${m}|${l}`;
+                
+                if (!groups[k]) {
+                    groups[k] = { month: m, loMuon: l, total: 0, video: 0, image: 0 };
+                }
+                groups[k].total++;
+                if (row.videoReview && row.videoReview.trim() !== '') groups[k].video++;
+                if (row.imageReview && row.imageReview.trim() !== '') groups[k].image++;
+            });
+
+            let sortedGroups = Object.values(groups).sort((a,b) => {
+                let mDiff = parseInt(a.month) - parseInt(b.month);
+                if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
+                return a.loMuon.localeCompare(b.loMuon);
+            });
+
+            tbody.innerHTML = sortedGroups.map(g => {
+                let isVideoDone = g.video === g.total && g.total > 0;
+                let vClass = isVideoDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
+                let iClass = (g.image === g.total && g.total > 0) ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
+                let status = isVideoDone ? '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold whitespace-nowrap">Yes</span>' : '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold whitespace-nowrap">No</span>';
+
+                return `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-4 py-3 text-center border-r border-gray-100 font-medium">${g.month}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${g.loMuon}</td>
+                        <td class="px-4 py-3 text-center border-r border-gray-100 font-bold text-gray-700">${g.total}</td>
+                        <td class="px-4 py-3 text-center border-r border-gray-100"><span class="${vClass}">${g.video}</span> / ${g.total}</td>
+                        <td class="px-4 py-3 text-center border-r border-gray-100"><span class="${iClass}">${g.image}</span> / ${g.total}</td>
+                        <td class="px-4 py-3 text-center">${status}</td>
+                    </tr>
+                `;
+            }).join('') || `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-400 italic">Chưa có dữ liệu phân bổ lô mượn.</td></tr>`;
+        };
+
         window.renderSummary = function() {
             const tbody = document.getElementById('summaryBody'); if(!tbody) return;
             
@@ -1708,30 +1829,25 @@
                 let isEarlyA = !isNaN(m1) && m1 >= 1 && m1 <= 3;
                 let isEarlyB = !isNaN(m2) && m2 >= 1 && m2 <= 3;
 
-                // Ưu tiên 1: Tháng 1, 2, 3 lên đầu
                 if (isEarlyA && !isEarlyB) return -1;
                 if (!isEarlyA && isEarlyB) return 1;
 
-                // Ưu tiên 2: Nếu cùng thuộc nhóm tháng 1, 2, 3 thì xếp theo tháng (1 -> 2 -> 3)
                 if (isEarlyA && isEarlyB && m1 !== m2) {
                     return m1 - m2;
                 }
 
-                // Ưu tiên 3: Sắp xếp theo Ngày nhận hàng (nh) từ cũ đến mới
                 if (a.nh === 'Trống' && b.nh !== 'Trống') return 1;
                 if (b.nh === 'Trống' && a.nh !== 'Trống') return -1;
                 if (a.nh !== 'Trống' && b.nh !== 'Trống' && a.nh !== b.nh) {
                     return a.nh.localeCompare(b.nh);
                 }
                 
-                // Ưu tiên 4: Nếu trùng ngày nhận hàng (hoặc trống cả 2), xếp theo Tháng
                 if(a.m === 'Trống' && b.m !== 'Trống') return 1;
                 if(b.m === 'Trống' && a.m !== 'Trống') return -1;
                 if(a.m !== 'Trống' && b.m !== 'Trống' && m1 !== m2) {
                     return m1 - m2;
                 }
 
-                // Ưu tiên 5: Tên lô mượn
                 return (a.l || '').localeCompare(b.l || '');
             });
 
@@ -1947,6 +2063,15 @@
             };
             const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon'); const sF = getV('status');
 
+            let targetGroupKeys = new Set();
+            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
+                tableData.forEach(row => {
+                    if (window.globalSkuFilterArray.includes(row.sku)) {
+                        targetGroupKeys.add(row.ngayNhan);
+                    }
+                });
+            }
+
             let dailyGroups = {};
             tableData.forEach(row => {
                 if (!window.isSkuMatched(row.sku)) return;
@@ -2016,6 +2141,10 @@
             const showOnlyLate = document.getElementById('filter-img-late')?.checked;
             if (showOnlyLate) { processedGanttData = processedGanttData.filter(g => g.isChupLate || g.isRetouchLate); }
 
+            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
+                processedGanttData = processedGanttData.filter(g => targetGroupKeys.has(g.groupKey));
+            }
+
             if (!sF.includes('ALL')) {
                 processedGanttData = processedGanttData.filter(g => {
                     let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
@@ -2033,7 +2162,6 @@
             processedGanttData.forEach(g => {
                 totalSKU += g.skuCount;
                 
-                // Loại trừ hàng dự kiến mượn (chưa done mượn nào)
                 if (g.muonDone > 0) {
                     totalChuaChup += Math.max(0, g.skuCount - g.chupDone);
                     totalChuaRetouch += Math.max(0, g.skuCount - g.retouchDone);
@@ -2247,112 +2375,6 @@
             panel.innerHTML = html;
         }
 
-        window.getLatestEndChup = function(noiMuonTarget) {
-            let latest = { date: null, conflictDate: null };
-            let schedules = window.getGlobalSchedule ? window.getGlobalSchedule() : {};
-            Object.keys(schedules).forEach(dateKey => {
-                const groupRows = tableData.filter(r => r.ngayNhan === dateKey && (r.noiMuon||'').toUpperCase() === noiMuonTarget.toUpperCase());
-                if (groupRows.length > 0) {
-                    if (!latest.date || schedules[dateKey].endChup > latest.date) {
-                        latest.date = schedules[dateKey].endChup;
-                        latest.conflictDate = dateKey;
-                    }
-                }
-            });
-            return latest;
-        }
-
-        window.calculateSimulation = function() {
-            const noi = document.getElementById('calc-noi').value; const ngayNhan = document.getElementById('calc-ngay').value; const sku = parseInt(document.getElementById('calc-sku').value);
-            if (!ngayNhan || isNaN(sku) || sku <= 0) { alert('Vui lòng nhập ngày nhận hàng và số lượng SKU hợp lệ!'); return; }
-            const resArea = document.getElementById('calc-result-area'); const warnArea = document.getElementById('calc-warning'); const warnText = document.getElementById('calc-warning-text');
-            resArea.classList.remove('hidden'); warnArea.classList.add('hidden');
-            let baseStart = addWorkingDays(ngayNhan, 1); let actualStart = baseStart;
-
-            if (noi) {
-                let latest = window.getLatestEndChup(noi);
-                if (latest && latest.date && latest.date >= baseStart) {
-                    actualStart = addWorkingDays(latest.date, 1);
-                    warnText.innerHTML = `Lưu ý: <b>${noi}</b> đang bị kẹt lịch chụp của nhóm nhận ngày <b>${formatDateToDisplay(latest.conflictDate)}</b> cho đến hết ngày <b>${formatDateToDisplay(latest.date)}</b>.<br>Hệ thống tự động dời ngày chụp dự kiến mới sang: <b>${formatDateToDisplay(actualStart)}</b>.`;
-                    warnArea.classList.remove('hidden');
-                }
-            }
-
-            let daysToProcess = Math.max(0, Math.ceil(sku * 7 / 160) - 1);
-            let endChup = addWorkingDays(actualStart, daysToProcess);
-            let startRetouch = addWorkingDays(actualStart, 2);
-            let endRetouch = addWorkingDays(startRetouch, daysToProcess);
-
-            document.getElementById('res-bd-c').innerText = formatDateToDisplay(actualStart);
-            document.getElementById('res-kt-c').innerText = formatDateToDisplay(endChup);
-            document.getElementById('res-bd-r').innerText = formatDateToDisplay(startRetouch);
-            document.getElementById('res-kt-r').innerText = formatDateToDisplay(endRetouch);
-        }
-
-        window.saveDataLocal = function() {
-            localStorage.setItem('pnj_inventoryData', JSON.stringify(tableData));
-            localStorage.setItem('pnj_videoData', JSON.stringify(videoData));
-            localStorage.setItem('pnj_imageManualDates', JSON.stringify(imageManualDates));
-            localStorage.setItem('pnj_imageManualEndDates', JSON.stringify(imageManualEndDates));
-            localStorage.setItem('pnj_imageManualRetouchStarts', JSON.stringify(imageManualRetouchStarts));
-            localStorage.setItem('pnj_imageManualRetouchEnds', JSON.stringify(imageManualRetouchEnds));
-            
-            const now = new Date().toISOString();
-            localStorage.setItem('pnj_last_updated', now);
-            if (window.updateLastUpdatedUI) window.updateLastUpdatedUI(now);
-
-            const toast = document.getElementById('toast'); 
-            if(toast) { toast.classList.remove('opacity-0', 'translate-y-[-10px]'); setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-[-10px]'); }, 2500); }
-        }
-
-        window.loadDataLocal = function() {
-            const saved = localStorage.getItem('pnj_inventoryData') || localStorage.getItem('inventoryData_v6');
-            if (saved) try { tableData = JSON.parse(saved); } catch(e) { tableData = []; }
-            const savedVideo = localStorage.getItem('pnj_videoData') || localStorage.getItem('videoData_v1');
-            if (savedVideo) try { videoData = JSON.parse(savedVideo); } catch(e) { videoData = []; }
-            
-            const parseLS = (key, oldKey, targetObj) => { const s = localStorage.getItem(key) || localStorage.getItem(oldKey); if (s) try { Object.assign(targetObj, JSON.parse(s)); } catch(e) {} };
-            parseLS('pnj_imageManualDates', 'imageManualDates_v1', imageManualDates);
-            parseLS('pnj_imageManualEndDates', 'imageManualEndDates_v1', imageManualEndDates);
-            parseLS('pnj_imageManualRetouchStarts', 'imageManualRetouchStarts_v1', imageManualRetouchStarts);
-            parseLS('pnj_imageManualRetouchEnds', 'imageManualRetouchEnds_v1', imageManualRetouchEnds);
-            
-            const savedTime = localStorage.getItem('pnj_last_updated');
-            if (savedTime && window.updateLastUpdatedUI) {
-                window.updateLastUpdatedUI(savedTime);
-            }
-
-            if (window.renderTable) window.renderTable(); 
-            if (window.renderVideoTable) window.renderVideoTable(); 
-            if (window.switchTab) {
-                const currentTab = document.querySelector('nav button.bg-pnjBlue');
-                if (currentTab) window.switchTab(currentTab.id.replace('btn-', ''));
-                else window.switchTab('tab-report');
-            }
-        }
-
-        window.saveData = function() {
-            if (!window.isFakeLoggedIn) return; // Prevent saving if not logged in
-            window.saveDataLocal();
-            if (window.saveDataToCloud) {
-                window.saveDataToCloud();
-            }
-        }
-
-        function downloadCSV(csv, filename) {
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute("href", url);
-                link.setAttribute("download", filename);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }
-
         window.exportCSV = function() {
             let dataToExport = tableData;
             if (window.globalSkuFilterArrayLower && window.globalSkuFilterArrayLower.length > 0) {
@@ -2360,8 +2382,8 @@
             }
             if (dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
             
-            let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại\n";
-            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}"\n`; });
+            let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại,Video review,Hình ảnh review\n";
+            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}","${(r.videoReview||'').replace(/"/g,'""')}","${(r.imageReview||'').replace(/"/g,'""')}"\n`; });
             downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
@@ -2380,6 +2402,17 @@
                 }).join(",") + "\n"; 
             });
             downloadCSV(csv, `PNJ_Report_${new Date().toISOString().slice(0,10)}.csv`);
+        }
+
+        window.exportReviewCSV = function() {
+            const tbody = document.getElementById('reviewSummaryBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
+            let csv = "\uFEFFTháng,Lô mượn,Tổng mượn,Video Review (Hoàn thành/Tổng),Hình ảnh Review (Hoàn thành/Tổng),Trạng thái quay\n";
+            Array.from(tbody.querySelectorAll('tr')).forEach(tr => { 
+                csv += Array.from(tr.querySelectorAll('td')).map(td => { 
+                    return `"${td.innerText.trim().replace(/"/g,'""')}"`; 
+                }).join(",") + "\n"; 
+            });
+            downloadCSV(csv, `PNJ_TienDoReview_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         window.downloadSpecificSKUs = function(idsStr, dateLabel) {
@@ -2436,10 +2469,12 @@
                 for (let i = 1; i < lines.length; i++) {
                     const c = lines[i].trim().split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"').trim());
                     if (c.length >= 4 && c[0]) {
-                        if (c.length >= 15) {
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'' });
+                        if (c.length >= 17) {
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', phanLoai: c[13]||'', note: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'' });
+                        } else if (c.length >= 15) { // Hỗ trợ định dạng cũ (chưa có Video review và Hình ảnh review)
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: '', imageReview: '' });
                         } else {
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ttChup: c[9]||'', ttRetouch: c[10]||'', note: c[11]||'', phanLoai: c[12]||'' });
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ttChup: c[9]||'', ttRetouch: c[10]||'', note: c[11]||'', phanLoai: c[12]||'', videoReview: '', imageReview: '' });
                         }
                     }
                 }
