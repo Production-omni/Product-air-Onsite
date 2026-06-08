@@ -222,9 +222,9 @@
                         <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">1. Chụp hình</p>
                         <p class="text-[10px] text-gray-500 mb-3 uppercase">(Studio/Outsource)</p>
                         <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f2-min-1" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <input type="number" id="f2-min-1" value="7" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
                             <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f2-max-1" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <input type="number" id="f2-max-1" value="7" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
                         </div>
                     </div>
                     <i class="fas fa-arrow-right text-gray-300 hidden lg:block"></i><i class="fas fa-arrow-down text-gray-300 lg:hidden py-1"></i>
@@ -233,9 +233,9 @@
                         <p class="font-bold text-sm text-[#1C3B5E] mb-1 uppercase">2. Retouch</p>
                         <p class="text-[10px] text-gray-500 mb-3 uppercase">(Hậu kỳ hình ảnh)</p>
                         <div class="flex items-center justify-center gap-2">
-                            <input type="number" id="f2-min-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <input type="number" id="f2-min-2" value="7" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
                             <span class="text-gray-400 font-bold">-</span>
-                            <input type="number" id="f2-max-2" value="5" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
+                            <input type="number" id="f2-max-2" value="7" min="0" class="w-14 text-center border border-gray-300 py-1.5 px-1 rounded focus:border-pnjGold focus:ring-1 focus:ring-pnjGold outline-none font-medium" onchange="saveProcessFlowSettings()">
                         </div>
                     </div>
                     <i class="fas fa-arrow-right text-gray-300 hidden lg:block"></i><i class="fas fa-arrow-down text-gray-300 lg:hidden py-1"></i>
@@ -255,9 +255,9 @@
                     <div class="lg:ml-2 bg-[#F8F9FA] border border-gray-200 rounded-xl p-5 text-center w-full lg:w-56 shadow-sm">
                         <p class="font-bold text-xs text-[#1C3B5E] uppercase mb-2">Tổng Thời Gian</p>
                         <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-3xl font-black text-pnjGold" id="f2-total-min">15</span>
+                            <span class="text-3xl font-black text-pnjGold" id="f2-total-min">19</span>
                             <span class="text-gray-400 font-bold mx-1">-</span>
-                            <span class="text-3xl font-black text-pnjGold" id="f2-total-max">15</span>
+                            <span class="text-3xl font-black text-pnjGold" id="f2-total-max">19</span>
                         </div>
                         <p class="text-[10px] font-bold text-gray-500 uppercase mt-2">Ngày làm việc</p>
                     </div>
@@ -544,6 +544,17 @@
                     <i class="fas fa-exclamation-circle"></i><span>Trễ hạn</span>
                 </label>
                 
+                <!-- Nút chuông cảnh báo dời lên đây -->
+                <div class="relative hidden" id="alert-btn-container">
+                    <button onclick="document.getElementById('deadline-alerts-panel').classList.toggle('hidden'); event.stopPropagation();" class="relative bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors shadow-sm ml-1">
+                        <i class="fas fa-bell animate-pulse"></i> Cảnh báo
+                        <span id="alert-badge" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-black shadow-sm border border-white">0</span>
+                    </button>
+                    <div id="deadline-alerts-panel" onclick="event.stopPropagation()" class="hidden absolute top-full left-0 mt-2 w-[400px] max-w-[85vw] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+                         <!-- Content rendered by JS -->
+                    </div>
+                </div>
+                
                 <button onclick="window.downloadFilteredSKUs()" class="flex items-center space-x-1 text-xs text-white bg-pnjBlue hover:bg-pnjBlueLight px-3 py-1.5 rounded font-bold transition-colors shadow-sm ml-1" title="Tải toàn bộ danh sách mã SKU đang hiển thị theo bộ lọc">
                     <i class="fas fa-file-excel text-pnjGold"></i><span>Tải tất cả</span>
                 </button>
@@ -557,17 +568,6 @@
                     <button onclick="window.applyGlobalSkuFilter('')" class="absolute right-2 top-1.5 text-gray-400 hover:text-red-500" title="Xóa tìm kiếm"><i class="fas fa-times"></i></button>
                 </div>
                 <button onclick="window.applyGlobalSkuFilter(document.getElementById('search-sku-img').value)" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
-
-                <!-- Nút chuông cảnh báo -->
-                <div class="relative hidden" id="alert-btn-container">
-                    <button onclick="document.getElementById('deadline-alerts-panel').classList.toggle('hidden'); event.stopPropagation();" class="relative bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors shadow-sm ml-2">
-                        <i class="fas fa-bell"></i> Cảnh báo
-                        <span id="alert-badge" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-black shadow-sm border border-white">0</span>
-                    </button>
-                    <div id="deadline-alerts-panel" onclick="event.stopPropagation()" class="hidden absolute top-full right-0 mt-2 w-[400px] max-w-[85vw] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
-                         <!-- Content rendered by JS -->
-                    </div>
-                </div>
 
                 <button onclick="window.clearImageFilters(); window.applyGlobalSkuFilter('');" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100 ml-2">Xóa lọc</button>
             </div>
@@ -738,6 +738,23 @@
                         <i class="fas fa-file-excel text-pnjGold"></i> Xuất Báo Cáo
                     </button>
                 </div>
+
+                <div class="bg-gray-50 p-4 border-b border-gray-200 flex flex-wrap gap-3 items-center">
+                    <span class="text-sm font-bold text-pnjBlue uppercase"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
+                    
+                    <div class="relative inline-block text-left" id="wrap-filter-review-month">
+                        <button onclick="toggleFilterDropdown('dropdown-review-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[120px]">
+                            <span id="label-review-month" class="truncate font-medium">Tất cả Tháng</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
+                        </button>
+                        <div id="dropdown-review-month" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-review-month" checked onchange="toggleAllCheckboxes('review-month', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div id="list-review-month" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="clearReviewFilters();" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
+                </div>
+
                 <div class="overflow-x-auto flex-grow">
                     <table class="w-full text-sm text-left whitespace-nowrap">
                         <thead class="text-xs text-gray-600 uppercase bg-[#F8F5EE] border-b border-[#E8E2D2]">
@@ -746,8 +763,7 @@
                                 <th class="px-4 py-3 font-bold border-r border-[#E8E2D2]">Lô mượn</th>
                                 <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Tổng mượn</th>
                                 <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Video Review</th>
-                                <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Hình ảnh Review</th>
-                                <th class="px-4 py-3 font-bold text-center">Trạng thái quay</th>
+                                <th class="px-4 py-3 font-bold text-center">Hình ảnh Review</th>
                             </tr>
                         </thead>
                         <tbody id="reviewSummaryBody" class="divide-y divide-gray-100 bg-white">
@@ -755,9 +771,15 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="bg-gray-50 p-4 border-t border-gray-200 flex flex-wrap justify-end items-center text-gray-800 text-sm font-bold gap-6">
+                    <div>Tổng mượn: <span id="reviewTotalMuon" class="text-pnjBlue text-xl ml-1 font-black">0</span></div>
+                    <div>Tổng Video Review: <span id="reviewTotalVideo" class="text-emerald-600 text-xl ml-1 font-black">0</span> <span class="text-gray-400">/</span> <span id="reviewTotalVideoMuon" class="text-gray-500 text-lg">0</span></div>
+                    <div>Tổng Hình ảnh Review: <span id="reviewTotalImage" class="text-emerald-600 text-xl ml-1 font-black">0</span> <span class="text-gray-400">/</span> <span id="reviewTotalImageMuon" class="text-gray-500 text-lg">0</span></div>
+                </div>
             </div>
 
-        </div>
+        </div> <!-- Kết thúc khu vực TAB VIDEO -->
 
         <!-- ==================== TAB 6: DATABASE GỐC ==================== -->
         <div id="tab-database" class="hidden">
@@ -1215,7 +1237,7 @@
         }
 
         document.addEventListener('click', function(event) {
-            const dropdowns = ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-status', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon', 'dropdown-img-status'];
+            const dropdowns = ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-status', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon', 'dropdown-img-status', 'dropdown-review-month'];
             dropdowns.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.classList.contains('hidden')) {
@@ -1245,7 +1267,7 @@
 
             if(tabId === 'tab-summary') { populateSummaryFilters(); window.renderSummary(); window.loadFlowSettings(); }
             else if (tabId === 'tab-report') { populateReportFilters(); window.renderReport(); }
-            else if (tabId === 'tab-video') { window.renderVideoTable(); window.renderReviewTable(); }
+            else if (tabId === 'tab-video') { window.populateReviewFilters(); window.renderVideoTable(); window.renderReviewTable(); }
             else if (tabId === 'tab-image') { populateImageFilters(); window.renderImageTrackingTable(); }
             else if (tabId === 'tab-process') { window.loadProcessFlowSettings(); }
             else if (tabId === 'tab-database') { window.renderTable(); }
@@ -1310,7 +1332,7 @@
             if (isNaN(start.getTime()) || isNaN(end.getTime()) || start > end) return 0;
             let count = 0; let d = new Date(start);
             while (d <= end) {
-                let ds = d.toISOString().split('T')[0];
+                let ds = getLocalDateStr(d);
                 let day = d.getDay();
                 if (day !== 0 && day !== 6 && !isHoliday(ds)) count++;
                 d.setDate(d.getDate() + 1);
@@ -1322,15 +1344,15 @@
             if (!dateStr) return '';
             let d = new Date(dateStr);
             if (isNaN(d.getTime())) return '';
-            while (d.getDay() === 0 || d.getDay() === 6 || isHoliday(d.toISOString().split('T')[0])) {
+            while (d.getDay() === 0 || d.getDay() === 6 || isHoliday(getLocalDateStr(d))) {
                 d.setDate(d.getDate() + 1);
             }
             while (days > 0) {
                 d.setDate(d.getDate() + 1);
-                let ds = d.toISOString().split('T')[0];
+                let ds = getLocalDateStr(d);
                 if (d.getDay() !== 0 && d.getDay() !== 6 && !isHoliday(ds)) days--;
             }
-            return d.toISOString().split('T')[0];
+            return getLocalDateStr(d);
         }
 
         function calculateDays(startDate, receiveDate) {
@@ -1354,9 +1376,8 @@
 
         function getProcessDays(skuCount) {
             if (!skuCount || skuCount <= 0) return 0;
-            if (skuCount <= 160) return 5;
-            let extra = skuCount - 160;
-            return 5 + Math.ceil(extra / 50) * 2;
+            // Áp dụng định mức 5 ngày cho 160 SKU
+            return Math.max(1, Math.ceil(skuCount * 5 / 160));
         }
 
         window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '', videoReview: '', imageReview: '' }); window.renderTable(); }
@@ -1445,7 +1466,7 @@
 
         window.toggleFilterDropdown = function(id) {
             const el = document.getElementById(id);
-            ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-status', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon', 'dropdown-img-status'].forEach(otherId => {
+            ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-status', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon', 'dropdown-img-status', 'dropdown-review-month'].forEach(otherId => {
                 const otherEl = document.getElementById(otherId); if(otherEl && otherId !== id) otherEl.classList.add('hidden');
             });
             if(el) el.classList.toggle('hidden');
@@ -1454,7 +1475,7 @@
         window.toggleAllCheckboxes = function(fullType, isChecked) {
             document.querySelectorAll(`.cb-${fullType}`).forEach(cb => cb.checked = isChecked);
             updateFilterLabel(fullType);
-            if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else window.renderSummary();
+            if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else if(fullType.startsWith('review-')) window.renderReviewTable(); else window.renderSummary();
         }
 
         window.handleCheckboxChange = function(fullType) {
@@ -1462,7 +1483,7 @@
             const selectAllBtn = document.getElementById(`selectAll-${fullType}`);
             if(selectAllBtn) selectAllBtn.checked = Array.from(cbs).every(cb => cb.checked);
             updateFilterLabel(fullType);
-            if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else window.renderSummary();
+            if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else if(fullType.startsWith('review-')) window.renderReviewTable(); else window.renderSummary();
         }
 
         function updateFilterLabel(fullType) {
@@ -1471,7 +1492,7 @@
             const labelEl = document.getElementById(`label-${fullType}`);
             if(!labelEl) return;
             
-            let baseType = fullType.replace('report-', '').replace('img-', '');
+            let baseType = fullType.replace('report-', '').replace('img-', '').replace('review-', '');
             let prefix = baseType === 'month' ? 'Tháng' : (baseType === 'noiMuon' ? 'Nơi mượn' : (baseType === 'loMuon' ? 'Lô mượn' : (baseType === 'ttMuon' ? 'TT Mượn' : (baseType === 'status' ? 'Trạng thái' : (baseType === 'phanLoai' ? 'Phân loại' : '')))));
             
             if (checkedCbs.length === cbs.length) labelEl.innerText = `Tất cả ${prefix}`;
@@ -1578,20 +1599,21 @@
             ['img-month', 'img-noiMuon', 'img-loMuon', 'img-status'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); 
         }
 
+        // --- FIX CRITICAL: Tính toán lịch trình toàn cục KHÔNG bị ảnh hưởng bởi thanh tìm kiếm SKU ---
         window.getGlobalSchedule = function() {
-            let dailyGroups = {};
+            let trueGroups = {};
             tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return;
+                // Tuyệt đối KHÔNG LỌC theo isSkuMatched ở đây để đảm bảo lịch trình gốc luôn chính xác
                 if (!row.ngayNhan) return; 
                 let dateKey = row.ngayNhan;
-                if (!dailyGroups[dateKey]) { dailyGroups[dateKey] = { ngayNhan: dateKey, skuCount: 0, khoSku: 0, nvtSku: 0, otherSku: 0 }; }
-                let group = dailyGroups[dateKey];
+                if (!trueGroups[dateKey]) { trueGroups[dateKey] = { ngayNhan: dateKey, skuCount: 0, khoSku: 0, nvtSku: 0, otherSku: 0 }; }
+                let group = trueGroups[dateKey];
                 let nUpper = (row.noiMuon || 'Trống').toUpperCase();
                 if (nUpper === 'KHO') group.khoSku++; else if (nUpper === 'NVT') group.nvtSku++; else group.otherSku++;
                 group.skuCount++;
             });
 
-            let sortedDates = Object.values(dailyGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan));
+            let sortedDates = Object.values(trueGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan));
             let globalNextFreeChupNVT = null, globalNextFreeChupKHO = null, globalNextFreeChupOther = null, globalNextFreeRetouch = null;
             let schedules = {};
 
@@ -1633,7 +1655,7 @@
                 let eR = addWorkingDays(asR, Math.max(0, getProcessDays(g.skuCount) - 1)); 
                 let aeR = imageManualRetouchEnds[manualKey] || eR;
                 globalNextFreeRetouch = addWorkingDays(aeR, 1);
-                schedules[g.ngayNhan] = { endChup: finalEndChup, endRetouch: aeR };
+                schedules[g.ngayNhan] = { endChup: finalEndChup, endRetouch: aeR, startChup: finalStartChup, startRetouch: asR, sKHO, eKHO, sNVT, eNVT, sOther, eOther };
             });
             return schedules;
         };
@@ -1665,7 +1687,7 @@
                         <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayNhan}" onchange="updateCell('${row.id}', 'ngayNhan', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayTra}" onchange="updateCell('${row.id}', 'ngayTra', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-2 py-1 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5" id="days_${row.id}">${calculatedDays !== '' ? calculatedDays : '-'}</td>
-                        <td class="px-1 py-1"><input type="text" value="${row.note}" onchange="updateCell('${row.id}', 'note', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.note}" onchange="updateCell('${row.id}', 'note', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.videoReview || ''}" onchange="updateCell('${row.id}', 'videoReview', this.value)" placeholder="Link video..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1"><input type="text" value="${row.imageReview || ''}" onchange="updateCell('${row.id}', 'imageReview', this.value)" placeholder="Link hình ảnh..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     </tr>`;
@@ -1673,7 +1695,6 @@
             const totalCount = document.getElementById('totalRowsCount');
             if (totalCount) totalCount.innerText = dataToRender.length.toLocaleString();
             
-            // Sync review table if open
             if(window.renderReviewTable) window.renderReviewTable();
         }
 
@@ -1731,23 +1752,64 @@
             }
         }
 
+        window.populateReviewFilters = function() {
+            const curMonth = getFilterState('review-month');
+            const months = new Set();
+            tableData.forEach(row => {
+                if (!window.isSkuMatched(row.sku)) return;
+                if (!row.loMuon) return;
+                months.add(row.month || 'Trống');
+            });
+            buildFilterDropdown(months, 'review-month', curMonth);
+        };
+
+        window.clearReviewFilters = function() {
+            ['review-month'].forEach(type => {
+                const btn = document.getElementById(`selectAll-${type}`);
+                if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); }
+            });
+        };
+
         window.renderReviewTable = function() {
             const tbody = document.getElementById('reviewSummaryBody');
             if (!tbody) return;
 
+            const getV = (t) => {
+                const cbs = document.querySelectorAll(`.cb-${t}`);
+                if (cbs.length === 0) return ['ALL'];
+                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            };
+            const mF = getV('review-month');
+
             let groups = {};
+            let grandTotalMuon = 0;
+            let grandTotalVideoYes = 0;
+            let grandTotalImageYes = 0;
+
             tableData.forEach(row => {
                 if (!row.loMuon) return;
+                if (!window.isSkuMatched(row.sku)) return; 
+                
                 const m = row.month || 'Trống';
+                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
+
                 const l = row.loMuon;
                 const k = `${m}|${l}`;
                 
                 if (!groups[k]) {
-                    groups[k] = { month: m, loMuon: l, total: 0, video: 0, image: 0 };
+                    groups[k] = { month: m, loMuon: l, total: 0, videoYes: 0, imageYes: 0 };
                 }
                 groups[k].total++;
-                if (row.videoReview && row.videoReview.trim() !== '') groups[k].video++;
-                if (row.imageReview && row.imageReview.trim() !== '') groups[k].image++;
+                grandTotalMuon++;
+
+                if (row.videoReview && row.videoReview.toLowerCase().trim() === 'yes') {
+                    groups[k].videoYes++;
+                    grandTotalVideoYes++;
+                }
+                if (row.imageReview && row.imageReview.toLowerCase().trim() === 'yes') {
+                    groups[k].imageYes++;
+                    grandTotalImageYes++;
+                }
             });
 
             let sortedGroups = Object.values(groups).sort((a,b) => {
@@ -1757,22 +1819,34 @@
             });
 
             tbody.innerHTML = sortedGroups.map(g => {
-                let isVideoDone = g.video === g.total && g.total > 0;
+                let isVideoDone = g.videoYes === g.total && g.total > 0;
                 let vClass = isVideoDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
-                let iClass = (g.image === g.total && g.total > 0) ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
-                let status = isVideoDone ? '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold whitespace-nowrap">Yes</span>' : '<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold whitespace-nowrap">No</span>';
+                let isImageDone = g.imageYes === g.total && g.total > 0;
+                let iClass = isImageDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
 
                 return `
                     <tr class="hover:bg-gray-50 transition-colors">
                         <td class="px-4 py-3 text-center border-r border-gray-100 font-medium">${g.month}</td>
                         <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${g.loMuon}</td>
                         <td class="px-4 py-3 text-center border-r border-gray-100 font-bold text-gray-700">${g.total}</td>
-                        <td class="px-4 py-3 text-center border-r border-gray-100"><span class="${vClass}">${g.video}</span> / ${g.total}</td>
-                        <td class="px-4 py-3 text-center border-r border-gray-100"><span class="${iClass}">${g.image}</span> / ${g.total}</td>
-                        <td class="px-4 py-3 text-center">${status}</td>
+                        <td class="px-4 py-3 text-center border-r border-gray-100"><span class="${vClass}">${g.videoYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
+                        <td class="px-4 py-3 text-center"><span class="${iClass}">${g.imageYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
                     </tr>
                 `;
-            }).join('') || `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-400 italic">Chưa có dữ liệu phân bổ lô mượn.</td></tr>`;
+            }).join('') || `<tr><td colspan="5" class="px-4 py-8 text-center text-gray-400 italic">Chưa có dữ liệu phân bổ lô mượn.</td></tr>`;
+
+            const elTotalMuon = document.getElementById('reviewTotalMuon');
+            if (elTotalMuon) elTotalMuon.innerText = grandTotalMuon.toLocaleString();
+            
+            const elTotalVideo = document.getElementById('reviewTotalVideo');
+            if (elTotalVideo) elTotalVideo.innerText = grandTotalVideoYes.toLocaleString();
+            const elTotalVideoMuon = document.getElementById('reviewTotalVideoMuon');
+            if (elTotalVideoMuon) elTotalVideoMuon.innerText = grandTotalMuon.toLocaleString();
+
+            const elTotalImage = document.getElementById('reviewTotalImage');
+            if (elTotalImage) elTotalImage.innerText = grandTotalImageYes.toLocaleString();
+            const elTotalImageMuon = document.getElementById('reviewTotalImageMuon');
+            if (elTotalImageMuon) elTotalImageMuon.innerText = grandTotalMuon.toLocaleString();
         };
 
         window.renderSummary = function() {
@@ -1899,7 +1973,7 @@
                 <tr class="hover:bg-gray-50 transition-colors bg-white">
                     <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full min-w-[150px]" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100 relative min-w-[160px]"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     
@@ -2054,6 +2128,7 @@
             const vR = document.getElementById('val-pending-r'); if (vR) vR.innerText = sPR || '-';
         }
 
+        // --- FIX CRITICAL: Bảng tiến độ và Gantt không bị co hẹp ngày khi tìm kiếm ---
         window.renderImageTrackingTable = function() {
             const tbody = document.getElementById('imageTrackingBody'); if(!tbody) return;
             const getV = (type) => {
@@ -2063,87 +2138,60 @@
             };
             const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon'); const sF = getV('status');
 
-            let targetGroupKeys = new Set();
-            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
-                tableData.forEach(row => {
-                    if (window.globalSkuFilterArray.includes(row.sku)) {
-                        targetGroupKeys.add(row.ngayNhan);
-                    }
-                });
-            }
+            // BƯỚC 1: Lấy lịch trình thực tế GỐC (Tuyệt đối không dùng filter tìm kiếm ở bước này)
+            let trueSchedules = window.getGlobalSchedule();
 
-            let dailyGroups = {};
+            // BƯỚC 2: Nhóm dữ liệu để hiển thị (CÓ dùng filter tìm kiếm)
+            let displayGroups = {};
             tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return;
+                if (!window.isSkuMatched(row.sku)) return; // BỘ LỌC TÌM KIẾM ĐƯỢC ÁP DỤNG TẠI ĐÂY
                 if (!row.ngayNhan) return; 
+                
                 const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const l = row.loMuon || 'Trống';
                 if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
                 if (!nF.includes('ALL') && !nF.includes(n)) return;
                 if (!lF.includes('ALL') && !lF.includes(l)) return;
 
                 let groupKey = row.ngayNhan;
-                if (!dailyGroups[groupKey]) { dailyGroups[groupKey] = { groupKey: groupKey, ngayNhan: row.ngayNhan, skuCount: 0, chupDone: 0, retouchDone: 0, muonDone: 0, khoSku: 0, nvtSku: 0, otherSku: 0, items: {}, ids: [] }; }
-                let group = dailyGroups[groupKey];
+                if (!displayGroups[groupKey]) { displayGroups[groupKey] = { groupKey: groupKey, ngayNhan: row.ngayNhan, skuCount: 0, chupDone: 0, retouchDone: 0, muonDone: 0, items: {}, ids: [] }; }
+                let group = displayGroups[groupKey];
                 group.ids.push(row.id);
                 
-                let nUpper = n.toUpperCase();
-                if (nUpper === 'KHO') group.khoSku++; else if (nUpper === 'NVT') group.nvtSku++; else group.otherSku++;
                 let itemKey = l + '|' + n;
                 if (!group.items[itemKey]) { group.items[itemKey] = { loMuon: l, noiMuon: n, skuCount: 0, ttMuons: new Set() }; }
                 group.items[itemKey].skuCount++;
                 group.items[itemKey].ttMuons.add(row.ttMuon || 'Trống');
                 group.skuCount++;
+                
                 let ttMuonLower = (row.ttMuon || '').toLowerCase();
                 if (ttMuonLower.includes('done')) group.muonDone++;
                 if (row.ttChup && row.ttChup.toLowerCase().includes('done')) group.chupDone++;
                 if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) group.retouchDone++;
             });
 
-            let sortedDates = Object.values(dailyGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan));
-            let globalNextFreeChupNVT = null, globalNextFreeChupKHO = null, globalNextFreeChupOther = null, globalNextFreeRetouch = null;
             let todayStr = new Date().toISOString().slice(0, 10);
-            let html = '';
             
-            let processedGanttData = sortedDates.map(g => {
-                let baseStart = addWorkingDays(g.ngayNhan, 1); 
-                let sKHO = null, eKHO = null;
-                if (g.khoSku > 0) { sKHO = (globalNextFreeChupKHO && baseStart < globalNextFreeChupKHO) ? globalNextFreeChupKHO : baseStart; eKHO = addWorkingDays(sKHO, Math.max(0, Math.ceil(g.khoSku * 7 / 160) - 1)); globalNextFreeChupKHO = addWorkingDays(eKHO, 1); }
-                let sNVT = null, eNVT = null;
-                if (g.nvtSku > 0) { sNVT = (globalNextFreeChupNVT && baseStart < globalNextFreeChupNVT) ? globalNextFreeChupNVT : baseStart; eNVT = addWorkingDays(sNVT, Math.max(0, Math.ceil(g.nvtSku * 7 / 160) - 1)); globalNextFreeChupNVT = addWorkingDays(eNVT, 1); }
-                let sOther = null, eOther = null;
-                if (g.otherSku > 0) { sOther = (globalNextFreeChupOther && baseStart < globalNextFreeChupOther) ? globalNextFreeChupOther : baseStart; eOther = addWorkingDays(sOther, Math.max(0, Math.ceil(g.otherSku * 7 / 160) - 1)); globalNextFreeChupOther = addWorkingDays(eOther, 1); }
-
-                let starts = [sKHO, sNVT, sOther].filter(x => x !== null); let ends = [eKHO, eNVT, eOther].filter(x => x !== null);
-                let minStart = starts.length > 0 ? starts.reduce((min, p) => p < min ? p : min, starts[0]) : baseStart;
-                let maxEnd = ends.length > 0 ? ends.reduce((max, p) => p > max ? p : max, ends[0]) : baseStart;
-                let manualKey = g.groupKey;
+            // BƯỚC 3: Ghép nối ngày tháng GỐC vào dữ liệu hiển thị (Bảo toàn độ dài của Gantt Chart)
+            let processedGanttData = Object.values(displayGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan)).map(g => {
+                let ts = trueSchedules[g.ngayNhan]; // ts chứa ngày gốc
+                if (!ts) return null; // Safety check
                 
-                let finalStartChup = imageManualDates[manualKey] || minStart;
-                let finalEndChup = imageManualEndDates[manualKey] || maxEnd;
-
-                let sR = addWorkingDays(finalStartChup, 2); 
-                if (globalNextFreeRetouch && sR < globalNextFreeRetouch) { sR = globalNextFreeRetouch; }
-                let asR = imageManualRetouchStarts[manualKey] || sR;
-                let eR = addWorkingDays(asR, Math.max(0, Math.ceil(g.skuCount * 7 / 160) - 1)); 
-                let aeR = imageManualRetouchEnds[manualKey] || eR;
-                globalNextFreeRetouch = addWorkingDays(aeR, 1);
+                let tCD = getWorkingDays(ts.startChup, ts.endChup) || 1; 
+                let tRD = getWorkingDays(ts.startRetouch, ts.endRetouch) || 1;
+                let isChupLate = todayStr > ts.endChup && g.chupDone < g.skuCount;
+                let isRetouchLate = todayStr > ts.endRetouch && g.retouchDone < g.skuCount;
                 
-                let tCD = getWorkingDays(finalStartChup, finalEndChup) || 1; 
-                let tRD = getWorkingDays(asR, aeR) || 1;
-                let isChupLate = todayStr > finalEndChup && g.chupDone < g.skuCount;
-                let isRetouchLate = todayStr > aeR && g.retouchDone < g.skuCount;
-                
-                return { ...g, manualKey, sKHO, eKHO, sNVT, eNVT, sOther, eOther, startChup: finalStartChup, endChup: finalEndChup, startRetouch: asR, endRetouch: aeR, tCD, tRD, isChupLate, isRetouchLate };
-            });
+                return { ...g, manualKey: g.groupKey, sKHO: ts.sKHO, eKHO: ts.eKHO, sNVT: ts.sNVT, eNVT: ts.eNVT, sOther: ts.sOther, eOther: ts.eOther, startChup: ts.startChup, endChup: ts.endChup, startRetouch: ts.startRetouch, endRetouch: ts.endRetouch, tCD, tRD, isChupLate, isRetouchLate };
+            }).filter(g => g !== null);
 
             window.currentGanttData = processedGanttData;
 
+            // Luôn gọi Alert Cảnh báo trước khi Bị Lọc để đảm bảo không bị ẩn đi
+            if (window.renderDeadlineAlerts) window.renderDeadlineAlerts(processedGanttData);
+
+            // BƯỚC 4: Lọc theo Checkbox Trạng Thái trên thanh điều hướng
             const showOnlyLate = document.getElementById('filter-img-late')?.checked;
             if (showOnlyLate) { processedGanttData = processedGanttData.filter(g => g.isChupLate || g.isRetouchLate); }
-
-            if (window.globalSkuFilterArray && window.globalSkuFilterArray.length > 0) {
-                processedGanttData = processedGanttData.filter(g => targetGroupKeys.has(g.groupKey));
-            }
 
             if (!sF.includes('ALL')) {
                 processedGanttData = processedGanttData.filter(g => {
@@ -2158,6 +2206,7 @@
             let totalSKU = 0;
             let totalChuaChup = 0;
             let totalChuaRetouch = 0;
+            let html = '';
 
             processedGanttData.forEach(g => {
                 totalSKU += g.skuCount;
@@ -2167,7 +2216,10 @@
                     totalChuaRetouch += Math.max(0, g.skuCount - g.retouchDone);
                 }
 
-                let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0">${i.loMuon}</div>`).join('') || '-';
+                let isGroupLate = g.isChupLate || g.isRetouchLate;
+                let lateIndicatorImg = isGroupLate ? `<span class="inline-flex relative h-2.5 w-2.5 ml-2 flex-shrink-0" title="Lô trễ hạn!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span></span>` : '';
+
+                let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0 flex items-center justify-between"><span class="truncate pr-2">${i.loMuon}</span> ${lateIndicatorImg}</div>`).join('') || '-';
                 
                 let ttMuonHTML = Object.values(g.items).map(i => {
                     let tts = Array.from(i.ttMuons).filter(t => t !== 'Trống').join(', ');
@@ -2227,7 +2279,6 @@
             if (elTotal2) elTotal2.innerText = totalSKU.toLocaleString();
 
             window.renderGanttChart(processedGanttData);
-            if (window.renderDeadlineAlerts) window.renderDeadlineAlerts(processedGanttData);
         }
 
         window.renderGanttChart = function(ganttData) {
@@ -2315,7 +2366,8 @@
             let alerts = [];
             
             ganttData.forEach(g => {
-                let isMuonDone = g.muonDone > 0 && g.muonDone === g.skuCount;
+                // Chỉ cần có 1 sản phẩm đã Done mượn là bắt đầu tính toán cảnh báo cho cả lô
+                let isMuonDone = g.muonDone > 0;
                 if (!isMuonDone) return;
 
                 let isChupDone = g.chupDone === g.skuCount;
@@ -2406,7 +2458,7 @@
 
         window.exportReviewCSV = function() {
             const tbody = document.getElementById('reviewSummaryBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
-            let csv = "\uFEFFTháng,Lô mượn,Tổng mượn,Video Review (Hoàn thành/Tổng),Hình ảnh Review (Hoàn thành/Tổng),Trạng thái quay\n";
+            let csv = "\uFEFFTháng,Lô mượn,Tổng mượn,Video Review (Yes/Tổng),Hình ảnh Review (Yes/Tổng)\n";
             Array.from(tbody.querySelectorAll('tr')).forEach(tr => { 
                 csv += Array.from(tr.querySelectorAll('td')).map(td => { 
                     return `"${td.innerText.trim().replace(/"/g,'""')}"`; 
@@ -2457,8 +2509,23 @@
             downloadCSV(csv, `DanhSachSKU_SanXuatHinhAnh_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // --- FIX CRITICAL: Hỗ trợ nạp CSV cũ và mới đúng trật tự cột ---
         window.importCSV = function(event) {
-            if(!window.isFakeLoggedIn) return; // Bảo vệ hàm import
+            if(!window.isFakeLoggedIn) return; 
             const file = event.target.files[0]; if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -2470,10 +2537,14 @@
                     const c = lines[i].trim().split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"').trim());
                     if (c.length >= 4 && c[0]) {
                         if (c.length >= 17) {
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', phanLoai: c[13]||'', note: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'' });
-                        } else if (c.length >= 15) { // Hỗ trợ định dạng cũ (chưa có Video review và Hình ảnh review)
+                            // File mới có đủ Video Review và Hình ảnh Review
+                            // Cột 13: Ghi chú, Cột 14: Phân loại, Cột 15: Video, Cột 16: Hình ảnh
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'' });
+                        } else if (c.length >= 15) { 
+                            // Định dạng cũ (Chưa có 2 cột Review nhưng có Ghi chú và Phân loại)
                             newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: '', imageReview: '' });
                         } else {
+                            // Định dạng rất cũ
                             newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ttChup: c[9]||'', ttRetouch: c[10]||'', note: c[11]||'', phanLoai: c[12]||'', videoReview: '', imageReview: '' });
                         }
                     }
