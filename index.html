@@ -969,8 +969,9 @@
                 throw new Error("Missing config");
             }
         } catch (e) {
+            // CẤU HÌNH FIREBASE CỦA BẠN (CHẠY TRÊN GITHUB)
             firebaseConfig = {
-                apiKey: "",
+                apiKey: "AIzaSyBW_picOLzLjkU-JT3PrfwDpFbUN5Cw9ag",
                 authDomain: "product-air-onsite.firebaseapp.com",
                 projectId: "product-air-onsite",
                 storageBucket: "product-air-onsite.firebasestorage.app",
@@ -988,6 +989,24 @@
         let currentUser = null;
         let unsubscribeSnapshot = null;
 
+        // HÀM SỬA LỖI: Xử lý hiển thị giao diện ngay cả khi mất mạng / thiếu API Key
+        window.loadDataLocal = function() {
+            const loader = document.getElementById('global-loader');
+            if (loader) {
+                loader.classList.add('opacity-0');
+                setTimeout(() => loader.classList.add('hidden'), 500);
+            }
+            if (window.renderTable) window.renderTable(); 
+            if (window.renderVideoTable) window.renderVideoTable(); 
+            if (window.renderVideoBrandTable) window.renderVideoBrandTable();
+            if (window.renderVideoDashboard) window.renderVideoDashboard();
+            if (window.switchTab) {
+                const currentTab = document.querySelector('nav button.bg-pnjBlue');
+                if (currentTab) window.switchTab(currentTab.id.replace('btn-', ''));
+                else window.switchTab('tab-report');
+            }
+        };
+
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -997,6 +1016,9 @@
                 }
             } catch (error) {
                 console.error("Firebase Auth Error:", error);
+                const loaderText = document.getElementById('loader-text');
+                if (loaderText) loaderText.innerText = "Chưa cấu hình Firebase API. Đang mở chế độ cục bộ (Offline)...";
+                setTimeout(() => { if(window.loadDataLocal) window.loadDataLocal(); }, 1500);
             }
         };
 
@@ -1066,13 +1088,12 @@
 
                 } else {
                     if (window.loadDataLocal) window.loadDataLocal();
-                    if (loader) { loader.classList.add('opacity-0'); setTimeout(() => loader.classList.add('hidden'), 500); }
                 }
             }, (error) => {
                 console.warn("Lỗi đồng bộ Cloud:", error);
-                if (loaderText) loaderText.innerText = "Lỗi kết nối! Đang tải dữ liệu nội bộ...";
-                if (window.loadDataLocal) window.loadDataLocal();
-                setTimeout(() => { if(loader) { loader.classList.add('opacity-0'); setTimeout(() => loader.classList.add('hidden'), 500); } }, 1000);
+                const loaderText = document.getElementById('loader-text');
+                if (loaderText) loaderText.innerText = "Lỗi kết nối máy chủ! Đang mở dữ liệu nội bộ...";
+                setTimeout(() => { if (window.loadDataLocal) window.loadDataLocal(); }, 1000);
             });
         };
 
