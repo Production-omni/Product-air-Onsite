@@ -129,23 +129,23 @@
         <!-- Navigation Tabs Style PNJ -->
         <div class="mb-4 bg-white rounded-xl shadow-sm border border-gray-200 p-2 overflow-x-auto">
             <nav class="flex space-x-2 min-w-max" aria-label="Tabs">
-                <button onclick="switchTab('tab-process')" id="btn-tab-process" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
+                <button onclick="window.switchTab('tab-process')" id="btn-tab-process" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
                     <i class="fas fa-project-diagram text-gray-400"></i> Quy trình
                 </button>
-                <button onclick="switchTab('tab-report')" id="btn-tab-report" class="bg-pnjBlue text-white py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-md">
+                <button onclick="window.switchTab('tab-report')" id="btn-tab-report" class="bg-pnjBlue text-white py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-md">
                     <i class="fas fa-chart-pie text-pnjGold"></i> Report
                 </button>
-                <button onclick="switchTab('tab-summary')" id="btn-tab-summary" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
+                <button onclick="window.switchTab('tab-summary')" id="btn-tab-summary" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
                     <i class="fas fa-layer-group text-gray-400"></i> Mượn hàng
                 </button>
-                <button onclick="switchTab('tab-image')" id="btn-tab-image" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
+                <button onclick="window.switchTab('tab-image')" id="btn-tab-image" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
                     <i class="fas fa-image text-gray-400"></i> Sản xuất hình ảnh
                 </button>
-                <button onclick="switchTab('tab-video')" id="btn-tab-video" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
+                <button onclick="window.switchTab('tab-video')" id="btn-tab-video" class="text-gray-600 hover:bg-gray-100 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all">
                     <i class="fas fa-video text-gray-400"></i> Sản xuất video
                 </button>
                 <div class="w-px bg-gray-300 my-2 mx-1"></div>
-                <button onclick="switchTab('tab-database')" id="btn-tab-database" class="text-gray-600 hover:bg-pnjGold/20 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all">
+                <button onclick="window.switchTab('tab-database')" id="btn-tab-database" class="text-gray-600 hover:bg-pnjGold/20 hover:text-pnjBlue py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all">
                     <i class="fas fa-database text-pnjGold"></i> Database Gốc
                 </button>
             </nav>
@@ -330,7 +330,7 @@
                 </div>
                 <button onclick="window.applyGlobalSkuFilter(document.getElementById('search-sku-report').value)" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
 
-                <button onclick="clearReportFilters(); window.applyGlobalSkuFilter('');" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100 ml-2"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
+                <button onclick="window.clearReportFilters(); window.applyGlobalSkuFilter('');" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100 ml-2"><i class="fas fa-sync-alt mr-1"></i> Đặt lại</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -466,7 +466,7 @@
                 <div class="bg-white p-5 border-b border-gray-200 flex flex-col md:flex-row justify-between md:items-center gap-4">
                     <span class="font-bold text-pnjBlue text-lg uppercase"><i class="fas fa-layer-group mr-2 text-pnjGold"></i> Mượn hàng</span>
                     <div class="flex gap-2">
-                        <button onclick="saveData()" class="admin-only hidden bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold shadow-md transition-colors flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
+                        <button onclick="window.saveData()" class="admin-only hidden bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold shadow-md transition-colors flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
                         <button onclick="exportSummaryCSV()" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"><i class="fas fa-file-excel text-pnjGold"></i> Xuất Excel Báo Cáo</button>
                     </div>
                 </div>
@@ -474,39 +474,39 @@
                 <div class="bg-gray-50 p-4 border-b border-gray-200 flex flex-wrap gap-3 items-center">
                     <span class="text-sm font-bold text-pnjBlue uppercase"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
                     <div class="relative inline-block text-left" id="wrap-filter-month">
-                        <button onclick="toggleFilterDropdown('dropdown-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[120px]">
+                        <button onclick="window.toggleFilterDropdown('dropdown-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[120px]">
                             <span id="label-month" class="truncate font-medium">Tất cả Tháng</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                         </button>
                         <div id="dropdown-month" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
-                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-month" checked onchange="toggleAllCheckboxes('month', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-month" checked onchange="window.toggleAllCheckboxes('month', this.checked)"><span>Chọn tất cả</span></label></div>
                             <div id="list-month" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                         </div>
                     </div>
                     <div class="relative inline-block text-left" id="wrap-filter-noiMuon">
-                        <button onclick="toggleFilterDropdown('dropdown-noiMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
+                        <button onclick="window.toggleFilterDropdown('dropdown-noiMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
                             <span id="label-noiMuon" class="truncate font-medium">Tất cả Nơi mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                         </button>
                         <div id="dropdown-noiMuon" class="hidden absolute z-50 mt-1 w-56 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
-                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-noiMuon" checked onchange="toggleAllCheckboxes('noiMuon', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-noiMuon" checked onchange="window.toggleAllCheckboxes('noiMuon', this.checked)"><span>Chọn tất cả</span></label></div>
                             <div id="list-noiMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                         </div>
                     </div>
                     <div class="relative inline-block text-left" id="wrap-filter-ttMuon">
-                        <button onclick="toggleFilterDropdown('dropdown-ttMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
+                        <button onclick="window.toggleFilterDropdown('dropdown-ttMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
                             <span id="label-ttMuon" class="truncate font-medium">Tất cả TT Mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                         </button>
                         <div id="dropdown-ttMuon" class="hidden absolute z-50 mt-1 w-64 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
-                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-ttMuon" checked onchange="toggleAllCheckboxes('ttMuon', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-ttMuon" checked onchange="window.toggleAllCheckboxes('ttMuon', this.checked)"><span>Chọn tất cả</span></label></div>
                             <div id="list-ttMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                         </div>
                     </div>
 
                     <div class="relative inline-block text-left" id="wrap-filter-status">
-                        <button onclick="toggleFilterDropdown('dropdown-status')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
+                        <button onclick="window.toggleFilterDropdown('dropdown-status')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[140px]">
                             <span id="label-status" class="truncate font-medium">Tất cả Trạng thái</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                         </button>
                         <div id="dropdown-status" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
-                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-status" checked onchange="toggleAllCheckboxes('status', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-status" checked onchange="window.toggleAllCheckboxes('status', this.checked)"><span>Chọn tất cả</span></label></div>
                             <div id="list-status" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                         </div>
                     </div>
@@ -520,7 +520,7 @@
                     </div>
                     <button onclick="window.applyGlobalSkuFilter(document.getElementById('search-sku-summary').value)" class="bg-pnjBlue text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-pnjBlueLight transition-colors">Tìm</button>
 
-                    <button onclick="clearSummaryFilters(); window.applyGlobalSkuFilter('');" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
+                    <button onclick="window.clearSummaryFilters(); window.applyGlobalSkuFilter('');" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
                 </div>
 
                 <div class="overflow-x-auto table-container max-h-[65vh]">
@@ -558,44 +558,44 @@
                 <span class="font-bold text-pnjBlue text-sm uppercase tracking-wider"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
                 
                 <div class="relative inline-block text-left" id="wrap-filter-img-month">
-                    <button onclick="toggleFilterDropdown('dropdown-img-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[120px] flex justify-between items-center">
+                    <button onclick="window.toggleFilterDropdown('dropdown-img-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[120px] flex justify-between items-center">
                         <span id="label-img-month" class="truncate font-medium">Tất cả Tháng</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                     </button>
                     <div id="dropdown-img-month" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-xl rounded-lg border border-gray-200 top-full left-0">
-                        <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-img-month" checked onchange="toggleAllCheckboxes('img-month', this.checked)"><span>Chọn tất cả</span></label></div>
+                        <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-img-month" checked onchange="window.toggleAllCheckboxes('img-month', this.checked)"><span>Chọn tất cả</span></label></div>
                         <div id="list-img-month" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                     </div>
                 </div>
                 
                 <div class="relative inline-block text-left" id="wrap-filter-img-noiMuon">
-                    <button onclick="toggleFilterDropdown('dropdown-img-noiMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[140px] flex justify-between items-center">
+                    <button onclick="window.toggleFilterDropdown('dropdown-img-noiMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[140px] flex justify-between items-center">
                         <span id="label-img-noiMuon" class="truncate font-medium">Tất cả Nơi mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                     </button>
                     <div id="dropdown-img-noiMuon" class="hidden absolute z-50 mt-1 w-56 bg-white shadow-xl rounded-lg border border-gray-200 top-full left-0">
-                        <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-img-noiMuon" checked onchange="toggleAllCheckboxes('img-noiMuon', this.checked)"><span>Chọn tất cả</span></label></div>
+                        <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-img-noiMuon" checked onchange="window.toggleAllCheckboxes('img-noiMuon', this.checked)"><span>Chọn tất cả</span></label></div>
                         <div id="list-img-noiMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                     </div>
                 </div>
                 
                 <div class="relative inline-block text-left" id="wrap-filter-img-loMuon">
-                    <button onclick="toggleFilterDropdown('dropdown-img-loMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[160px] flex justify-between items-center">
+                    <button onclick="window.toggleFilterDropdown('dropdown-img-loMuon')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[160px] flex justify-between items-center">
                         <span id="label-img-loMuon" class="truncate font-medium">Tất cả Lô mượn</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                     </button>
                     <div id="dropdown-img-loMuon" class="hidden absolute z-50 mt-1 w-72 bg-white shadow-xl rounded-lg border border-gray-200 top-full left-0">
                         <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg flex flex-col gap-2">
-                            <input type="text" id="search-img-loMuon" placeholder="Nhập để tìm lô mượn..." class="w-full text-sm border border-gray-300 rounded p-1.5 focus:border-pnjBlue focus:ring-1 focus:ring-pnjBlue" onkeyup="filterDropdownList('img-loMuon', this.value)" onclick="event.stopPropagation()">
-                            <label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-img-loMuon" checked onchange="toggleAllCheckboxes('img-loMuon', this.checked)"><span>Chọn tất cả</span></label>
+                            <input type="text" id="search-img-loMuon" placeholder="Nhập để tìm lô mượn..." class="w-full text-sm border border-gray-300 rounded p-1.5 focus:border-pnjBlue focus:ring-1 focus:ring-pnjBlue" onkeyup="window.filterDropdownList('img-loMuon', this.value)" onclick="event.stopPropagation()">
+                            <label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-img-loMuon" checked onchange="window.toggleAllCheckboxes('img-loMuon', this.checked)"><span>Chọn tất cả</span></label>
                         </div>
                         <div id="list-img-loMuon" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                     </div>
                 </div>
 
                 <div class="relative inline-block text-left" id="wrap-filter-img-status">
-                    <button onclick="toggleFilterDropdown('dropdown-img-status')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[140px] flex justify-between items-center">
+                    <button onclick="window.toggleFilterDropdown('dropdown-img-status')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-gray-50 hover:bg-white min-w-[140px] flex justify-between items-center">
                         <span id="label-img-status" class="truncate font-medium">Tất cả Trạng thái</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                     </button>
                     <div id="dropdown-img-status" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-xl rounded-lg border border-gray-200 top-full left-0">
-                        <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-img-status" checked onchange="toggleAllCheckboxes('img-status', this.checked)"><span>Chọn tất cả</span></label></div>
+                        <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-img-status" checked onchange="window.toggleAllCheckboxes('img-status', this.checked)"><span>Chọn tất cả</span></label></div>
                         <div id="list-img-status" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                     </div>
                 </div>
@@ -656,12 +656,12 @@
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
                 <!-- Thêm onclick và mũi tên để thu gọn/mở rộng -->
-                <div class="bg-white p-5 border-b border-gray-200 flex justify-between items-center cursor-pointer select-none hover:bg-gray-50 transition-colors" onclick="toggleSection('image-tracking-content', 'icon-image-tracking')">
+                <div class="bg-white p-5 border-b border-gray-200 flex justify-between items-center cursor-pointer select-none hover:bg-gray-50 transition-colors" onclick="window.toggleSection('image-tracking-content', 'icon-image-tracking')">
                     <span class="font-bold text-pnjBlue text-lg uppercase flex items-center gap-3">
                         <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300 transform -rotate-90" id="icon-image-tracking"></i>
                         <span><i class="fas fa-calendar-alt mr-2 text-pnjGold"></i> Bảng Theo Dõi Tiến Độ</span>
                     </span>
-                    <button onclick="clearImageManualDates(); event.stopPropagation();" class="admin-only bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hidden"><i class="fas fa-sync-alt"></i> Reset lịch thủ công</button>
+                    <button onclick="window.clearImageManualDates(); event.stopPropagation();" class="admin-only bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hidden"><i class="fas fa-sync-alt"></i> Reset lịch thủ công</button>
                 </div>
                 
                 <!-- Bọc nội dung vào div hidden mặc định -->
@@ -719,7 +719,7 @@
             <!-- SƠ ĐỒ GANTT TIMELINE -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
                 <!-- Thêm onclick và mũi tên để thu gọn/mở rộng -->
-                <div class="bg-white p-5 border-b border-gray-200 flex justify-between items-center cursor-pointer select-none hover:bg-gray-50 transition-colors" onclick="toggleSection('gantt-content', 'icon-gantt')">
+                <div class="bg-white p-5 border-b border-gray-200 flex justify-between items-center cursor-pointer select-none hover:bg-gray-50 transition-colors" onclick="window.toggleSection('gantt-content', 'icon-gantt')">
                     <span class="font-bold text-pnjBlue text-lg uppercase flex items-center gap-3">
                         <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300 transform -rotate-90" id="icon-gantt"></i>
                         <span><i class="fas fa-stream mr-2 text-pnjGold"></i> Timeline Sản Xuất (Sơ đồ Gantt)</span>
@@ -778,7 +778,7 @@
                     <div class="admin-only hidden border-t border-gray-100 pt-4 mt-auto">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-sm font-bold text-gray-600"><i class="fas fa-edit text-pnjGold"></i> Chỉnh sửa dữ liệu biểu đồ:</span>
-                            <button onclick="addVideoBrandRow()" class="bg-pnjBlue/10 hover:bg-pnjBlue/20 text-pnjBlue px-3 py-1.5 rounded text-xs font-semibold transition-colors flex items-center gap-1"><i class="fas fa-plus"></i> Thêm Brand</button>
+                            <button onclick="window.addVideoBrandRow()" class="bg-pnjBlue/10 hover:bg-pnjBlue/20 text-pnjBlue px-3 py-1.5 rounded text-xs font-semibold transition-colors flex items-center gap-1"><i class="fas fa-plus"></i> Thêm Brand</button>
                         </div>
                         <div class="max-h-[160px] overflow-y-auto table-container">
                             <table class="w-full text-sm text-left whitespace-nowrap">
@@ -803,8 +803,8 @@
                 <div class="bg-[#1C3B5E] p-4 border-b border-[#112640] flex justify-between items-center">
                     <span class="font-bold text-white text-base uppercase flex items-center gap-2"><i class="fas fa-video text-pnjGold"></i> Bảng Theo Dõi Sản Xuất Video</span>
                     <div class="flex gap-2">
-                        <button onclick="addNewVideoRow()" class="admin-only hidden bg-white/10 text-white hover:bg-white/20 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Lô Video</button>
-                        <button onclick="saveData()" class="admin-only hidden bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
+                        <button onclick="window.addNewVideoRow()" class="admin-only hidden bg-white/10 text-white hover:bg-white/20 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Lô Video</button>
+                        <button onclick="window.saveData()" class="admin-only hidden bg-pnjGold text-white hover:bg-pnjGoldLight px-4 py-1.5 rounded-lg text-sm font-bold"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
                     </div>
                 </div>
                 <div class="overflow-x-auto flex-grow max-h-[50vh]">
@@ -831,7 +831,7 @@
                     <span class="font-bold text-white text-base uppercase tracking-wide flex items-center gap-2">
                         <i class="fas fa-star text-pnjGold"></i> Theo Dõi Tiến Độ Review (Tự Động)
                     </span>
-                    <button onclick="exportReviewCSV()" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 border border-pnjGold/30">
+                    <button onclick="window.exportReviewCSV()" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 border border-pnjGold/30">
                         <i class="fas fa-file-excel text-pnjGold"></i> Xuất Báo Cáo
                     </button>
                 </div>
@@ -840,16 +840,16 @@
                     <span class="text-sm font-bold text-pnjBlue uppercase"><i class="fas fa-filter text-pnjGold mr-1"></i> Lọc:</span>
                     
                     <div class="relative inline-block text-left" id="wrap-filter-review-month">
-                        <button onclick="toggleFilterDropdown('dropdown-review-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[120px]">
+                        <button onclick="window.toggleFilterDropdown('dropdown-review-month')" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white hover:bg-gray-50 flex items-center justify-between min-w-[120px]">
                             <span id="label-review-month" class="truncate font-medium">Tất cả Tháng</span><i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
                         </button>
                         <div id="dropdown-review-month" class="hidden absolute z-50 mt-1 w-48 bg-white shadow-lg rounded-lg border border-gray-200 top-full left-0">
-                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-review-month" checked onchange="toggleAllCheckboxes('review-month', this.checked)"><span>Chọn tất cả</span></label></div>
+                            <div class="p-2 border-b border-gray-100 bg-gray-50 rounded-t-lg"><label class="flex items-center space-x-2 text-sm text-pnjBlue font-bold cursor-pointer"><input type="checkbox" id="selectAll-review-month" checked onchange="window.toggleAllCheckboxes('review-month', this.checked)"><span>Chọn tất cả</span></label></div>
                             <div id="list-review-month" class="p-2 max-h-48 overflow-y-auto space-y-1"></div>
                         </div>
                     </div>
 
-                    <button onclick="clearReviewFilters();" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
+                    <button onclick="window.clearReviewFilters();" class="text-sm text-red-500 hover:text-red-700 font-medium px-2 py-1 transition-colors ml-auto"><i class="fas fa-times-circle"></i> Xóa lọc</button>
                 </div>
 
                 <div class="overflow-auto table-container max-h-[50vh] flex-grow">
@@ -881,13 +881,13 @@
         <!-- ==================== TAB 6: DATABASE GỐC ==================== -->
         <div id="tab-database" class="hidden">
             <div class="flex flex-wrap gap-3 mb-6 bg-white p-4 rounded-xl border border-gray-200 shadow-sm items-center">
-                <button onclick="addNewRow()" class="admin-only hidden bg-pnjBlue/10 text-pnjBlue hover:bg-pnjBlue/20 px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Dòng</button>
-                <button onclick="saveData()" class="admin-only hidden bg-pnjGold text-white hover:bg-pnjGoldLight px-6 py-2.5 rounded-lg font-bold shadow-md flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
+                <button onclick="window.addNewRow()" class="admin-only hidden bg-pnjBlue/10 text-pnjBlue hover:bg-pnjBlue/20 px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Dòng</button>
+                <button onclick="window.saveData()" class="admin-only hidden bg-pnjGold text-white hover:bg-pnjGoldLight px-6 py-2.5 rounded-lg font-bold shadow-md flex items-center gap-2"><i class="fas fa-save"></i> Lưu Dữ Liệu</button>
                 <div class="admin-only hidden w-px h-8 bg-gray-300 mx-2 md:block"></div>
                 <label class="admin-only hidden bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold cursor-pointer flex items-center gap-2">
-                    <i class="fas fa-upload text-pnjBlue"></i> Nhập CSV<input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="importCSV(event)">
+                    <i class="fas fa-upload text-pnjBlue"></i> Nhập CSV<input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="window.importCSV(event)">
                 </label>
-                <button onclick="exportCSV()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-download text-pnjBlue"></i> Xuất CSV</button>
+                <button onclick="window.exportCSV()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-download text-pnjBlue"></i> Xuất CSV</button>
                 
                 <div class="flex-grow"></div>
 
@@ -899,7 +899,7 @@
                 </div>
                 <button onclick="window.applyGlobalSkuFilter(document.getElementById('search-sku-database').value)" class="bg-pnjBlue text-white hover:bg-pnjBlueLight px-4 py-2.5 rounded-lg font-semibold transition-colors">Tìm</button>
 
-                <button onclick="clearAllData()" class="admin-only hidden text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2.5 rounded-lg font-semibold border border-red-100 ml-2">Xóa toàn bộ</button>
+                <button onclick="window.clearAllData()" class="admin-only hidden text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2.5 rounded-lg font-semibold border border-red-100 ml-2">Xóa toàn bộ</button>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
@@ -937,9 +937,9 @@
                 <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-between items-center text-sm font-semibold text-gray-700">
                     <span class="text-gray-500 italic font-normal">* Số ngày mượn tính tự động. Đang hiển thị <span id="pageInfoStart" class="font-bold">0</span> - <span id="pageInfoEnd" class="font-bold">0</span> trên tổng số <span id="totalRowsCount" class="text-pnjBlue text-lg font-bold">0</span> dòng.</span>
                     <div class="flex items-center gap-2">
-                        <button onclick="changePage(-1)" id="btnPrevPage" class="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-pnjBlue transition-colors"><i class="fas fa-chevron-left"></i></button>
+                        <button onclick="window.changePage(-1)" id="btnPrevPage" class="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-pnjBlue transition-colors"><i class="fas fa-chevron-left"></i></button>
                         <span class="px-4 py-1.5 font-bold text-pnjBlue bg-white border border-gray-200 rounded">Trang <span id="currentPageNum">1</span> / <span id="totalPagesNum">1</span></span>
-                        <button onclick="changePage(1)" id="btnNextPage" class="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-pnjBlue transition-colors"><i class="fas fa-chevron-right"></i></button>
+                        <button onclick="window.changePage(1)" id="btnNextPage" class="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-pnjBlue transition-colors"><i class="fas fa-chevron-right"></i></button>
                     </div>
                 </div>
             </div>
@@ -956,40 +956,29 @@
     <datalist id="ttQuayList"><option value="Đã xong"><option value="Đang quay"><option value="Chưa quay"></datalist>
     <datalist id="ttDungList"><option value="Đã xong"><option value="Đang dựng"><option value="Chưa dựng"></datalist>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    <script>
+        // ---------------------------------------------------------
+        // DÁN LINK WEB APP URL CỦA BẠN VÀO ĐÂY:
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwX69lvvWi-aPOMOO_xtiCpLffVoaLrZ6Ut8opzizhdvy_Jbx36fdUrWdvr8l219EO/exec"; 
+        // ---------------------------------------------------------
 
-        let firebaseConfig;
-        try {
-            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-                firebaseConfig = JSON.parse(__firebase_config);
-            } else {
-                throw new Error("Missing config");
-            }
-        } catch (e) {
-            // CẤU HÌNH FIREBASE CỦA BẠN (CHẠY TRÊN GITHUB)
-            firebaseConfig = {
-                apiKey: "AIzaSyBW_picOLzLjkU-JT3PrfwDpFbUN5Cw9ag",
-                authDomain: "product-air-onsite.firebaseapp.com",
-                projectId: "product-air-onsite",
-                storageBucket: "product-air-onsite.firebasestorage.app",
-                messagingSenderId: "669904152111",
-                appId: "1:669904152111:web:3d4d53af1fb082c83608da",
-                measurementId: "G-NDXY6R3LVF"
-            };
-        }
+        var tableData = [];
+        var videoData = [];
+        var videoBrandManualData = [];
+        var imageManualDates = {}; 
+        var imageManualEndDates = {}; 
+        var imageManualRetouchStarts = {}; 
+        var imageManualRetouchEnds = {}; 
+        var chartDoneInstance = null;
+        var chartVideoInstance = null;
+        var chartVideoBrandInstance = null;
+        var chartBrandInstance = null;
+        var chartBrandChupInstance = null;
+        window.globalSkuFilterArray = [];
+        window.globalSkuFilterArrayLower = []; 
+        var currentPage = 1;
+        const rowsPerPage = 100;
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' && __app_id ? __app_id : "product-air-onsite";
-        
-        let currentUser = null;
-        let unsubscribeSnapshot = null;
-
-        // HÀM SỬA LỖI: Xử lý hiển thị giao diện ngay cả khi mất mạng / thiếu API Key
         window.loadDataLocal = function() {
             const loader = document.getElementById('global-loader');
             if (loader) {
@@ -1007,131 +996,137 @@
             }
         };
 
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Firebase Auth Error:", error);
-                const loaderText = document.getElementById('loader-text');
-                if (loaderText) loaderText.innerText = "Chưa cấu hình Firebase API. Đang mở chế độ cục bộ (Offline)...";
-                setTimeout(() => { if(window.loadDataLocal) window.loadDataLocal(); }, 1500);
-            }
-        };
-
-        const setupApp = async () => {
-            await initAuth();
-            onAuthStateChanged(auth, (user) => {
-                currentUser = user;
-                if (user) {
-                    window.listenToCloudData();
-                } else {
-                    if(window.loadDataLocal) window.loadDataLocal();
-                }
-            });
-        };
-
-        window.isFakeLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
-        window.applyAdminState();
-        
-        setupApp();
-
-        window.listenToCloudData = function() {
-            if (!currentUser) return;
-            if (unsubscribeSnapshot) unsubscribeSnapshot();
-            
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data');
+        window.listenToCloudData = async function() {
             const loader = document.getElementById('global-loader');
             const loaderText = document.getElementById('loader-text');
             if (loader) loader.classList.remove('hidden', 'opacity-0');
-            
-            unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
-                if (loaderText) loaderText.innerText = "Đang tải và xử lý dữ liệu...";
-                
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    window.tableData = data.tableData || [];
-                    window.videoData = data.videoData || [];
-                    window.videoBrandManualData = data.videoBrandManualData || [];
-                    window.imageManualDates = data.imageManualDates || {};
-                    window.imageManualEndDates = data.imageManualEndDates || {};
-                    window.imageManualRetouchStarts = data.imageManualRetouchStarts || {};
-                    window.imageManualRetouchEnds = data.imageManualRetouchEnds || {};
-                    
-                    if (data.flowProcessSettings) localStorage.setItem('pnj_flow_process_settings', JSON.stringify(data.flowProcessSettings));
-                    if (data.flowSettings) localStorage.setItem('pnj_flow_settings', JSON.stringify(data.flowSettings));
-                    if (data.timestamp && window.updateLastUpdatedUI) window.updateLastUpdatedUI(data.timestamp);
+            if (loaderText) loaderText.innerText = "Đang tải dữ liệu từ Google Drive...";
 
-                    // TỐI ƯU HÓA: Chia nhỏ luồng vẽ UI để không làm đơ trình duyệt (Non-blocking UI)
-                    setTimeout(() => { if (window.renderTable) window.renderTable(); }, 0);
-                    setTimeout(() => { if (window.renderSummary) window.renderSummary(); }, 50);
-                    setTimeout(() => { if (window.renderReport) window.renderReport(); }, 100);
-                    setTimeout(() => { 
-                        if (window.renderVideoTable) window.renderVideoTable(); 
-                        if (window.renderVideoBrandTable) window.renderVideoBrandTable();
-                        if (window.renderVideoDashboard) window.renderVideoDashboard();
-                    }, 150);
-                    
-                    // Vẽ cái nặng nhất (Gantt Chart & Bảng hình ảnh) sau cùng
-                    setTimeout(() => { 
-                        if (window.renderImageTrackingTable) window.renderImageTrackingTable(); 
-                        
-                        // Hoàn tất -> Tắt Loading
-                        if (loader) {
-                            loader.classList.add('opacity-0');
-                            setTimeout(() => loader.classList.add('hidden'), 500);
-                        }
-                    }, 200);
-
-                } else {
-                    if (window.loadDataLocal) window.loadDataLocal();
+            try {
+                if(GOOGLE_SCRIPT_URL === "DÁN_LINK_WEB_APP_URL_VAO_DAY" || !GOOGLE_SCRIPT_URL) {
+                    throw new Error("Chưa điền link Google Script!");
                 }
-            }, (error) => {
-                console.warn("Lỗi đồng bộ Cloud:", error);
-                const loaderText = document.getElementById('loader-text');
-                if (loaderText) loaderText.innerText = "Lỗi kết nối máy chủ! Đang mở dữ liệu nội bộ...";
-                setTimeout(() => { if (window.loadDataLocal) window.loadDataLocal(); }, 1000);
-            });
+
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                if (!response.ok) throw new Error("Network response was not ok");
+                
+                const data = await response.json();
+                
+                if (loaderText) loaderText.innerText = "Đang xử lý giao diện...";
+
+                window.tableData = data.tableData || [];
+                window.videoData = data.videoData || [];
+                window.videoBrandManualData = data.videoBrandManualData || [];
+                window.imageManualDates = data.imageManualDates || {};
+                window.imageManualEndDates = data.imageManualEndDates || {};
+                window.imageManualRetouchStarts = data.imageManualRetouchStarts || {};
+                window.imageManualRetouchEnds = data.imageManualRetouchEnds || {};
+                
+                if (data.flowProcessSettings) localStorage.setItem('pnj_flow_process_settings', JSON.stringify(data.flowProcessSettings));
+                if (data.flowSettings) localStorage.setItem('pnj_flow_settings', JSON.stringify(data.flowSettings));
+                if (data.timestamp && window.updateLastUpdatedUI) window.updateLastUpdatedUI(data.timestamp);
+
+                setTimeout(() => { if (window.renderTable) window.renderTable(); }, 0);
+                setTimeout(() => { if (window.renderSummary) window.renderSummary(); }, 50);
+                setTimeout(() => { if (window.renderReport) window.renderReport(); }, 100);
+                setTimeout(() => { 
+                    if (window.renderVideoTable) window.renderVideoTable(); 
+                    if (window.renderVideoBrandTable) window.renderVideoBrandTable();
+                    if (window.renderVideoDashboard) window.renderVideoDashboard();
+                }, 150);
+                
+                setTimeout(() => { 
+                    if (window.renderImageTrackingTable) window.renderImageTrackingTable(); 
+                    if (loader) {
+                        loader.classList.add('opacity-0');
+                        setTimeout(() => loader.classList.add('hidden'), 500);
+                    }
+                }, 200);
+
+            } catch (error) {
+                console.warn("Lỗi tải dữ liệu Google Drive:", error);
+                if (loaderText) loaderText.innerText = "Lỗi kết nối Drive! Đang mở dữ liệu nội bộ...";
+                setTimeout(() => { window.loadDataLocal(); }, 1500);
+            }
         };
 
         window.saveDataToCloud = async function() {
             if (!window.isFakeLoggedIn) { alert("Vui lòng đăng nhập Admin để lưu dữ liệu!"); return; }
-            if (!currentUser) { alert("Đang kết nối hệ thống máy chủ, vui lòng thử lại sau giây lát."); return; }
+            
+            const toast = document.getElementById('toast');
+            const now = new Date().toISOString();
+            
+            const payload = {
+                tableData: window.tableData || [],
+                videoData: window.videoData || [],
+                videoBrandManualData: window.videoBrandManualData || [],
+                imageManualDates: window.imageManualDates || {},
+                imageManualEndDates: window.imageManualEndDates || {},
+                imageManualRetouchStarts: window.imageManualRetouchStarts || {},
+                imageManualRetouchEnds: window.imageManualRetouchEnds || {},
+                flowProcessSettings: JSON.parse(localStorage.getItem('pnj_flow_process_settings') || '{}'),
+                flowSettings: JSON.parse(localStorage.getItem('pnj_flow_settings') || '{}'),
+                timestamp: now
+            };
+
             try {
-                const now = new Date().toISOString();
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data'); 
-                await setDoc(docRef, {
-                    tableData: window.tableData || [],
-                    videoData: window.videoData || [],
-                    videoBrandManualData: window.videoBrandManualData || [],
-                    imageManualDates: window.imageManualDates || {},
-                    imageManualEndDates: window.imageManualEndDates || {},
-                    imageManualRetouchStarts: window.imageManualRetouchStarts || {},
-                    imageManualRetouchEnds: window.imageManualRetouchEnds || {},
-                    flowProcessSettings: JSON.parse(localStorage.getItem('pnj_flow_process_settings') || '{}'),
-                    flowSettings: JSON.parse(localStorage.getItem('pnj_flow_settings') || '{}'),
-                    timestamp: now
-                });
-                
-                if (window.updateLastUpdatedUI) window.updateLastUpdatedUI(now);
-                
-                const toast = document.getElementById('toast'); 
-                if (toast) {
-                    toast.classList.remove('opacity-0', 'translate-y-[-10px]'); 
-                    setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-[-10px]'); }, 2500);
+                if(GOOGLE_SCRIPT_URL === "DÁN_LINK_WEB_APP_URL_VAO_DAY" || !GOOGLE_SCRIPT_URL) {
+                    alert("Cần điền Link Google Script vào code trước khi lưu!"); return;
                 }
-            } catch(e) {
-                console.warn("Lưu Cloud thất bại:", e.message);
-                alert("Lưu Cloud thất bại: Hệ thống sẽ tự động lưu tạm trên máy của bạn.");
-                if(window.saveDataLocal) window.saveDataLocal(); 
+
+                const saveBtns = document.querySelectorAll('button[onclick="window.saveData()"]');
+                const originalHtmls = [];
+                saveBtns.forEach((btn, idx) => {
+                    originalHtmls[idx] = btn.innerHTML;
+                    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang lưu...`;
+                    btn.disabled = true;
+                });
+
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                saveBtns.forEach((btn, idx) => {
+                    btn.innerHTML = originalHtmls[idx];
+                    btn.disabled = false;
+                });
+
+                if (result.status === "success") {
+                    if (window.updateLastUpdatedUI) window.updateLastUpdatedUI(now);
+                    if (toast) {
+                        toast.innerHTML = `<i class="fas fa-check-circle text-lg"></i> Dữ liệu đã lưu an toàn lên Google Drive!`;
+                        toast.classList.remove('opacity-0', 'translate-y-[-10px]'); 
+                        setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-[-10px]'); }, 2500);
+                    }
+                } else {
+                    throw new Error(result.message || "Lỗi không xác định từ Google Script");
+                }
+            } catch (error) {
+                console.error("Lỗi lưu dữ liệu Google Drive:", error);
+                alert("Lưu lên Google Drive thất bại!\nChi tiết: " + error.message);
+                
+                const saveBtns = document.querySelectorAll('button[onclick="window.saveData()"]');
+                saveBtns.forEach(btn => {
+                    btn.innerHTML = `<i class="fas fa-save"></i> Lưu Dữ Liệu`;
+                    btn.disabled = false;
+                });
             }
         };
-    </script>
 
-    <script>
+        window.saveData = function() {
+            if (!window.isFakeLoggedIn) {
+                alert("Vui lòng đăng nhập Admin để lưu dữ liệu!");
+                return;
+            }
+            if (window.saveDataToCloud) {
+                window.saveDataToCloud();
+            }
+        };
+
         window.handleLogin = function() {
             const username = document.getElementById('admin-username').value;
             const pass = document.getElementById('admin-pass').value;
@@ -1170,25 +1165,6 @@
             }
         };
 
-        var tableData = [];
-        var videoData = [];
-        var videoBrandManualData = [];
-        var imageManualDates = {}; 
-        var imageManualEndDates = {}; 
-        var imageManualRetouchStarts = {}; 
-        var imageManualRetouchEnds = {}; 
-        var chartDoneInstance = null;
-        var chartVideoInstance = null;
-        var chartVideoBrandInstance = null;
-        var chartBrandInstance = null;
-        var chartBrandChupInstance = null;
-        window.globalSkuFilterArray = [];
-        window.globalSkuFilterArrayLower = []; 
-        
-        // Cấu hình phân trang Database
-        var currentPage = 1;
-        const rowsPerPage = 100;
-
         window.applyGlobalSkuFilter = function(val) {
             const searchText = val !== undefined ? val : (document.getElementById('search-sku-report')?.value || '');
             
@@ -1205,7 +1181,7 @@
                 if (el && el.value !== searchText) el.value = searchText;
             });
             
-            currentPage = 1; // Reset trang về 1 khi tìm kiếm
+            currentPage = 1; 
             if (window.renderTable) window.renderTable();
             if (window.renderSummary) window.renderSummary();
             if (window.renderReport) window.renderReport();
@@ -1367,12 +1343,6 @@
             window.isFakeLoggedIn = oldSaveState;
         };
 
-        function togglePendingDetails() {
-            const details = document.getElementById('pending-m-details');
-            const icon = document.getElementById('icon-pending-details');
-            if (details && icon) { details.classList.toggle('hidden'); icon.classList.toggle('rotate-180'); }
-        }
-
         window.toggleSection = function(contentId, iconId) {
             const content = document.getElementById(contentId);
             const icon = document.getElementById(iconId);
@@ -1417,17 +1387,17 @@
             const activeBtn = document.getElementById('btn-' + tabId);
             if(activeBtn) activeBtn.className = "bg-pnjBlue text-white py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-md";
 
-            if(tabId === 'tab-summary') { populateSummaryFilters(); window.renderSummary(); window.loadFlowSettings(); }
-            else if (tabId === 'tab-report') { populateReportFilters(); window.renderReport(); }
+            if(tabId === 'tab-summary') { window.populateSummaryFilters(); window.renderSummary(); window.loadFlowSettings(); }
+            else if (tabId === 'tab-report') { window.populateReportFilters(); window.renderReport(); }
             else if (tabId === 'tab-video') { window.populateReviewFilters(); window.renderVideoTable(); window.renderVideoDashboard(); window.renderReviewTable(); }
-            else if (tabId === 'tab-image') { populateImageFilters(); window.renderImageTrackingTable(); }
+            else if (tabId === 'tab-image') { window.populateImageFilters(); window.renderImageTrackingTable(); }
             else if (tabId === 'tab-process') { window.loadProcessFlowSettings(); }
             else if (tabId === 'tab-database') { window.renderTable(); }
         }
 
-        function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
+        window.generateId = function() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
         
-        function parseDateFromCSV(dateStr) {
+        window.parseDateFromCSV = function(dateStr) {
             if (!dateStr) return '';
             if (dateStr.includes('/')) {
                 const parts = dateStr.split('/');
@@ -1440,7 +1410,7 @@
             return dateStr;
         }
         
-        function formatDateToDisplay(dateStr) {
+        window.formatDateToDisplay = function(dateStr) {
             if (!dateStr) return '';
             if (dateStr.includes('-')) {
                 const parts = dateStr.split('-');
@@ -1449,7 +1419,7 @@
             return dateStr;
         }
 
-        function formatDateForExport(dateStr) {
+        window.formatDateForExport = function(dateStr) {
             if (!dateStr) return '';
             if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
                 const parts = dateStr.split('-');
@@ -1458,81 +1428,81 @@
             return dateStr;
         }
 
-        function getLocalDateStr(d) {
+        window.getLocalDateStr = function(d) {
             return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
         }
 
-        function getDayName(dateStr) {
+        window.getDayName = function(dateStr) {
             let d = new Date(dateStr).getDay();
             if(d === 0) return 'CN';
             return 'T' + (d + 1);
         }
         
-        function isWeekend(dateStr) {
+        window.isWeekend = function(dateStr) {
             let d = new Date(dateStr).getDay();
             return d === 0 || d === 6;
         }
 
-        function isHoliday(dateStr) {
+        window.isHoliday = function(dateStr) {
             const holidays = ['2026-04-26', '2026-04-27', '2026-04-30', '2026-05-01'];
             return holidays.includes(dateStr);
         }
 
-        function getWorkingDays(startDate, endDate) {
+        window.getWorkingDays = function(startDate, endDate) {
             if (!startDate || !endDate) return 0;
             let start = new Date(startDate); let end = new Date(endDate);
             if (isNaN(start.getTime()) || isNaN(end.getTime()) || start > end) return 0;
             let count = 0; let d = new Date(start);
             while (d <= end) {
-                let ds = getLocalDateStr(d);
+                let ds = window.getLocalDateStr(d);
                 let day = d.getDay();
-                if (day !== 0 && day !== 6 && !isHoliday(ds)) count++;
+                if (day !== 0 && day !== 6 && !window.isHoliday(ds)) count++;
                 d.setDate(d.getDate() + 1);
             }
             return count;
         }
 
-        function addWorkingDays(dateStr, days) {
+        window.addWorkingDays = function(dateStr, days) {
             if (!dateStr) return '';
             let d = new Date(dateStr);
             if (isNaN(d.getTime())) return '';
-            while (d.getDay() === 0 || d.getDay() === 6 || isHoliday(getLocalDateStr(d))) {
+            while (d.getDay() === 0 || d.getDay() === 6 || window.isHoliday(window.getLocalDateStr(d))) {
                 d.setDate(d.getDate() + 1);
             }
             while (days > 0) {
                 d.setDate(d.getDate() + 1);
-                let ds = getLocalDateStr(d);
-                if (d.getDay() !== 0 && d.getDay() !== 6 && !isHoliday(ds)) days--;
+                let ds = window.getLocalDateStr(d);
+                if (d.getDay() !== 0 && d.getDay() !== 6 && !window.isHoliday(ds)) days--;
             }
-            return getLocalDateStr(d);
+            return window.getLocalDateStr(d);
         }
 
-        function calculateDays(startDate, receiveDate) {
+        window.calculateDays = function(startDate, receiveDate) {
             if (!startDate || !receiveDate) return '';
             const start = new Date(startDate); const receive = new Date(receiveDate);
             const diffTime = receive - start;
             return diffTime < 0 ? 0 : Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
         }
 
-        function getDatesInRange(startStr, endStr) {
+        window.getDatesInRange = function(startStr, endStr) {
             let dates = [];
             let curr = new Date(startStr);
             let end = new Date(endStr);
             if(isNaN(curr.getTime()) || isNaN(end.getTime())) return dates;
             while(curr <= end) {
-                dates.push(getLocalDateStr(curr));
+                dates.push(window.getLocalDateStr(curr));
                 curr.setDate(curr.getDate() + 1);
             }
             return dates;
         }
 
-        function getProcessDays(skuCount) {
+        window.getProcessDays = function(skuCount) {
             if (!skuCount || skuCount <= 0) return 0;
             return Math.max(1, Math.ceil(skuCount * 5 / 160));
         }
 
-        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '', videoReview: '', imageReview: '', brand: '', brand2: '' }); window.renderTable(); }
-        window.addNewVideoRow = function() { if(!window.isFakeLoggedIn) return; videoData.unshift({ id: generateId(), month: '', loVideo: '', slThucTe: 0, ttQuay: '', ttDung: '', ghiChu: '' }); window.renderVideoTable(); }
+        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: window.generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '', videoReview: '', imageReview: '', brand: '', brand2: '' }); window.renderTable(); }
+        window.addNewVideoRow = function() { if(!window.isFakeLoggedIn) return; videoData.unshift({ id: window.generateId(), month: '', loVideo: '', slThucTe: 0, ttQuay: '', ttDung: '', ghiChu: '' }); window.renderVideoTable(); }
         window.deleteRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { tableData = tableData.filter(row => row.id !== id); window.renderTable(); } }
         window.deleteVideoRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { videoData = videoData.filter(row => row.id !== id); window.renderVideoTable(); } }
         window.clearAllData = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa toàn bộ Database?")) { tableData = []; window.renderTable(); window.saveData(); } }
@@ -1544,7 +1514,7 @@
             if (rowIndex > -1) {
                 tableData[rowIndex][field] = value;
                 if (field === 'ngayBatDau' || field === 'ngayNhan') {
-                    const days = calculateDays(tableData[rowIndex].ngayBatDau, tableData[rowIndex].ngayNhan);
+                    const days = window.calculateDays(tableData[rowIndex].ngayBatDau, tableData[rowIndex].ngayNhan);
                     const cell = document.getElementById(`days_${id}`);
                     if(cell) cell.innerText = days !== '' ? days : '-';
                 }
@@ -1572,10 +1542,9 @@
         window.updateImageManualRetouchStart = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchStarts[key] = value; else delete imageManualRetouchStarts[key]; window.renderImageTrackingTable(); window.saveData(); }
         window.updateImageManualRetouchEnd = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchEnds[key] = value; else delete imageManualRetouchEnds[key]; window.renderImageTrackingTable(); window.saveData(); }
 
-        // --- CÁC HÀM XỬ LÝ BIỂU ĐỒ BRAND VIDEO NHẬP TAY ---
         window.addVideoBrandRow = function() {
             if(!window.isFakeLoggedIn) return;
-            videoBrandManualData.push({ id: generateId(), brand: '', count: 0 });
+            videoBrandManualData.push({ id: window.generateId(), brand: '', count: 0 });
             window.renderVideoBrandTable();
             window.renderVideoDashboard();
         }
@@ -1601,38 +1570,28 @@
             if(!tbody) return;
             tbody.innerHTML = videoBrandManualData.map(row => `
                 <tr class="hover:bg-gray-50 transition-colors bg-white">
-                    <td class="py-1.5 px-2 text-center border-r border-gray-100"><button onclick="deleteVideoBrandRow('${row.id}')" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button></td>
-                    <td class="py-1.5 px-2 border-r border-gray-100"><input type="text" value="${row.brand}" onchange="updateVideoBrandCell('${row.id}', 'brand', this.value)" class="w-full text-xs p-1.5 border border-transparent hover:border-gray-300 focus:border-pnjGold rounded outline-none font-semibold text-[#1C3B5E]" placeholder="Tên brand..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="py-1.5 px-2"><input type="number" value="${row.count}" onchange="updateVideoBrandCell('${row.id}', 'count', this.value)" class="w-full text-xs p-1.5 text-center border border-transparent hover:border-gray-300 focus:border-pnjGold rounded outline-none font-bold text-pnjGold bg-pnjGold/5" placeholder="0" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="py-1.5 px-2 text-center border-r border-gray-100"><button onclick="window.deleteVideoBrandRow('${row.id}')" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button></td>
+                    <td class="py-1.5 px-2 border-r border-gray-100"><input type="text" value="${row.brand}" onchange="window.updateVideoBrandCell('${row.id}', 'brand', this.value)" class="w-full text-xs p-1.5 border border-transparent hover:border-gray-300 focus:border-pnjGold rounded outline-none font-semibold text-[#1C3B5E]" placeholder="Tên brand..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="py-1.5 px-2"><input type="number" value="${row.count}" onchange="window.updateVideoBrandCell('${row.id}', 'count', this.value)" class="w-full text-xs p-1.5 text-center border border-transparent hover:border-gray-300 focus:border-pnjGold rounded outline-none font-bold text-pnjGold bg-pnjGold/5" placeholder="0" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                 </tr>
             `).join('') || `<tr><td colspan="3" class="py-4 text-center text-xs text-gray-400 italic">Bấm "Thêm Brand" để nhập số liệu</td></tr>`;
         }
 
-        window.saveData = function() {
-            if (!window.isFakeLoggedIn) {
-                alert("Vui lòng đăng nhập Admin để lưu dữ liệu!");
-                return;
-            }
-            if (window.saveDataToCloud) {
-                window.saveDataToCloud();
-            }
-        };
-
-        function getFilterState(fullType) {
+        window.getFilterState = function(fullType) {
             const cbs = document.querySelectorAll(`.cb-${fullType}`); 
             if (cbs.length === 0) return null; 
             const selectAllBtn = document.getElementById(`selectAll-${fullType}`);
             return (selectAllBtn && selectAllBtn.checked) ? 'ALL' : Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
         }
 
-        const sortValuesHelper = (a, b) => {
+        window.sortValuesHelper = function(a, b) {
             if (a === 'Trống') return 1; if (b === 'Trống') return -1;
             const numA = Number(a); const numB = Number(b);
             if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
             return a.toString().localeCompare(b.toString());
         };
 
-        function buildFilterDropdown(set, fullType, curSelected) {
+        window.buildFilterDropdown = function(set, fullType, curSelected) {
             const listEl = document.getElementById(`list-${fullType}`); if(!listEl) return;
             let allChecked = true;
             const searchInput = document.getElementById(`search-${fullType}`);
@@ -1640,15 +1599,15 @@
 
             if (set.size === 0) { listEl.innerHTML = '<div class="px-2 py-1.5 text-sm text-gray-400 italic">Không có dữ liệu</div>'; return; }
 
-            listEl.innerHTML = Array.from(set).sort(sortValuesHelper).map(val => {
+            listEl.innerHTML = Array.from(set).sort(window.sortValuesHelper).map(val => {
                 let isChecked = (curSelected === null || curSelected === 'ALL') ? true : curSelected.includes(val.toString());
                 if (!isChecked) allChecked = false;
-                return `<label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 px-2 py-1.5 rounded"><input type="checkbox" value="${val}" class="cb-${fullType} rounded text-pnjBlue focus:ring-pnjBlue" ${isChecked ? 'checked' : ''} onchange="handleCheckboxChange('${fullType}')"><span class="truncate">${val}</span></label>`;
+                return `<label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 px-2 py-1.5 rounded"><input type="checkbox" value="${val}" class="cb-${fullType} rounded text-pnjBlue focus:ring-pnjBlue" ${isChecked ? 'checked' : ''} onchange="window.handleCheckboxChange('${fullType}')"><span class="truncate">${val}</span></label>`;
             }).join('');
             
             const selectAllBtn = document.getElementById(`selectAll-${fullType}`); 
             if(selectAllBtn) selectAllBtn.checked = allChecked;
-            updateFilterLabel(fullType);
+            window.updateFilterLabel(fullType);
         }
 
         window.toggleFilterDropdown = function(id) {
@@ -1661,7 +1620,7 @@
 
         window.toggleAllCheckboxes = function(fullType, isChecked) {
             document.querySelectorAll(`.cb-${fullType}`).forEach(cb => cb.checked = isChecked);
-            updateFilterLabel(fullType);
+            window.updateFilterLabel(fullType);
             if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else if(fullType.startsWith('review-')) window.renderReviewTable(); else window.renderSummary();
         }
 
@@ -1669,11 +1628,11 @@
             const cbs = document.querySelectorAll(`.cb-${fullType}`);
             const selectAllBtn = document.getElementById(`selectAll-${fullType}`);
             if(selectAllBtn) selectAllBtn.checked = Array.from(cbs).every(cb => cb.checked);
-            updateFilterLabel(fullType);
+            window.updateFilterLabel(fullType);
             if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else if(fullType.startsWith('review-')) window.renderReviewTable(); else window.renderSummary();
         }
 
-        function updateFilterLabel(fullType) {
+        window.updateFilterLabel = function(fullType) {
             const cbs = document.querySelectorAll(`.cb-${fullType}`);
             const checkedCbs = Array.from(cbs).filter(cb => cb.checked);
             const labelEl = document.getElementById(`label-${fullType}`);
@@ -1698,10 +1657,7 @@
                 else { label.classList.add('hidden'); label.classList.remove('flex'); }
             });
         }
-    </script>
-    
-    <script>
-        // Các hàm xử lý Pagination
+
         window.changePage = function(delta) {
             let dataToRender = tableData;
             if (window.globalSkuFilterArrayLower && window.globalSkuFilterArrayLower.length > 0) {
@@ -1716,8 +1672,8 @@
             window.renderTable();
         };
 
-        function populateSummaryFilters() {
-            const curMonth = getFilterState('month'); const curNoi = getFilterState('noiMuon'); const curTT = getFilterState('ttMuon'); const curStatus = getFilterState('status');
+        window.populateSummaryFilters = function() {
+            const curMonth = window.getFilterState('month'); const curNoi = window.getFilterState('noiMuon'); const curTT = window.getFilterState('ttMuon'); const curStatus = window.getFilterState('status');
             const months = new Set(); const nois = new Set(); const tts = new Set(); const ttLos = new Set();
             let groupsForFilter = {};
 
@@ -1727,7 +1683,7 @@
                 months.add(row.month || 'Trống'); nois.add(row.noiMuon || 'Trống'); tts.add(row.ttMuon || 'Trống'); 
                 
                 const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const tt = row.ttMuon || 'Trống';
-                const d = calculateDays(row.ngayBatDau, row.ngayNhan); const l = row.loMuon || 'Trống';
+                const d = window.calculateDays(row.ngayBatDau, row.ngayNhan); const l = row.loMuon || 'Trống';
                 const bd = row.ngayBatDau || 'Trống'; const nh = row.ngayNhan || 'Trống'; const ds = d !== '' ? d : 'Trống';
                 const tr = row.ngayTra || 'Trống';
                 const k = `${m}|${n}|${l}|${bd}|${nh}|${tr}|${ds}|${tt}`;
@@ -1747,12 +1703,13 @@
                 ttLos.add(statusText);
             });
 
-            buildFilterDropdown(months, 'month', curMonth); buildFilterDropdown(nois, 'noiMuon', curNoi); buildFilterDropdown(tts, 'ttMuon', curTT); buildFilterDropdown(ttLos, 'status', curStatus);
+            window.buildFilterDropdown(months, 'month', curMonth); window.buildFilterDropdown(nois, 'noiMuon', curNoi); window.buildFilterDropdown(tts, 'ttMuon', curTT); window.buildFilterDropdown(ttLos, 'status', curStatus);
         }
+
         window.clearSummaryFilters = function() { ['month', 'noiMuon', 'ttMuon', 'status'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
 
-        function populateReportFilters() {
-            const curMonth = getFilterState('report-month'); const curNoi = getFilterState('report-noiMuon'); const curPhanLoai = getFilterState('report-phanLoai');
+        window.populateReportFilters = function() {
+            const curMonth = window.getFilterState('report-month'); const curNoi = window.getFilterState('report-noiMuon'); const curPhanLoai = window.getFilterState('report-phanLoai');
             const months = new Set(); const nois = new Set(); const phanLoais = new Set();
             tableData.forEach(row => { 
                 if (!window.isSkuMatched(row.sku)) return;
@@ -1761,12 +1718,13 @@
                 nois.add(row.noiMuon || 'Trống'); 
                 phanLoais.add(row.phanLoai || 'Trống');
             });
-            buildFilterDropdown(months, 'report-month', curMonth); buildFilterDropdown(nois, 'report-noiMuon', curNoi); buildFilterDropdown(phanLoais, 'report-phanLoai', curPhanLoai);
+            window.buildFilterDropdown(months, 'report-month', curMonth); window.buildFilterDropdown(nois, 'report-noiMuon', curNoi); window.buildFilterDropdown(phanLoais, 'report-phanLoai', curPhanLoai);
         }
+
         window.clearReportFilters = function() { ['report-month', 'report-noiMuon', 'report-phanLoai'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
 
-        function populateImageFilters() {
-            const curMonth = getFilterState('img-month'); const curNoi = getFilterState('img-noiMuon'); const curLo = getFilterState('img-loMuon'); const curStatus = getFilterState('img-status');
+        window.populateImageFilters = function() {
+            const curMonth = window.getFilterState('img-month'); const curNoi = window.getFilterState('img-noiMuon'); const curLo = window.getFilterState('img-loMuon'); const curStatus = window.getFilterState('img-status');
             const months = new Set(); const nois = new Set(); const los = new Set(); const ttLos = new Set();
             
             let dailyGroups = {};
@@ -1794,8 +1752,9 @@
                 ttLos.add(statusText);
             });
 
-            buildFilterDropdown(months, 'img-month', curMonth); buildFilterDropdown(nois, 'img-noiMuon', curNoi); buildFilterDropdown(los, 'img-loMuon', curLo); buildFilterDropdown(ttLos, 'img-status', curStatus);
+            window.buildFilterDropdown(months, 'img-month', curMonth); window.buildFilterDropdown(nois, 'img-noiMuon', curNoi); window.buildFilterDropdown(los, 'img-loMuon', curLo); window.buildFilterDropdown(ttLos, 'img-status', curStatus);
         }
+
         window.clearImageFilters = function() { 
             const lateCb = document.getElementById('filter-img-late'); if (lateCb) lateCb.checked = false;
             ['img-month', 'img-noiMuon', 'img-loMuon', 'img-status'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); 
@@ -1818,26 +1777,26 @@
             let schedules = {};
 
             sortedDates.forEach(g => {
-                let baseStart = addWorkingDays(g.ngayNhan, 1); 
+                let baseStart = window.addWorkingDays(g.ngayNhan, 1); 
                 let sKHO = null, eKHO = null;
                 if (g.khoSku > 0) {
                     sKHO = (globalNextFreeChupKHO && baseStart < globalNextFreeChupKHO) ? globalNextFreeChupKHO : baseStart;
-                    eKHO = addWorkingDays(sKHO, Math.max(0, getProcessDays(g.khoSku) - 1));
-                    globalNextFreeChupKHO = addWorkingDays(eKHO, 1);
+                    eKHO = window.addWorkingDays(sKHO, Math.max(0, window.getProcessDays(g.khoSku) - 1));
+                    globalNextFreeChupKHO = window.addWorkingDays(eKHO, 1);
                 }
 
                 let sNVT = null, eNVT = null;
                 if (g.nvtSku > 0) {
                     sNVT = (globalNextFreeChupNVT && baseStart < globalNextFreeChupNVT) ? globalNextFreeChupNVT : baseStart;
-                    eNVT = addWorkingDays(sNVT, Math.max(0, getProcessDays(g.nvtSku) - 1));
-                    globalNextFreeChupNVT = addWorkingDays(eNVT, 1);
+                    eNVT = window.addWorkingDays(sNVT, Math.max(0, window.getProcessDays(g.nvtSku) - 1));
+                    globalNextFreeChupNVT = window.addWorkingDays(eNVT, 1);
                 }
 
                 let sOther = null, eOther = null;
                 if (g.otherSku > 0) {
                     sOther = (globalNextFreeChupOther && baseStart < globalNextFreeChupOther) ? globalNextFreeChupOther : baseStart;
-                    eOther = addWorkingDays(sOther, Math.max(0, getProcessDays(g.otherSku) - 1));
-                    globalNextFreeChupOther = addWorkingDays(eOther, 1);
+                    eOther = window.addWorkingDays(sOther, Math.max(0, window.getProcessDays(g.otherSku) - 1));
+                    globalNextFreeChupOther = window.addWorkingDays(eOther, 1);
                 }
 
                 let starts = [sKHO, sNVT, sOther].filter(x => x !== null);
@@ -1849,12 +1808,12 @@
                 let finalStartChup = imageManualDates[manualKey] || minStart;
                 let finalEndChup = imageManualEndDates[manualKey] || maxEnd;
 
-                let sR = addWorkingDays(finalStartChup, 2); 
+                let sR = window.addWorkingDays(finalStartChup, 2); 
                 if (globalNextFreeRetouch && sR < globalNextFreeRetouch) sR = globalNextFreeRetouch;
                 let asR = imageManualRetouchStarts[manualKey] || sR;
-                let eR = addWorkingDays(asR, Math.max(0, getProcessDays(g.skuCount) - 1)); 
+                let eR = window.addWorkingDays(asR, Math.max(0, window.getProcessDays(g.skuCount) - 1)); 
                 let aeR = imageManualRetouchEnds[manualKey] || eR;
-                globalNextFreeRetouch = addWorkingDays(aeR, 1);
+                globalNextFreeRetouch = window.addWorkingDays(aeR, 1);
                 schedules[g.ngayNhan] = { endChup: finalEndChup, endRetouch: aeR, startChup: finalStartChup, startRetouch: asR, sKHO, eKHO, sNVT, eNVT, sOther, eOther };
             });
             return schedules;
@@ -1868,7 +1827,6 @@
                 dataToRender = tableData.filter(row => window.isSkuMatched(row.sku));
             }
 
-            // Xử lý thông số phân trang
             let totalRows = dataToRender.length;
             let totalPages = Math.ceil(totalRows / rowsPerPage);
             if (currentPage > totalPages) currentPage = totalPages || 1;
@@ -1878,33 +1836,32 @@
             let pageData = dataToRender.slice(startIndex, endIndex);
 
             tbody.innerHTML = pageData.map(row => {
-                const calculatedDays = calculateDays(row.ngayBatDau, row.ngayNhan);
+                const calculatedDays = window.calculateDays(row.ngayBatDau, row.ngayNhan);
                 return `
                     <tr class="hover:bg-gray-50 transition-colors group bg-white">
-                        <td class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} px-2 py-2 border-r border-gray-100 text-center"><button onclick="deleteRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
-                        <td class="px-2 py-1 border-r border-gray-100 sticky-col bg-white"><input type="text" value="${row.sku}" onchange="updateCell('${row.id}', 'sku', this.value)" class="font-bold text-pnjBlue" placeholder="Nhập SKU" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="number" min="1" max="12" value="${row.month}" onchange="updateCell('${row.id}', 'month', this.value)" class="text-center font-medium" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.noiMuon}" onchange="updateCell('${row.id}', 'noiMuon', this.value)" list="noiMuonList" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loMuon}" onchange="updateCell('${row.id}', 'loMuon', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttMuon}" onchange="updateCell('${row.id}', 'ttMuon', this.value)" list="ttMuonList" class="${row.ttMuon?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayChup || ''}" onchange="updateCell('${row.id}', 'ngayChup', this.value)" class="text-xs text-gray-500" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttChup}" onchange="updateCell('${row.id}', 'ttChup', this.value)" list="ttChupList" class="${row.ttChup?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayRetouch || ''}" onchange="updateCell('${row.id}', 'ngayRetouch', this.value)" class="text-xs text-gray-500" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttRetouch}" onchange="updateCell('${row.id}', 'ttRetouch', this.value)" list="ttRetouchList" class="${row.ttRetouch?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.phanLoai || ''}" onchange="updateCell('${row.id}', 'phanLoai', this.value)" list="phanLoaiList" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayBatDau}" onchange="updateCell('${row.id}', 'ngayBatDau', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayNhan}" onchange="updateCell('${row.id}', 'ngayNhan', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayTra}" onchange="updateCell('${row.id}', 'ngayTra', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} px-2 py-2 border-r border-gray-100 text-center"><button onclick="window.deleteRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
+                        <td class="px-2 py-1 border-r border-gray-100 sticky-col bg-white"><input type="text" value="${row.sku}" onchange="window.updateCell('${row.id}', 'sku', this.value)" class="font-bold text-pnjBlue" placeholder="Nhập SKU" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="number" min="1" max="12" value="${row.month}" onchange="window.updateCell('${row.id}', 'month', this.value)" class="text-center font-medium" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.noiMuon}" onchange="window.updateCell('${row.id}', 'noiMuon', this.value)" list="noiMuonList" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loMuon}" onchange="window.updateCell('${row.id}', 'loMuon', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttMuon}" onchange="window.updateCell('${row.id}', 'ttMuon', this.value)" list="ttMuonList" class="${row.ttMuon?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayChup || ''}" onchange="window.updateCell('${row.id}', 'ngayChup', this.value)" class="text-xs text-gray-500" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttChup}" onchange="window.updateCell('${row.id}', 'ttChup', this.value)" list="ttChupList" class="${row.ttChup?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayRetouch || ''}" onchange="window.updateCell('${row.id}', 'ngayRetouch', this.value)" class="text-xs text-gray-500" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttRetouch}" onchange="window.updateCell('${row.id}', 'ttRetouch', this.value)" list="ttRetouchList" class="${row.ttRetouch?.includes('Done') ? 'text-emerald-600 font-medium' : ''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.phanLoai || ''}" onchange="window.updateCell('${row.id}', 'phanLoai', this.value)" list="phanLoaiList" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayBatDau}" onchange="window.updateCell('${row.id}', 'ngayBatDau', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayNhan}" onchange="window.updateCell('${row.id}', 'ngayNhan', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${row.ngayTra}" onchange="window.updateCell('${row.id}', 'ngayTra', this.value)" class="text-xs" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-2 py-1 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5" id="days_${row.id}">${calculatedDays !== '' ? calculatedDays : '-'}</td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.note}" onchange="updateCell('${row.id}', 'note', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.videoReview || ''}" onchange="updateCell('${row.id}', 'videoReview', this.value)" placeholder="Link video..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.imageReview || ''}" onchange="updateCell('${row.id}', 'imageReview', this.value)" placeholder="Link hình ảnh..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.brand || ''}" onchange="updateCell('${row.id}', 'brand', this.value)" placeholder="Nhập brand..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1"><input type="text" value="${row.brand2 || ''}" onchange="updateCell('${row.id}', 'brand2', this.value)" placeholder="Nhập brand 2..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.note}" onchange="window.updateCell('${row.id}', 'note', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.videoReview || ''}" onchange="window.updateCell('${row.id}', 'videoReview', this.value)" placeholder="Link video..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.imageReview || ''}" onchange="window.updateCell('${row.id}', 'imageReview', this.value)" placeholder="Link hình ảnh..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.brand || ''}" onchange="window.updateCell('${row.id}', 'brand', this.value)" placeholder="Nhập brand..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1"><input type="text" value="${row.brand2 || ''}" onchange="window.updateCell('${row.id}', 'brand2', this.value)" placeholder="Nhập brand 2..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     </tr>`;
             }).join('');
             
-            // Cập nhật UI phân trang
             const totalCount = document.getElementById('totalRowsCount');
             if (totalCount) totalCount.innerText = totalRows.toLocaleString();
             
@@ -1939,16 +1896,15 @@
 
                 return `
                 <tr class="hover:bg-gray-50 transition-colors group">
-                    <td class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} px-2 py-2 text-center border-r border-gray-100"><button onclick="deleteVideoRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
-                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${row.month}" onchange="updateVideoCell('${row.id}', 'month', this.value)" class="text-center font-bold text-gray-700 bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loVideo || ''}" onchange="updateVideoCell('${row.id}', 'loVideo', this.value)" class="font-bold text-[#1C3B5E] bg-transparent border-none" placeholder="VD: Video-Jan" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100 w-24"><input type="number" value="${row.slThucTe || ''}" onchange="updateVideoCell('${row.id}', 'slThucTe', this.value)" class="text-center font-bold text-red-500 bg-transparent border-none" placeholder="0" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttQuay || ''}" list="ttQuayList" onchange="updateVideoCell('${row.id}', 'ttQuay', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tQClass}" placeholder="VD: Đã xong" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttDung || ''}" list="ttDungList" onchange="updateVideoCell('${row.id}', 'ttDung', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tDClass}" placeholder="VD: Đang dựng" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1"><input type="text" value="${row.ghiChu || ''}" onchange="updateVideoCell('${row.id}', 'ghiChu', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} px-2 py-2 text-center border-r border-gray-100"><button onclick="window.deleteVideoRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
+                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${row.month}" onchange="window.updateVideoCell('${row.id}', 'month', this.value)" class="text-center font-bold text-gray-700 bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loVideo || ''}" onchange="window.updateVideoCell('${row.id}', 'loVideo', this.value)" class="font-bold text-[#1C3B5E] bg-transparent border-none" placeholder="VD: Video-Jan" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100 w-24"><input type="number" value="${row.slThucTe || ''}" onchange="window.updateVideoCell('${row.id}', 'slThucTe', this.value)" class="text-center font-bold text-red-500 bg-transparent border-none" placeholder="0" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttQuay || ''}" list="ttQuayList" onchange="window.updateVideoCell('${row.id}', 'ttQuay', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tQClass}" placeholder="VD: Đã xong" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttDung || ''}" list="ttDungList" onchange="window.updateVideoCell('${row.id}', 'ttDung', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tDClass}" placeholder="VD: Đang dựng" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1"><input type="text" value="${row.ghiChu || ''}" onchange="window.updateVideoCell('${row.id}', 'ghiChu', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                 </tr>`;
             }).join('');
-            // Không gọi trực tiếp renderVideoDashboard ở đây để tránh đụng vòng lặp, đã gọi ở onSnapshot
         }
 
         window.renderVideoDashboard = function() {
@@ -1960,7 +1916,6 @@
                 yearlyTotal += sl; monthlyData[m].count += sl;
             });
 
-            // Thay đổi mục tiêu 480 thành 540
             let yearPct = Math.min(100, ((yearlyTotal / 540) * 100));
             let displayPct = yearPct % 1 === 0 ? yearPct.toFixed(0) : yearPct.toFixed(1);
             const yearPctEl = document.getElementById('kpi-video-year-pct'); if (yearPctEl) yearPctEl.innerText = `Đã đạt ${displayPct}% kế hoạch năm`;
@@ -1984,7 +1939,6 @@
                 }
             }
 
-            // Xử lý biểu đồ Brand cho Video từ dữ liệu nhập tay
             let brandCounts = {};
             videoBrandManualData.forEach(item => {
                 let b = (item.brand || 'Chưa đặt tên').trim();
@@ -2044,103 +1998,6 @@
             }
         }
 
-        window.populateReviewFilters = function() {
-            const curMonth = getFilterState('review-month');
-            const months = new Set();
-            tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return;
-                if (!row.loMuon) return;
-                months.add(row.month || 'Trống');
-            });
-            buildFilterDropdown(months, 'review-month', curMonth);
-        };
-
-        window.clearReviewFilters = function() {
-            ['review-month'].forEach(type => {
-                const btn = document.getElementById(`selectAll-${type}`);
-                if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); }
-            });
-        };
-
-        window.renderReviewTable = function() {
-            const tbody = document.getElementById('reviewSummaryBody');
-            if (!tbody) return;
-
-            const getV = (t) => {
-                const cbs = document.querySelectorAll(`.cb-${t}`);
-                if (cbs.length === 0) return ['ALL'];
-                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
-            };
-            const mF = getV('review-month');
-
-            let groups = {};
-            let grandTotalMuon = 0;
-            let grandTotalVideoYes = 0;
-            let grandTotalImageYes = 0;
-
-            tableData.forEach(row => {
-                if (!row.loMuon) return;
-                if (!window.isSkuMatched(row.sku)) return; 
-                
-                const m = row.month || 'Trống';
-                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
-
-                const l = row.loMuon;
-                const k = `${m}|${l}`;
-                
-                if (!groups[k]) {
-                    groups[k] = { month: m, loMuon: l, total: 0, videoYes: 0, imageYes: 0 };
-                }
-                groups[k].total++;
-                grandTotalMuon++;
-
-                if (row.videoReview && row.videoReview.toLowerCase().trim() === 'yes') {
-                    groups[k].videoYes++;
-                    grandTotalVideoYes++;
-                }
-                if (row.imageReview && row.imageReview.toLowerCase().trim() === 'yes') {
-                    groups[k].imageYes++;
-                    grandTotalImageYes++;
-                }
-            });
-
-            let sortedGroups = Object.values(groups).sort((a,b) => {
-                let mDiff = parseInt(a.month) - parseInt(b.month);
-                if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
-                return a.loMuon.localeCompare(b.loMuon);
-            });
-
-            tbody.innerHTML = sortedGroups.map(g => {
-                let isVideoDone = g.videoYes === g.total && g.total > 0;
-                let vClass = isVideoDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
-                let isImageDone = g.imageYes === g.total && g.total > 0;
-                let iClass = isImageDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
-
-                return `
-                    <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="px-4 py-3 text-center border-r border-gray-100 font-medium">${g.month}</td>
-                        <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${g.loMuon}</td>
-                        <td class="px-4 py-3 text-center border-r border-gray-100 font-bold text-gray-700">${g.total}</td>
-                        <td class="px-4 py-3 text-center border-r border-gray-100"><span class="${vClass}">${g.videoYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
-                        <td class="px-4 py-3 text-center"><span class="${iClass}">${g.imageYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
-                    </tr>
-                `;
-            }).join('') || `<tr><td colspan="5" class="px-4 py-8 text-center text-gray-400 italic">Chưa có dữ liệu phân bổ lô mượn.</td></tr>`;
-
-            const elTotalMuon = document.getElementById('reviewTotalMuon');
-            if (elTotalMuon) elTotalMuon.innerText = grandTotalMuon.toLocaleString();
-            
-            const elTotalVideo = document.getElementById('reviewTotalVideo');
-            if (elTotalVideo) elTotalVideo.innerText = grandTotalVideoYes.toLocaleString();
-            const elTotalVideoMuon = document.getElementById('reviewTotalVideoMuon');
-            if (elTotalVideoMuon) elTotalVideoMuon.innerText = grandTotalMuon.toLocaleString();
-
-            const elTotalImage = document.getElementById('reviewTotalImage');
-            if (elTotalImage) elTotalImage.innerText = grandTotalImageYes.toLocaleString();
-            const elTotalImageMuon = document.getElementById('reviewTotalImageMuon');
-            if (elTotalImageMuon) elTotalImageMuon.innerText = grandTotalMuon.toLocaleString();
-        };
-
         window.renderSummary = function() {
             const tbody = document.getElementById('summaryBody'); if(!tbody) return;
             
@@ -2165,7 +2022,7 @@
                 if (!nF.includes('ALL') && !nF.includes(n)) return;
                 if (!tF.includes('ALL') && !tF.includes(tt)) return;
 
-                const d = calculateDays(row.ngayBatDau, row.ngayNhan); 
+                const d = window.calculateDays(row.ngayBatDau, row.ngayNhan); 
                 const l = row.loMuon || 'Trống';
                 const bd = row.ngayBatDau || 'Trống'; 
                 const nh = row.ngayNhan || 'Trống'; 
@@ -2263,17 +2120,17 @@
 
                 return `
                 <tr class="hover:bg-gray-50 transition-colors bg-white">
-                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100 relative min-w-[160px]"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="window.updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="window.updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100 relative min-w-[160px]"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="window.updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="window.updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="window.updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     
                     <td class="px-2 py-1 border-r border-gray-100 min-w-[150px]">
                         <div class="flex items-center justify-center gap-1.5 w-full">
-                            <input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none ${isDaTra ? 'text-emerald-600 font-bold' : 'text-gray-500'} text-center flex-grow p-0 outline-none transition-colors" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
+                            <input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="window.updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none ${isDaTra ? 'text-emerald-600 font-bold' : 'text-gray-500'} text-center flex-grow p-0 outline-none transition-colors" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
                             <div class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} flex items-center pr-1" title="Đánh dấu lô này Đã Trả Hàng">
-                                <input type="checkbox" ${isDaTra ? 'checked' : ''} onchange="updateSummaryGroup('${g.ids.join(',')}', 'daTra', this.checked)" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 cursor-pointer shadow-sm transition-all hover:scale-110" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
+                                <input type="checkbox" ${isDaTra ? 'checked' : ''} onchange="window.updateSummaryGroup('${g.ids.join(',')}', 'daTra', this.checked)" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 cursor-pointer shadow-sm transition-all hover:scale-110" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
                             </div>
                             <div class="${window.isFakeLoggedIn ? 'hidden' : ''} flex items-center pr-1" title="${isDaTra ? 'Đã trả hàng' : 'Chưa trả'}">
                                 ${isDaTra ? '<i class="fas fa-check-circle text-emerald-500 text-sm"></i>' : '<div class="w-3.5 h-3.5"></div>'}
@@ -2282,11 +2139,11 @@
                     </td>
 
                     <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.ds}</td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="window.updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
                     <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
                     <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${Array.from(g.notes).join('; ')}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'note', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${Array.from(g.notes).join('; ')}" onchange="window.updateSummaryGroup('${g.ids.join(',')}', 'note', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     <td class="px-4 py-3 text-right font-black text-pnjBlue bg-pnjBlue/5">${g.count}</td>
                 </tr>`;
             }).join('');
@@ -2359,7 +2216,6 @@
                     if (iDC) { 
                         brandStats[brand].chup++; 
                         totalBrandChup++; 
-                        // Phân tích chi tiết Brand 2 riêng cho nhánh KDQT
                         if (brand.toUpperCase() === 'KDQT' && brand2 !== 'Trống' && brand2 !== '') {
                             if (!brandStats[brand].subBrands[brand2]) {
                                 brandStats[brand].subBrands[brand2] = 0;
@@ -2454,7 +2310,6 @@
                 sortedBrands.forEach(b => {
                     let pct = totalBrandChup > 0 ? ((b.chup / totalBrandChup) * 100).toFixed(1) + '%' : '0%';
                     
-                    // Render dòng Brand chính
                     htmlBrandTable += `
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${b.name}</td>
@@ -2463,9 +2318,8 @@
                         </tr>
                     `;
 
-                    // Render các dòng phân nhánh Brand 2 (nếu là KDQT)
                     if (b.name.toUpperCase() === 'KDQT' && Object.keys(b.subBrands).length > 0) {
-                        let sortedSubs = Object.entries(b.subBrands).sort((x, y) => y[1] - x[1]); // Sắp xếp Brand 2 theo SL giảm dần
+                        let sortedSubs = Object.entries(b.subBrands).sort((x, y) => y[1] - x[1]); 
                         sortedSubs.forEach(([subName, subCount]) => {
                             let subPct = totalBrandChup > 0 ? ((subCount / totalBrandChup) * 100).toFixed(1) + '%' : '0%';
                             htmlBrandTable += `
@@ -2500,15 +2354,13 @@
                                 ] 
                             }, 
                             options: { 
-                                indexAxis: 'y', // Chuyển thành biểu đồ ngang
+                                indexAxis: 'y', 
                                 responsive: true, 
                                 maintainAspectRatio: false, 
-                                layout: { padding: { right: 40, top: 10, bottom: 10 } }, // Chừa không gian bên phải cho số liệu
-                                plugins: { 
-                                    legend: { display: false } 
-                                }, 
+                                layout: { padding: { right: 40, top: 10, bottom: 10 } }, 
+                                plugins: { legend: { display: false } }, 
                                 scales: { 
-                                    x: { display: false, beginAtZero: true }, // Ẩn trục X cho đẹp
+                                    x: { display: false, beginAtZero: true }, 
                                     y: { border: { display: false }, grid: { display: false }, ticks: { font: { family: "'Be Vietnam Pro', sans-serif", weight: 'bold' }, color: '#4B5563' } } 
                                 } 
                             },
@@ -2518,8 +2370,8 @@
                                     const { ctx, data } = chart; 
                                     ctx.save(); 
                                     ctx.font = 'bold 12px "Be Vietnam Pro", sans-serif'; 
-                                    ctx.textAlign = 'left'; // Căn trái
-                                    ctx.textBaseline = 'middle'; // Căn giữa theo chiều dọc
+                                    ctx.textAlign = 'left'; 
+                                    ctx.textBaseline = 'middle'; 
                                     ctx.fillStyle = '#1C3B5E'; 
                                     data.datasets.forEach((dataset, i) => { 
                                         const meta = chart.getDatasetMeta(i); 
@@ -2527,7 +2379,6 @@
                                             meta.data.forEach((bar, index) => { 
                                                 const value = dataset.data[index]; 
                                                 if (value > 0) { 
-                                                    // Vẽ text nằm bên phải của thanh ngang
                                                     ctx.fillText(value.toLocaleString(), bar.x + 8, bar.y); 
                                                 } 
                                             }); 
@@ -2542,7 +2393,6 @@
             }
         };
 
-        // --- FIX CRITICAL: Bảng tiến độ và Gantt không bị co hẹp ngày khi tìm kiếm ---
         window.renderImageTrackingTable = function() {
             const tbody = document.getElementById('imageTrackingBody'); if(!tbody) return;
             const getV = (type) => {
@@ -2552,13 +2402,11 @@
             };
             const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon'); const sF = getV('status');
 
-            // BƯỚC 1: Lấy lịch trình thực tế GỐC (Tuyệt đối không dùng filter tìm kiếm ở bước này)
             let trueSchedules = window.getGlobalSchedule();
 
-            // BƯỚC 2: Nhóm dữ liệu để hiển thị (CÓ dùng filter tìm kiếm)
             let displayGroups = {};
             tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return; // BỘ LỌC TÌM KIẾM ĐƯỢC ÁP DỤNG TẠI ĐÂY
+                if (!window.isSkuMatched(row.sku)) return; 
                 if (!row.ngayNhan) return; 
                 
                 const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const l = row.loMuon || 'Trống';
@@ -2585,13 +2433,12 @@
 
             let todayStr = new Date().toISOString().slice(0, 10);
             
-            // BƯỚC 3: Ghép nối ngày tháng GỐC vào dữ liệu hiển thị (Bảo toàn độ dài của Gantt Chart)
             let processedGanttData = Object.values(displayGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan)).map(g => {
-                let ts = trueSchedules[g.ngayNhan]; // ts chứa ngày gốc
-                if (!ts) return null; // Safety check
+                let ts = trueSchedules[g.ngayNhan]; 
+                if (!ts) return null; 
                 
-                let tCD = getWorkingDays(ts.startChup, ts.endChup) || 1; 
-                let tRD = getWorkingDays(ts.startRetouch, ts.endRetouch) || 1;
+                let tCD = window.getWorkingDays(ts.startChup, ts.endChup) || 1; 
+                let tRD = window.getWorkingDays(ts.startRetouch, ts.endRetouch) || 1;
                 let isChupLate = todayStr > ts.endChup && g.chupDone < g.skuCount;
                 let isRetouchLate = todayStr > ts.endRetouch && g.retouchDone < g.skuCount;
                 
@@ -2600,10 +2447,8 @@
 
             window.currentGanttData = processedGanttData;
 
-            // Luôn gọi Alert Cảnh báo trước khi Bị Lọc để đảm bảo không bị ẩn đi
             if (window.renderDeadlineAlerts) window.renderDeadlineAlerts(processedGanttData);
 
-            // BƯỚC 4: Lọc theo Checkbox Trạng Thái trên thanh điều hướng
             const showOnlyLate = document.getElementById('filter-img-late')?.checked;
             if (showOnlyLate) { processedGanttData = processedGanttData.filter(g => g.isChupLate || g.isRetouchLate); }
 
@@ -2663,19 +2508,19 @@
                 html += `
                     <tr class="hover:bg-gray-50 transition-colors bg-white">
                         <td class="px-4 py-3 border-r border-gray-100 text-center min-w-[140px]">${ttMuonHTML}</td>
-                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue">${formatDateToDisplay(g.ngayNhan)}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue">${window.formatDateToDisplay(g.ngayNhan)}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-sm text-gray-600 min-w-[250px] whitespace-normal">${loListHTML}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue bg-pnjBlue/5">${g.skuCount}</td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startChup}" onchange="updateImageManualDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endChup}" onchange="updateImageManualEndDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startChup}" onchange="window.updateImageManualDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endChup}" onchange="window.updateImageManualEndDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.tCD}</td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startRetouch}" onchange="updateImageManualRetouchStart('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endRetouch}" onchange="updateImageManualRetouchEnd('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startRetouch}" onchange="window.updateImageManualRetouchStart('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endRetouch}" onchange="window.updateImageManualRetouchEnd('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-gray-700 bg-gray-100">${g.tRD}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
                         <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
-                        <td class="px-2 py-2 text-center"><button onclick="downloadSpecificSKUs('${g.ids.join(',')}', '${g.ngayNhan}')" class="bg-gray-100 hover:bg-pnjBlue hover:text-white text-pnjBlue p-2 rounded transition-colors shadow-sm" title="Tải mã SKU 13 của lô này"><i class="fas fa-file-csv"></i></button></td>
+                        <td class="px-2 py-2 text-center"><button onclick="window.downloadSpecificSKUs('${g.ids.join(',')}', '${g.ngayNhan}')" class="bg-gray-100 hover:bg-pnjBlue hover:text-white text-pnjBlue p-2 rounded transition-colors shadow-sm" title="Tải mã SKU 13 của lô này"><i class="fas fa-file-csv"></i></button></td>
                     </tr>`;
             });
             tbody.innerHTML = html || '<tr><td colspan="14" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu phù hợp.</td></tr>';
@@ -2692,11 +2537,89 @@
             const elTotal2 = document.getElementById('ganttGrandTotal');
             if (elTotal2) elTotal2.innerText = totalSKU.toLocaleString();
 
-            // Nhường luồng cho UI cập nhật bảng xong mới vẽ Gantt (rất tốn tài nguyên nếu dữ liệu lớn)
             setTimeout(() => {
                 if(window.renderGanttChart) window.renderGanttChart(processedGanttData);
             }, 50);
         }
+
+        window.renderReviewTable = function() {
+            const tbody = document.getElementById('reviewSummaryBody');
+            if (!tbody) return;
+
+            const getV = (t) => {
+                const cbs = document.querySelectorAll(`.cb-${t}`);
+                if (cbs.length === 0) return ['ALL'];
+                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            };
+            const mF = getV('review-month');
+
+            let groups = {};
+            let grandTotalMuon = 0;
+            let grandTotalVideoYes = 0;
+            let grandTotalImageYes = 0;
+
+            tableData.forEach(row => {
+                if (!row.loMuon) return;
+                if (!window.isSkuMatched(row.sku)) return; 
+                
+                const m = row.month || 'Trống';
+                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
+
+                const l = row.loMuon;
+                const k = `${m}|${l}`;
+                
+                if (!groups[k]) {
+                    groups[k] = { month: m, loMuon: l, total: 0, videoYes: 0, imageYes: 0 };
+                }
+                groups[k].total++;
+                grandTotalMuon++;
+
+                if (row.videoReview && row.videoReview.toLowerCase().trim() === 'yes') {
+                    groups[k].videoYes++;
+                    grandTotalVideoYes++;
+                }
+                if (row.imageReview && row.imageReview.toLowerCase().trim() === 'yes') {
+                    groups[k].imageYes++;
+                    grandTotalImageYes++;
+                }
+            });
+
+            let sortedGroups = Object.values(groups).sort((a,b) => {
+                let mDiff = parseInt(a.month) - parseInt(b.month);
+                if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
+                return a.loMuon.localeCompare(b.loMuon);
+            });
+
+            tbody.innerHTML = sortedGroups.map(g => {
+                let isVideoDone = g.videoYes === g.total && g.total > 0;
+                let vClass = isVideoDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
+                let isImageDone = g.imageYes === g.total && g.total > 0;
+                let iClass = isImageDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
+
+                return `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-4 py-3 text-center border-r border-gray-100 font-medium">${g.month}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${g.loMuon}</td>
+                        <td class="px-4 py-3 text-center border-r border-gray-100 font-bold text-gray-700">${g.total}</td>
+                        <td class="px-4 py-3 text-center border-r border-gray-100"><span class="${vClass}">${g.videoYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
+                        <td class="px-4 py-3 text-center"><span class="${iClass}">${g.imageYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
+                    </tr>
+                `;
+            }).join('') || `<tr><td colspan="5" class="px-4 py-8 text-center text-gray-400 italic">Chưa có dữ liệu phân bổ lô mượn.</td></tr>`;
+
+            const elTotalMuon = document.getElementById('reviewTotalMuon');
+            if (elTotalMuon) elTotalMuon.innerText = grandTotalMuon.toLocaleString();
+            
+            const elTotalVideo = document.getElementById('reviewTotalVideo');
+            if (elTotalVideo) elTotalVideo.innerText = grandTotalVideoYes.toLocaleString();
+            const elTotalVideoMuon = document.getElementById('reviewTotalVideoMuon');
+            if (elTotalVideoMuon) elTotalVideoMuon.innerText = grandTotalMuon.toLocaleString();
+
+            const elTotalImage = document.getElementById('reviewTotalImage');
+            if (elTotalImage) elTotalImage.innerText = grandTotalImageYes.toLocaleString();
+            const elTotalImageMuon = document.getElementById('reviewTotalImageMuon');
+            if (elTotalImageMuon) elTotalImageMuon.innerText = grandTotalMuon.toLocaleString();
+        };
 
         window.renderGanttChart = function(ganttData) {
             const container = document.getElementById('gantt-container'); if(!container) return;
@@ -2704,8 +2627,8 @@
 
             let minDate = ganttData[0].ngayNhan; let maxDate = ganttData[0].endRetouch;
             ganttData.forEach(g => { if (g.ngayNhan < minDate) minDate = g.ngayNhan; if (g.endRetouch > maxDate) maxDate = g.endRetouch; });
-            minDate = addWorkingDays(minDate, -1); maxDate = addWorkingDays(maxDate, 3);
-            let timelineDates = getDatesInRange(minDate, maxDate);
+            minDate = window.addWorkingDays(minDate, -1); maxDate = window.addWorkingDays(maxDate, 3);
+            let timelineDates = window.getDatesInRange(minDate, maxDate);
 
             let html = '<table class="text-sm text-left whitespace-nowrap border-collapse border border-gray-200" style="table-layout: fixed; min-width: 100%;">';
             html += '<thead class="text-xs text-gray-700 bg-gray-50 sticky top-0" style="z-index: 30;"><tr>';
@@ -2715,14 +2638,14 @@
             html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 60px; max-width: 60px; position: sticky; left: 340px; z-index: 30;" rowspan="2">SL</th>';
             
             timelineDates.forEach(d => {
-                let isW = isWeekend(d); let isH = isHoliday(d);
+                let isW = window.isWeekend(d); let isH = window.isHoliday(d);
                 let bgClass = (isW || isH) ? 'bg-gray-300' : 'bg-gray-100';
                 let parts = d.split('-'); let shortDate = `${parts[2]}/${parts[1]}`;
                 html += `<th class="px-1 py-1 border border-gray-200 text-center ${bgClass} text-[10px] min-w-[40px]">${shortDate}</th>`;
             });
             html += '</tr><tr>';
             timelineDates.forEach(d => {
-                let dayName = getDayName(d); let isW = isWeekend(d); let isH = isHoliday(d);
+                let dayName = window.getDayName(d); let isW = window.isWeekend(d); let isH = window.isHoliday(d);
                 let bgClass = (isW || isH) ? 'bg-gray-400 text-white' : 'bg-white';
                 html += `<th class="px-1 py-1 border border-gray-200 text-center ${bgClass} text-[10px] min-w-[40px]">${dayName}</th>`;
             });
@@ -2739,12 +2662,12 @@
 
                     html += `<tr>`;
                     html += `<td class="px-3 py-2 border border-gray-200 font-medium bg-white truncate" style="position: sticky; left: 0; z-index: 10;" title="${item.loMuon}">${item.loMuon}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center text-gray-500 bg-white" style="position: sticky; left: 150px; z-index: 10;">${formatDateToDisplay(g.ngayNhan)}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center text-gray-500 bg-white" style="position: sticky; left: 150px; z-index: 10;">${window.formatDateToDisplay(g.ngayNhan)}</td>`;
                     html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 250px; z-index: 10;">${item.noiMuon}</td>`;
                     html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 340px; z-index: 10;">${item.skuCount}</td>`;
                     
                     timelineDates.forEach(d => {
-                        let isW = isWeekend(d); let isH = isHoliday(d);
+                        let isW = window.isWeekend(d); let isH = window.isHoliday(d);
                         let isTaskDay = iStart && iEnd && d >= iStart && d <= iEnd && !isW && !isH;
                         let bgClass = isTaskDay ? 'bg-pnjGold text-white text-center text-[10px]' : ((isW || isH) ? 'bg-gray-100' : '');
                         html += `<td class="border border-gray-200 ${bgClass}">${isTaskDay ? 'Chụp' : ''}</td>`;
@@ -2759,7 +2682,7 @@
                 html += `<td class="px-3 py-2 border border-gray-200 text-center text-pnjBlue bg-gray-50" style="position: sticky; left: 340px; z-index: 10;">${g.skuCount}</td>`;
                 
                 timelineDates.forEach(d => {
-                    let isW = isWeekend(d); let isH = isHoliday(d);
+                    let isW = window.isWeekend(d); let isH = window.isHoliday(d);
                     let isTaskDay = d >= g.startRetouch && d <= g.endRetouch && !isW && !isH;
                     let cellClass = isTaskDay ? 'bg-pnjBlue text-white text-center text-[10px]' : ((isW || isH) ? 'bg-gray-200' : '');
                     html += `<td class="border border-gray-200 ${cellClass}">${isTaskDay ? 'Retouch' : ''}</td>`;
@@ -2778,8 +2701,8 @@
             if (dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
             
             let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại,Video review,Hình ảnh review,Brand,Brand 2\n";
-            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}","${(r.videoReview||'').replace(/"/g,'""')}","${(r.imageReview||'').replace(/"/g,'""')}","${(r.brand||'').replace(/"/g,'""')}","${(r.brand2||'').replace(/"/g,'""')}"\n`; });
-            downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
+            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${window.formatDateForExport(r.ngayBatDau)}","${window.formatDateForExport(r.ngayNhan)}","${window.formatDateForExport(r.ngayTra)}","${window.calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${window.formatDateForExport(r.ngayChup)}","${r.ttChup}","${window.formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}","${(r.videoReview||'').replace(/"/g,'""')}","${(r.imageReview||'').replace(/"/g,'""')}","${(r.brand||'').replace(/"/g,'""')}","${(r.brand2||'').replace(/"/g,'""')}"\n`; });
+            window.downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         window.exportSummaryCSV = function() {
@@ -2796,7 +2719,7 @@
                     return `"${val.replace(/"/g,'""')}"`; 
                 }).join(",") + "\n"; 
             });
-            downloadCSV(csv, `PNJ_Report_${new Date().toISOString().slice(0,10)}.csv`);
+            window.downloadCSV(csv, `PNJ_Report_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         window.exportReviewCSV = function() {
@@ -2807,7 +2730,7 @@
                     return `"${td.innerText.trim().replace(/"/g,'""')}"`; 
                 }).join(",") + "\n"; 
             });
-            downloadCSV(csv, `PNJ_TienDoReview_${new Date().toISOString().slice(0,10)}.csv`);
+            window.downloadCSV(csv, `PNJ_TienDoReview_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         window.exportReportBrandCSV = function() {
@@ -2818,7 +2741,7 @@
                     return `"${td.innerText.trim().replace(/"/g,'""')}"`; 
                 }).join(",") + "\n"; 
             });
-            downloadCSV(csv, `PNJ_Report_Brand_${new Date().toISOString().slice(0,10)}.csv`);
+            window.downloadCSV(csv, `PNJ_Report_Brand_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         window.downloadSpecificSKUs = function(idsStr, dateLabel) {
@@ -2827,7 +2750,7 @@
             if(rowsToExport.length === 0) return alert("Không tìm thấy dữ liệu!");
             let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Tình trạng chụp,Tình trạng retouch,Ghi chú\n";
             rowsToExport.forEach(r => { csv += `"${r.sku || ''}","${r.loMuon || ''}","${r.noiMuon || ''}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`; });
-            downloadCSV(csv, `DanhSachSKU_${dateLabel}.csv`);
+            window.downloadCSV(csv, `DanhSachSKU_${dateLabel}.csv`);
         }
 
         window.downloadFilteredSKUs = function() {
@@ -2839,8 +2762,8 @@
             let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Tình trạng mượn,Ngày nhận,Deadline Chụp,Deadline Retouch,Tình trạng trễ,Tình trạng chụp,Tình trạng retouch,Ghi chú\n";
             
             window.currentGanttData.forEach(g => {
-                let deadlineChup = formatDateForExport(g.endChup);
-                let deadlineRetouch = formatDateForExport(g.endRetouch);
+                let deadlineChup = window.formatDateForExport(g.endChup);
+                let deadlineRetouch = window.formatDateForExport(g.endRetouch);
                 
                 let groupRows = tableData.filter(r => g.ids.includes(r.id));
                 groupRows.forEach(r => {
@@ -2855,15 +2778,15 @@
                         if (isThisRowLateRetouch) statusArr.push("Trễ Retouch");
                         let lateStatus = statusArr.join(', ');
 
-                        csv += `"${r.sku}","${r.loMuon || ''}","${r.noiMuon || ''}","${r.ttMuon || ''}","${formatDateForExport(r.ngayNhan)}","${deadlineChup}","${deadlineRetouch}","${lateStatus}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`;
+                        csv += `"${r.sku}","${r.loMuon || ''}","${r.noiMuon || ''}","${r.ttMuon || ''}","${window.formatDateForExport(r.ngayNhan)}","${deadlineChup}","${deadlineRetouch}","${lateStatus}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`;
                     }
                 });
             });
 
-            downloadCSV(csv, `DanhSachSKU_SanXuatHinhAnh_${new Date().toISOString().slice(0,10)}.csv`);
+            window.downloadCSV(csv, `DanhSachSKU_SanXuatHinhAnh_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
-        function downloadCSV(csv, filename) {
+        window.downloadCSV = function(csv, filename) {
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             if (link.download !== undefined) {
@@ -2877,7 +2800,6 @@
             }
         }
 
-        // Import CSV Gốc
         window.importCSV = function(event) {
             if(!window.isFakeLoggedIn) return; 
             const file = event.target.files[0]; if (!file) return;
@@ -2892,18 +2814,18 @@
                     const c = lines[i].trim().split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"').trim());
                     if (c.length >= 4 && c[0]) {
                         newData.push({ 
-                            id: generateId()+i, 
+                            id: window.generateId()+i, 
                             sku: c[0] || '', 
                             month: c[1] || '', 
                             noiMuon: c[2] || '', 
                             loMuon: c[3] || '', 
-                            ngayBatDau: parseDateFromCSV(c[4]), 
-                            ngayNhan: parseDateFromCSV(c[5]), 
-                            ngayTra: parseDateFromCSV(c[6]), 
+                            ngayBatDau: window.parseDateFromCSV(c[4]), 
+                            ngayNhan: window.parseDateFromCSV(c[5]), 
+                            ngayTra: window.parseDateFromCSV(c[6]), 
                             ttMuon: c[8] || '', 
-                            ngayChup: parseDateFromCSV(c[9]), 
+                            ngayChup: window.parseDateFromCSV(c[9]), 
                             ttChup: c[10] || '', 
-                            ngayRetouch: parseDateFromCSV(c[11]), 
+                            ngayRetouch: window.parseDateFromCSV(c[11]), 
                             ttRetouch: c[12] || '', 
                             note: c[13] || '', 
                             phanLoai: c[14] || '', 
@@ -2926,6 +2848,13 @@
             };
             reader.readAsText(file);
         }
+
+        // KÍCH HOẠT HỆ THỐNG
+        window.addEventListener('DOMContentLoaded', () => {
+            window.isFakeLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
+            window.applyAdminState();
+            window.listenToCloudData();
+        });
     </script>
 </body>
 </html>
