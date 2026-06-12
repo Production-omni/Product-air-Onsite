@@ -959,7 +959,7 @@
     <script>
         // ---------------------------------------------------------
         // DÁN LINK WEB APP URL CỦA BẠN VÀO ĐÂY:
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwX69lvvWi-aPOMOO_xtiCpLffVoaLrZ6Ut8opzizhdvy_Jbx36fdUrWdvr8l219EO/exec"; 
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWhkrc0vGlQPCwUekpB_AkbSwOsvj__a89ZIASi0a30L2ZRYEwsNJChdIFu4_F5f1K/exec"; 
         // ---------------------------------------------------------
 
         var tableData = [];
@@ -1003,7 +1003,7 @@
             if (loaderText) loaderText.innerText = "Đang tải dữ liệu từ Google Drive...";
 
             try {
-                if(GOOGLE_SCRIPT_URL === "DÁN_LINK_WEB_APP_URL_VAO_DAY" || !GOOGLE_SCRIPT_URL) {
+                if(GOOGLE_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwWhkrc0vGlQPCwUekpB_AkbSwOsvj__a89ZIASi0a30L2ZRYEwsNJChdIFu4_F5f1K/exec" || !GOOGLE_SCRIPT_URL) {
                     throw new Error("Chưa điền link Google Script!");
                 }
 
@@ -1070,8 +1070,8 @@
             };
 
             try {
-                if(GOOGLE_SCRIPT_URL === "DÁN_LINK_WEB_APP_URL_VAO_DAY" || !GOOGLE_SCRIPT_URL) {
-                    alert("Cần điền Link Google Script vào code trước khi lưu!"); return;
+                if(GOOGLE_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwWhkrc0vGlQPCwUekpB_AkbSwOsvj__a89ZIASi0a30L2ZRYEwsNJChdIFu4_F5f1K/exec" || !GOOGLE_SCRIPT_URL) {
+                    alert("https://script.google.com/macros/s/AKfycbwWhkrc0vGlQPCwUekpB_AkbSwOsvj__a89ZIASi0a30L2ZRYEwsNJChdIFu4_F5f1K/exec"); return;
                 }
 
                 const saveBtns = document.querySelectorAll('button[onclick="window.saveData()"]');
