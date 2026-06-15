@@ -8,7 +8,7 @@
     <!-- Google Fonts: Be Vietnam Pro -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght=0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -52,7 +52,7 @@
         }
         input:hover:not(:disabled), select:hover:not(:disabled), textarea:hover:not(:disabled) { background: #f8fafc; border-color: #e2e8f0; }
         input:focus:not(:disabled), select:focus:not(:disabled), textarea:focus:not(:disabled) { border-color: #D4AF37; background: white; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
-        input:disabled, select:disabled, textarea:disabled { color: #4b5563; cursor: not-allowed; opacity: 0.7; }
+        input:disabled, select:disabled, textarea:disabled { color: #4b5563; cursor: not-allowed; }
         
         .sticky-col { position: sticky; left: 0; background-color: white; z-index: 10; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
         th.sticky-col { background-color: #003366; z-index: 20; }
@@ -70,12 +70,12 @@
             <div class="w-12 h-12 bg-pnjBlue text-pnjGold rounded-xl flex items-center justify-center font-bold text-2xl shadow-sm border border-pnjGold/30 relative z-10">P</div>
         </div>
         <h3 class="mt-6 text-xl font-bold text-pnjBlue tracking-wide">PNJ PRODUCT AIR</h3>
-        <p class="mt-2 text-sm text-gray-500 font-medium animate-pulse" id="loader-text">Đang đồng bộ dữ liệu hệ thống...</p>
+        <p class="mt-2 text-sm text-gray-500 font-medium animate-pulse" id="loader-text">Đang đồng bộ dữ liệu máy chủ...</p>
     </div>
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="bg-emerald-500 text-white px-5 py-2.5 rounded-lg shadow-lg transform transition-all duration-300 opacity-0 translate-y-[-10px] flex items-center gap-2 font-medium text-sm fixed top-4 right-4 z-[9999]">
-        <i class="fas fa-check-circle text-lg"></i> Dữ liệu đã được lưu!
+        <i class="fas fa-check-circle text-lg"></i> <span id="toast-msg">Dữ liệu đã được lưu thành công!</span>
     </div>
 
     <!-- LOGIN MODAL -->
@@ -111,7 +111,7 @@
             <div class="w-12 h-12 bg-pnjBlue text-pnjGold rounded-lg flex items-center justify-center font-bold text-2xl shadow-md border border-pnjGold/30">P</div>
             <div>
                 <h1 class="text-xl md:text-2xl font-bold text-pnjBlue uppercase tracking-wide">Product Air Onsite</h1>
-                <p id="last-update-time" class="text-xs text-gray-500 font-medium"><i class="fas fa-spinner fa-spin mr-1"></i>Đang kết nối hệ thống...</p>
+                <p id="last-update-time" class="text-xs text-gray-500 font-medium"><i class="fas fa-spinner fa-spin mr-1"></i>Đang kết nối Máy chủ PNJ...</p>
             </div>
         </div>
         
@@ -262,7 +262,7 @@
                         </div>
                     </div>
                     
-                    <div class="flex-1 hidden lg:block border-transparent"></div> <!-- Spacer -->
+                    <div class="flex-grow"></div>
                     
                     <div class="lg:ml-2 bg-[#F8F9FA] border border-gray-200 rounded-xl p-5 text-center w-full lg:w-56 shadow-sm">
                         <p class="font-bold text-xs text-[#1C3B5E] uppercase mb-2">Tổng Thời Gian</p>
@@ -410,7 +410,7 @@
                 </div>
             </div>
 
-            <!-- NEW SECTION: BẢNG THỐNG KÊ THEO BRAND (ĐÃ FIX UI) -->
+            <!-- BẢNG THỐNG KÊ THEO BRAND -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 mb-6">
                 <!-- Cột Biểu đồ -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
@@ -461,7 +461,7 @@
 
         </div> <!-- KẾT THÚC TAB REPORT -->
 
-        <!-- ==================== TAB 5: MƯỢN HÀNG (SUMMARY) ==================== -->
+        <!-- ==================== TAB 2: MƯỢN HÀNG (SUMMARY) ==================== -->
         <div id="tab-summary" class="hidden">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-white p-5 border-b border-gray-200 flex flex-col md:flex-row justify-between md:items-center gap-4">
@@ -606,16 +606,6 @@
                     <i class="fas fa-exclamation-circle"></i><span>Trễ hạn</span>
                 </label>
                 
-                <div class="relative hidden" id="alert-btn-container">
-                    <button onclick="document.getElementById('deadline-alerts-panel').classList.toggle('hidden'); event.stopPropagation();" class="relative bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors shadow-sm ml-1">
-                        <i class="fas fa-bell animate-pulse"></i> Cảnh báo
-                        <span id="alert-badge" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-black shadow-sm border border-white">0</span>
-                    </button>
-                    <div id="deadline-alerts-panel" onclick="event.stopPropagation()" class="hidden absolute top-full left-0 mt-2 w-[400px] max-w-[85vw] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
-                         <!-- Content rendered by JS -->
-                    </div>
-                </div>
-                
                 <button onclick="window.downloadFilteredSKUs()" class="flex items-center space-x-1 text-xs text-white bg-pnjBlue hover:bg-pnjBlueLight px-3 py-1.5 rounded font-bold transition-colors shadow-sm ml-1" title="Tải toàn bộ danh sách mã SKU đang hiển thị theo bộ lọc">
                     <i class="fas fa-file-excel text-pnjGold"></i><span>Tải tất cả</span>
                 </button>
@@ -633,39 +623,15 @@
                 <button onclick="window.clearImageFilters(); window.applyGlobalSkuFilter('');" class="text-sm text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg font-medium px-3 py-1.5 transition-colors border border-red-100 ml-2">Xóa lọc</button>
             </div>
 
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6 hidden">
-                <h3 class="font-bold text-pnjBlue text-lg uppercase mb-4"><i class="fas fa-calculator mr-2 text-pnjGold"></i> Bảng Tính Ngày Dự Kiến</h3>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nơi mượn</label>
-                        <select id="calc-noi" class="border border-gray-300 w-full rounded-lg px-3 py-2 text-sm bg-gray-50"><option value="">-- Bỏ qua --</option><option value="KHO">KHO</option><option value="NVT">NVT</option></select>
-                    </div>
-                    <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Ngày nhận hàng</label><input type="date" id="calc-ngay" class="border border-gray-300 w-full rounded-lg px-3 py-2 text-sm bg-gray-50"></div>
-                    <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tổng số lượng SKU</label><input type="number" id="calc-sku" placeholder="VD: 160" class="border border-gray-300 w-full rounded-lg px-3 py-2 text-sm bg-gray-50"></div>
-                    <div class="flex items-end"><button onclick="calculateSimulation()" class="w-full bg-pnjBlue text-white px-4 py-2 rounded-lg font-bold flex justify-center items-center gap-2 h-[38px]"><i class="fas fa-magic"></i> Tính Toán</button></div>
-                </div>
-                <div id="calc-result-area" class="hidden bg-pnjBg p-4 rounded-lg border border-gray-200 mt-4">
-                    <div id="calc-warning" class="hidden mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm"><span id="calc-warning-text"></span></div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                        <div class="p-3 bg-white border border-gray-200 rounded"><p class="text-xs text-gray-500 font-bold uppercase mb-1">Bắt đầu chụp</p><p class="text-xl font-black text-pnjBlue" id="res-bd-c">-</p></div>
-                        <div class="p-3 bg-white border border-gray-200 rounded"><p class="text-xs text-gray-500 font-bold uppercase mb-1">Kết thúc chụp</p><p class="text-xl font-black text-pnjBlue" id="res-kt-c">-</p></div>
-                        <div class="p-3 bg-white border border-gray-200 rounded"><p class="text-xs text-gray-500 font-bold uppercase mb-1">Bắt đầu Retouch</p><p class="text-xl font-black text-gray-700" id="res-bd-r">-</p></div>
-                        <div class="p-3 bg-white border border-gray-200 rounded"><p class="text-xs text-gray-500 font-bold uppercase mb-1">Kết thúc Retouch</p><p class="text-xl font-black text-gray-700" id="res-kt-r">-</p></div>
-                    </div>
-                </div>
-            </div>
-
+            <!-- BẢNG TIẾN ĐỘ SẢN XUẤT HÌNH ẢNH -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-                <!-- Thêm onclick và mũi tên để thu gọn/mở rộng -->
                 <div class="bg-white p-5 border-b border-gray-200 flex justify-between items-center cursor-pointer select-none hover:bg-gray-50 transition-colors" onclick="toggleSection('image-tracking-content', 'icon-image-tracking')">
                     <span class="font-bold text-pnjBlue text-lg uppercase flex items-center gap-3">
                         <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300 transform -rotate-90" id="icon-image-tracking"></i>
                         <span><i class="fas fa-calendar-alt mr-2 text-pnjGold"></i> Bảng Theo Dõi Tiến Độ</span>
                     </span>
-                    <button onclick="clearImageManualDates(); event.stopPropagation();" class="admin-only bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hidden"><i class="fas fa-sync-alt"></i> Reset lịch thủ công</button>
                 </div>
                 
-                <!-- Bọc nội dung vào div hidden mặc định -->
                 <div id="image-tracking-content" class="hidden">
                     <div class="p-4 bg-pnjGold/10 text-pnjBlue text-sm border-b border-pnjGold/20 font-medium leading-relaxed">
                         <div class="flex items-start gap-2">
@@ -719,14 +685,12 @@
 
             <!-- SƠ ĐỒ GANTT TIMELINE -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-                <!-- Thêm onclick và mũi tên để thu gọn/mở rộng -->
                 <div class="bg-white p-5 border-b border-gray-200 flex justify-between items-center cursor-pointer select-none hover:bg-gray-50 transition-colors" onclick="toggleSection('gantt-content', 'icon-gantt')">
                     <span class="font-bold text-pnjBlue text-lg uppercase flex items-center gap-3">
                         <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300 transform -rotate-90" id="icon-gantt"></i>
                         <span><i class="fas fa-stream mr-2 text-pnjGold"></i> Timeline Sản Xuất (Sơ đồ Gantt)</span>
                     </span>
                 </div>
-                <!-- Bọc nội dung vào div hidden mặc định -->
                 <div id="gantt-content" class="hidden">
                     <div class="overflow-auto table-container max-h-[500px]" id="gantt-container"></div>
                     <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end text-gray-800 text-base font-bold">
@@ -740,7 +704,6 @@
         <!-- ==================== TAB 4: VIDEO ==================== -->
         <div id="tab-video" class="hidden">
             
-            <!-- START: VIDEO DASHBOARD (NEW) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="bg-[#1C3B5E] text-white rounded-xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
                     <div class="absolute right-[-20px] bottom-[-20px] opacity-10"><i class="fas fa-video fa-6x"></i></div>
@@ -765,7 +728,7 @@
                     </div>
                 </div>
                 
-                <!-- Chart 2: Theo Brand (Nhập tay) -->
+                <!-- Chart 2: Theo Brand -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-bold text-[#1C3B5E] text-lg flex items-center gap-2"><i class="fas fa-tags text-pnjGold"></i> Số lượng quay theo Brand</h3>
@@ -818,7 +781,7 @@
                                 <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2] min-w-[100px]">SL Thực Tế</th>
                                 <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2] min-w-[150px]">Tình Trạng Quay</th>
                                 <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2] min-w-[150px]">Tình Trạng Dựng</th>
-                                <th class="px-4 py-3 font-bold min-w-[200px]">Ghi Chú</th>
+                                <th class="px-4 py-3 font-bold min-w-[200px]">Ghi Chi Tiết</th>
                             </tr>
                         </thead>
                         <tbody id="videoSummaryBody" class="divide-y divide-gray-100 bg-white"></tbody>
@@ -826,7 +789,7 @@
                 </div>
             </div>
 
-            <!-- NEW SECTION: BẢNG REVIEW TỰ ĐỘNG -->
+            <!-- BẢNG REVIEW TỰ ĐỘNG -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
                 <div class="bg-[#1C3B5E] p-4 border-b border-[#112640] flex justify-between items-center">
                     <span class="font-bold text-white text-base uppercase tracking-wide flex items-center gap-2">
@@ -879,7 +842,7 @@
 
         </div> <!-- Kết thúc khu vực TAB VIDEO -->
 
-        <!-- ==================== TAB 6: DATABASE GỐC ==================== -->
+        <!-- ==================== TAB 5: DATABASE GỐC ==================== -->
         <div id="tab-database" class="hidden">
             <div class="flex flex-wrap gap-3 mb-6 bg-white p-4 rounded-xl border border-gray-200 shadow-sm items-center">
                 <button onclick="addNewRow()" class="admin-only hidden bg-pnjBlue/10 text-pnjBlue hover:bg-pnjBlue/20 px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2"><i class="fas fa-plus"></i> Thêm Dòng</button>
@@ -949,6 +912,7 @@
     </div>
     </div>
 
+    <!-- DATALISTS CHO CÁC Ô NHẬP LIỆU -->
     <datalist id="noiMuonList"><option value="KHO"><option value="NVT"><option value="Sang tay"></datalist>
     <datalist id="ttMuonList"><option value="Done mượn"><option value="Chuẩn bị mượn"><option value="Đang mượn"></datalist>
     <datalist id="ttChupList"><option value="Done chụp"><option value="0"></datalist>
@@ -957,14 +921,31 @@
     <datalist id="ttQuayList"><option value="Đã xong"><option value="Đang quay"><option value="Chưa quay"></datalist>
     <datalist id="ttDungList"><option value="Đã xong"><option value="Đang dựng"><option value="Chưa dựng"></datalist>
 
+    <!-- BỘ NÃO JAVASCRIPT HỢP NHẤT VÀ TỐI ƯU HÓA -->
     <script>
-        // ---------------------------------------------------------
         // 1. LINK LƯU TRỮ CẤU HÌNH, VIDEO (GOOGLE DRIVE JSON)
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWhkrc0vGlQPCwUekpB_AkbSwOsvj__a89ZIASi0a30L2ZRYEwsNJChdIFu4_F5f1K/exec"; 
         
         // 2. LINK LẤY DỮ LIỆU SKU (GOOGLE SHEETS - ĐỊNH DẠNG CSV)
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRoN0Tz3awOJaeyBbQZmHQ8UHRgOAA9PVu9PNouDAlobrl_jyJdteFmsFsprEBuXzjgPw0f5ebnEX_O/pub?output=csv"; 
-        // ---------------------------------------------------------
+
+        var tableData = [];
+        var videoData = [];
+        var videoBrandManualData = [];
+        var imageManualDates = {}; 
+        var imageManualEndDates = {}; 
+        var imageManualRetouchStarts = {}; 
+        var imageManualRetouchEnds = {}; 
+        var chartDoneInstance = null;
+        var chartVideoInstance = null;
+        var chartVideoBrandInstance = null;
+        var chartBrandInstance = null;
+        window.globalSkuFilterArray = [];
+        window.globalSkuFilterArrayLower = []; 
+        
+        // Cấu hình phân trang Database
+        var currentPage = 1;
+        const rowsPerPage = 100;
 
         // Hàm hỗ trợ hiển thị màn hình đóng dữ liệu offline
         window.loadDataLocal = function() {
@@ -989,8 +970,8 @@
             if (loaderText) loaderText.innerText = "Đang tải cấu hình hệ thống...";
 
             try {
-                // 1. Tải cấu hình, cài đặt, dữ liệu video từ Google Drive JSON
-                const response = await fetch(GOOGLE_SCRIPT_URL);
+                // 1. Tải cấu hình, cài đặt, dữ liệu video từ Google Drive JSON (Dùng no-store tránh lưu cache)
+                const response = await fetch(GOOGLE_SCRIPT_URL + "?t=" + new Date().getTime(), { cache: "no-store" });
                 if (!response.ok) throw new Error("Network response was not ok");
                 const data = await response.json();
                 
@@ -1006,10 +987,11 @@
                 if (data.timestamp && window.updateLastUpdatedUI) window.updateLastUpdatedUI(data.timestamp);
 
                 // 2. Tải Dữ liệu Table từ GOOGLE SHEETS
-                if (GOOGLE_SHEET_CSV_URL && GOOGLE_SHEET_CSV_URL !== "DÁN_LINK_CSV_GOOGLE_SHEET_CỦA_CHỊ_VÀO_ĐÂY") {
+                if (GOOGLE_SHEET_CSV_URL) {
                     if (loaderText) loaderText.innerText = "Đang đồng bộ dữ liệu Google Sheets...";
                     try {
-                        const sheetRes = await fetch(GOOGLE_SHEET_CSV_URL + "&t=" + new Date().getTime()); // Chống cache
+                        // Ép trình duyệt không dùng cache để luôn lấy dữ liệu tươi nhất từ Google Sheet
+                        const sheetRes = await fetch(GOOGLE_SHEET_CSV_URL + "&_cache_bust=" + new Date().getTime(), { cache: "no-store" }); 
                         const csvText = await sheetRes.text();
                         const lines = csvText.replace(/^\uFEFF/, '').split('\n');
                         const newData = [];
@@ -1063,7 +1045,7 @@
             }
         };
 
-        // Hàm đẩy dữ liệu đè trực tiếp lên file JSON trên Google Drive (KHÔNG LƯU TABLEDATA)
+        // Hàm đẩy dữ liệu đè trực tiếp lên file JSON trên Google Drive (LƯU VIDEO/CHỈNH SỬA THỦ CÔNG)
         window.saveDataToCloud = async function() {
             if (!window.isFakeLoggedIn) { alert("Vui lòng đăng nhập Admin để lưu dữ liệu!"); return; }
             
@@ -1071,7 +1053,7 @@
             const now = new Date().toISOString();
             
             const payload = {
-                tableData: window.tableData || [], // Vẫn lưu backup phòng hờ
+                tableData: window.tableData || [], 
                 videoData: window.videoData || [],
                 videoBrandManualData: window.videoBrandManualData || [],
                 imageManualDates: window.imageManualDates || {},
@@ -1084,7 +1066,7 @@
             };
 
             try {
-                if(GOOGLE_SCRIPT_URL === "DÁN_LINK_WEB_APP_URL_VAO_DAY" || !GOOGLE_SCRIPT_URL) {
+                if(!GOOGLE_SCRIPT_URL) {
                     alert("Cần điền Link Google Script vào code trước khi lưu!"); return;
                 }
 
@@ -1092,25 +1074,21 @@
                 const originalHtmls = [];
                 saveBtns.forEach((btn, idx) => { originalHtmls[idx] = btn.innerHTML; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang lưu...`; btn.disabled = true; });
 
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: "POST", 
-                    redirect: "follow", 
+                // DÙNG CỜ NO-CORS ĐỂ TRÁNH TRÌNH DUYỆT CHẶN GHI CHÉO PHÂN QUYỀN (CORS PREFLIGHT)
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
                     headers: { "Content-Type": "text/plain;charset=utf-8" }, 
                     body: JSON.stringify(payload)
                 });
-                
-                const result = await response.json();
 
                 saveBtns.forEach((btn, idx) => { btn.innerHTML = originalHtmls[idx]; btn.disabled = false; });
                 
-                if (result.status === "success") {
-                    if (window.updateLastUpdatedUI) window.updateLastUpdatedUI(now);
-                    if (toast) {
-                        toast.innerHTML = `<i class="fas fa-check-circle text-lg"></i> Dữ liệu (Video, Cấu hình) đã lưu lên Drive!`;
-                        toast.classList.remove('opacity-0', 'translate-y-[-10px]'); setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-[-10px]'); }, 2500);
-                    }
-                } else {
-                    throw new Error(result.message || "Lỗi không xác định từ Google Script");
+                if (window.updateLastUpdatedUI) window.updateLastUpdatedUI(now);
+                if (toast) {
+                    toast.innerHTML = `<i class="fas fa-check-circle text-lg"></i> Cài đặt & Video đã lưu lên Drive!`;
+                    toast.classList.remove('opacity-0', 'translate-y-[-10px]'); 
+                    setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-[-10px]'); }, 2500);
                 }
             } catch (error) {
                 console.error("Lỗi lưu dữ liệu Google Drive:", error);
@@ -1119,9 +1097,8 @@
                 saveBtns.forEach(btn => { btn.innerHTML = `<i class="fas fa-save"></i> Lưu Dữ Liệu`; btn.disabled = false; });
             }
         };
-    </script>
-    
-    <script>
+
+        // ADMIN LOGIN / LOGOUT 
         window.handleLogin = function() {
             const username = document.getElementById('admin-username').value;
             const pass = document.getElementById('admin-pass').value;
@@ -1160,25 +1137,7 @@
             }
         };
 
-        var tableData = [];
-        var videoData = [];
-        var videoBrandManualData = [];
-        var imageManualDates = {}; 
-        var imageManualEndDates = {}; 
-        var imageManualRetouchStarts = {}; 
-        var imageManualRetouchEnds = {}; 
-        var chartDoneInstance = null;
-        var chartVideoInstance = null;
-        var chartVideoBrandInstance = null;
-        var chartBrandInstance = null;
-        var chartBrandChupInstance = null;
-        window.globalSkuFilterArray = [];
-        window.globalSkuFilterArrayLower = []; 
-        
-        // Cấu hình phân trang Database
-        var currentPage = 1;
-        const rowsPerPage = 100;
-
+        // GLOBAL SKU SEARCH FILTER 
         window.applyGlobalSkuFilter = function(val) {
             const searchText = val !== undefined ? val : (document.getElementById('search-sku-report')?.value || '');
             
@@ -1208,6 +1167,7 @@
             return window.globalSkuFilterArrayLower.some(f => target.includes(f));
         };
 
+        // ĐIỀU CHỈNH TRẠNG THÁI GIAO DIỆN THEO ADMIN / G-SHEETS
         window.applyAdminState = function() {
             const showLoginBtn = document.getElementById('btn-show-login');
             const logoutBtn = document.getElementById('btn-logout');
@@ -1229,6 +1189,14 @@
                 }
                 else el.classList.add('hidden');
             });
+
+            // Ẩn/hiển thị các nút thêm xóa database do database gốc nay lấy từ Google Sheets
+            const isSheetLinked = GOOGLE_SHEET_CSV_URL !== "";
+            if (isSheetLinked && window.isFakeLoggedIn) {
+                const btnAdd = document.getElementById('btn-add-row-db'); if (btnAdd) btnAdd.style.display = 'none';
+                const wrapImport = document.getElementById('wrap-import-csv'); if (wrapImport) wrapImport.style.display = 'none';
+                const btnClear = document.getElementById('btn-clear-db'); if (btnClear) btnClear.style.display = 'none';
+            }
 
             const staticInputs = document.querySelectorAll('#tab-process input, #tab-process textarea');
             staticInputs.forEach(el => el.disabled = !window.isFakeLoggedIn);
@@ -1256,46 +1224,7 @@
             }
         };
 
-        window.calculateFlowTotal = function() {
-            let totalMin = 0;
-            let totalMax = 0;
-            let flowData = {};
-            for (let i = 1; i <= 5; i++) {
-                let minEl = document.getElementById(`flow-min-${i}`);
-                let maxEl = document.getElementById(`flow-max-${i}`);
-                if(minEl && maxEl) {
-                    let minVal = parseInt(minEl.value) || 0;
-                    let maxVal = parseInt(maxEl.value) || 0;
-                    totalMin += minVal;
-                    totalMax += maxVal;
-                    flowData[`min${i}`] = minVal;
-                    flowData[`max${i}`] = maxVal;
-                }
-            }
-            const tMin = document.getElementById('flow-total-min');
-            const tMax = document.getElementById('flow-total-max');
-            if(tMin) tMin.innerText = totalMin;
-            if(tMax) tMax.innerText = totalMax;
-            
-            if(window.isFakeLoggedIn) localStorage.setItem('pnj_flow_settings', JSON.stringify(flowData));
-        };
-
-        window.loadFlowSettings = function() {
-            try {
-                const saved = localStorage.getItem('pnj_flow_settings');
-                if (saved) {
-                    const flowData = JSON.parse(saved);
-                    for (let i = 1; i <= 5; i++) {
-                        let minEl = document.getElementById(`flow-min-${i}`);
-                        let maxEl = document.getElementById(`flow-max-${i}`);
-                        if (minEl && flowData[`min${i}`] !== undefined) minEl.value = flowData[`min${i}`];
-                        if (maxEl && flowData[`max${i}`] !== undefined) maxEl.value = flowData[`max${i}`];
-                    }
-                }
-            } catch(e) {}
-            window.calculateFlowTotal();
-        };
-
+        // FLOW PROCESS SETTINGS
         window.saveProcessFlowSettings = function() {
             if(!window.isFakeLoggedIn) return; 
             let flowData = { f1: {}, f2: {}, notes: '' };
@@ -1376,27 +1305,9 @@
                     icon.classList.add('rotate-0');
                 }
             }
-        }
+        };
 
-        document.addEventListener('click', function(event) {
-            const dropdowns = ['dropdown-month', 'dropdown-noiMuon', 'dropdown-ttMuon', 'dropdown-status', 'dropdown-report-month', 'dropdown-report-noiMuon', 'dropdown-report-phanLoai', 'dropdown-img-month', 'dropdown-img-noiMuon', 'dropdown-img-loMuon', 'dropdown-img-status', 'dropdown-review-month'];
-            dropdowns.forEach(id => {
-                const el = document.getElementById(id);
-                if (el && !el.classList.contains('hidden')) {
-                    const btn = el.previousElementSibling;
-                    if (!el.contains(event.target) && !btn.contains(event.target)) el.classList.add('hidden');
-                }
-            });
-
-            const alertPanel = document.getElementById('deadline-alerts-panel');
-            const alertBtn = document.getElementById('alert-btn-container');
-            if (alertPanel && !alertPanel.classList.contains('hidden')) {
-                if (!alertPanel.contains(event.target) && (!alertBtn || !alertBtn.contains(event.target))) {
-                    alertPanel.classList.add('hidden');
-                }
-            }
-        });
-
+        // SWITCH TAB LOGIC
         window.switchTab = function(tabId) {
             ['tab-database', 'tab-summary', 'tab-report', 'tab-video', 'tab-image', 'tab-process'].forEach(id => {
                 const el = document.getElementById(id); if (el) el.classList.add('hidden');
@@ -1407,13 +1318,13 @@
             const activeBtn = document.getElementById('btn-' + tabId);
             if(activeBtn) activeBtn.className = "bg-pnjBlue text-white py-2.5 px-5 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-md";
 
-            if(tabId === 'tab-summary') { populateSummaryFilters(); window.renderSummary(); window.loadFlowSettings(); }
+            if(tabId === 'tab-summary') { populateSummaryFilters(); window.renderSummary(); }
             else if (tabId === 'tab-report') { populateReportFilters(); window.renderReport(); }
             else if (tabId === 'tab-video') { window.populateReviewFilters(); window.renderVideoTable(); window.renderVideoDashboard(); window.renderReviewTable(); }
             else if (tabId === 'tab-image') { populateImageFilters(); window.renderImageTrackingTable(); }
             else if (tabId === 'tab-process') { window.loadProcessFlowSettings(); }
             else if (tabId === 'tab-database') { window.renderTable(); }
-        }
+        };
 
         function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
         
@@ -1521,12 +1432,12 @@
             return Math.max(1, Math.ceil(skuCount * 5 / 160));
         }
 
-        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '', videoReview: '', imageReview: '', brand: '', brand2: '' }); window.renderTable(); }
-        window.addNewVideoRow = function() { if(!window.isFakeLoggedIn) return; videoData.unshift({ id: generateId(), month: '', loVideo: '', slThucTe: 0, ttQuay: '', ttDung: '', ghiChu: '' }); window.renderVideoTable(); }
-        window.deleteRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { tableData = tableData.filter(row => row.id !== id); window.renderTable(); } }
-        window.deleteVideoRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { videoData = videoData.filter(row => row.id !== id); window.renderVideoTable(); } }
-        window.clearAllData = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa toàn bộ Database?")) { tableData = []; window.renderTable(); window.saveData(); } }
-        window.clearImageManualDates = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa lịch chỉnh tay?")) { imageManualDates = {}; imageManualEndDates = {}; imageManualRetouchStarts = {}; imageManualRetouchEnds = {}; window.renderImageTrackingTable(); window.saveData(); } }
+        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '', videoReview: '', imageReview: '', brand: '', brand2: '' }); window.renderTable(); };
+        window.addNewVideoRow = function() { if(!window.isFakeLoggedIn) return; videoData.unshift({ id: generateId(), month: '', loVideo: '', slThucTe: 0, ttQuay: '', ttDung: '', ghiChu: '' }); window.renderVideoTable(); };
+        window.deleteRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { tableData = tableData.filter(row => row.id !== id); window.renderTable(); } };
+        window.deleteVideoRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { videoData = videoData.filter(row => row.id !== id); window.renderVideoTable(); } };
+        window.clearAllData = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa toàn bộ Database?")) { tableData = []; window.renderTable(); window.saveData(); } };
+        window.clearImageManualDates = function() { if(!window.isFakeLoggedIn) return; if(confirm("Xóa lịch chỉnh tay?")) { imageManualDates = {}; imageManualEndDates = {}; imageManualRetouchStarts = {}; imageManualRetouchEnds = {}; window.renderImageTrackingTable(); window.saveData(); } };
 
         window.updateCell = function(id, field, value) {
             if(!window.isFakeLoggedIn) return;
@@ -1539,7 +1450,7 @@
                     if(cell) cell.innerText = days !== '' ? days : '-';
                 }
             }
-        }
+        };
 
         window.updateSummaryGroup = function(idsStr, field, value) {
             if(!window.isFakeLoggedIn) return;
@@ -1549,33 +1460,33 @@
                 if (rowIndex > -1) { tableData[rowIndex][field] = value; needsRender = true; }
             });
             if (needsRender) window.renderSummary(); 
-        }
+        };
 
         window.updateVideoCell = function(id, field, value) { 
             if(!window.isFakeLoggedIn) return;
             const rowIndex = videoData.findIndex(row => row.id === id); 
             if (rowIndex > -1) { videoData[rowIndex][field] = value; window.renderVideoDashboard(); }
-        }
+        };
         
-        window.updateImageManualDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualDates[key] = value; else delete imageManualDates[key]; window.renderImageTrackingTable(); window.saveData(); }
-        window.updateImageManualEndDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualEndDates[key] = value; else delete imageManualEndDates[key]; window.renderImageTrackingTable(); window.saveData(); }
-        window.updateImageManualRetouchStart = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchStarts[key] = value; else delete imageManualRetouchStarts[key]; window.renderImageTrackingTable(); window.saveData(); }
-        window.updateImageManualRetouchEnd = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchEnds[key] = value; else delete imageManualRetouchEnds[key]; window.renderImageTrackingTable(); window.saveData(); }
+        window.updateImageManualDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualDates[key] = value; else delete imageManualDates[key]; window.renderImageTrackingTable(); window.saveData(); };
+        window.updateImageManualEndDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualEndDates[key] = value; else delete imageManualEndDates[key]; window.renderImageTrackingTable(); window.saveData(); };
+        window.updateImageManualRetouchStart = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchStarts[key] = value; else delete imageManualRetouchStarts[key]; window.renderImageTrackingTable(); window.saveData(); };
+        window.updateImageManualRetouchEnd = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchEnds[key] = value; else delete imageManualRetouchEnds[key]; window.renderImageTrackingTable(); window.saveData(); };
 
-        // --- CÁC HÀM XỬ LÝ BIỂU ĐỒ BRAND VIDEO NHẬP TAY ---
+        // VIDEO MANUAL BRAND MANUAL LOGIC
         window.addVideoBrandRow = function() {
             if(!window.isFakeLoggedIn) return;
             videoBrandManualData.push({ id: generateId(), brand: '', count: 0 });
             window.renderVideoBrandTable();
             window.renderVideoDashboard();
-        }
+        };
 
         window.deleteVideoBrandRow = function(id) {
             if(!window.isFakeLoggedIn) return;
             videoBrandManualData = videoBrandManualData.filter(r => r.id !== id);
             window.renderVideoBrandTable();
             window.renderVideoDashboard();
-        }
+        };
 
         window.updateVideoBrandCell = function(id, field, value) {
             if(!window.isFakeLoggedIn) return;
@@ -1584,7 +1495,7 @@
                 row[field] = field === 'count' ? (parseInt(value) || 0) : value;
                 window.renderVideoDashboard(); 
             }
-        }
+        };
 
         window.renderVideoBrandTable = function() {
             const tbody = document.getElementById('videoBrandManualBody');
@@ -1596,18 +1507,9 @@
                     <td class="py-1.5 px-2"><input type="number" value="${row.count}" onchange="updateVideoBrandCell('${row.id}', 'count', this.value)" class="w-full text-xs p-1.5 text-center border border-transparent hover:border-gray-300 focus:border-pnjGold rounded outline-none font-bold text-pnjGold bg-pnjGold/5" placeholder="0" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                 </tr>
             `).join('') || `<tr><td colspan="3" class="py-4 text-center text-xs text-gray-400 italic">Bấm "Thêm Brand" để nhập số liệu</td></tr>`;
-        }
-
-        window.saveData = function() {
-            if (!window.isFakeLoggedIn) {
-                alert("Vui lòng đăng nhập Admin để lưu dữ liệu!");
-                return;
-            }
-            if (window.saveDataToCloud) {
-                window.saveDataToCloud();
-            }
         };
 
+        // DROPDOWN FILTER LOGIC
         function getFilterState(fullType) {
             const cbs = document.querySelectorAll(`.cb-${fullType}`); 
             if (cbs.length === 0) return null; 
@@ -1647,13 +1549,13 @@
                 const otherEl = document.getElementById(otherId); if(otherEl && otherId !== id) otherEl.classList.add('hidden');
             });
             if(el) el.classList.toggle('hidden');
-        }
+        };
 
         window.toggleAllCheckboxes = function(fullType, isChecked) {
             document.querySelectorAll(`.cb-${fullType}`).forEach(cb => cb.checked = isChecked);
             updateFilterLabel(fullType);
             if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else if(fullType.startsWith('review-')) window.renderReviewTable(); else window.renderSummary();
-        }
+        };
 
         window.handleCheckboxChange = function(fullType) {
             const cbs = document.querySelectorAll(`.cb-${fullType}`);
@@ -1661,7 +1563,7 @@
             if(selectAllBtn) selectAllBtn.checked = Array.from(cbs).every(cb => cb.checked);
             updateFilterLabel(fullType);
             if(fullType.startsWith('report-')) window.renderReport(); else if(fullType.startsWith('img-')) window.renderImageTrackingTable(); else if(fullType.startsWith('review-')) window.renderReviewTable(); else window.renderSummary();
-        }
+        };
 
         function updateFilterLabel(fullType) {
             const cbs = document.querySelectorAll(`.cb-${fullType}`);
@@ -1687,25 +1589,9 @@
                 if (label.innerText.toLowerCase().includes(term)) { label.classList.remove('hidden'); label.classList.add('flex'); } 
                 else { label.classList.add('hidden'); label.classList.remove('flex'); }
             });
-        }
-    </script>
-    
-    <script>
-        // Các hàm xử lý Pagination
-        window.changePage = function(delta) {
-            let dataToRender = tableData;
-            if (window.globalSkuFilterArrayLower && window.globalSkuFilterArrayLower.length > 0) {
-                dataToRender = tableData.filter(row => window.isSkuMatched(row.sku));
-            }
-            let totalPages = Math.ceil(dataToRender.length / rowsPerPage);
-            
-            currentPage += delta;
-            if (currentPage < 1) currentPage = 1;
-            if (currentPage > totalPages) currentPage = totalPages || 1;
-            
-            window.renderTable();
         };
 
+        // POPULATE FILTERS
         function populateSummaryFilters() {
             const curMonth = getFilterState('month'); const curNoi = getFilterState('noiMuon'); const curTT = getFilterState('ttMuon'); const curStatus = getFilterState('status');
             const months = new Set(); const nois = new Set(); const tts = new Set(); const ttLos = new Set();
@@ -1739,7 +1625,7 @@
 
             buildFilterDropdown(months, 'month', curMonth); buildFilterDropdown(nois, 'noiMuon', curNoi); buildFilterDropdown(tts, 'ttMuon', curTT); buildFilterDropdown(ttLos, 'status', curStatus);
         }
-        window.clearSummaryFilters = function() { ['month', 'noiMuon', 'ttMuon', 'status'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
+        window.clearSummaryFilters = function() { ['month', 'noiMuon', 'ttMuon', 'status'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); };
 
         function populateReportFilters() {
             const curMonth = getFilterState('report-month'); const curNoi = getFilterState('report-noiMuon'); const curPhanLoai = getFilterState('report-phanLoai');
@@ -1753,7 +1639,7 @@
             });
             buildFilterDropdown(months, 'report-month', curMonth); buildFilterDropdown(nois, 'report-noiMuon', curNoi); buildFilterDropdown(phanLoais, 'report-phanLoai', curPhanLoai);
         }
-        window.clearReportFilters = function() { ['report-month', 'report-noiMuon', 'report-phanLoai'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); }
+        window.clearReportFilters = function() { ['report-month', 'report-noiMuon', 'report-phanLoai'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); };
 
         function populateImageFilters() {
             const curMonth = getFilterState('img-month'); const curNoi = getFilterState('img-noiMuon'); const curLo = getFilterState('img-loMuon'); const curStatus = getFilterState('img-status');
@@ -1789,67 +1675,251 @@
         window.clearImageFilters = function() { 
             const lateCb = document.getElementById('filter-img-late'); if (lateCb) lateCb.checked = false;
             ['img-month', 'img-noiMuon', 'img-loMuon', 'img-status'].forEach(type => { const btn = document.getElementById(`selectAll-${type}`); if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); } }); 
-        }
-
-        window.getGlobalSchedule = function() {
-            let trueGroups = {};
-            tableData.forEach(row => {
-                if (!row.ngayNhan) return; 
-                let dateKey = row.ngayNhan;
-                if (!trueGroups[dateKey]) { trueGroups[dateKey] = { ngayNhan: dateKey, skuCount: 0, khoSku: 0, nvtSku: 0, otherSku: 0 }; }
-                let group = trueGroups[dateKey];
-                let nUpper = (row.noiMuon || 'Trống').toUpperCase();
-                if (nUpper === 'KHO') group.khoSku++; else if (nUpper === 'NVT') group.nvtSku++; else group.otherSku++;
-                group.skuCount++;
-            });
-
-            let sortedDates = Object.values(trueGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan));
-            let globalNextFreeChupNVT = null, globalNextFreeChupKHO = null, globalNextFreeChupOther = null, globalNextFreeRetouch = null;
-            let schedules = {};
-
-            sortedDates.forEach(g => {
-                let baseStart = addWorkingDays(g.ngayNhan, 1); 
-                let sKHO = null, eKHO = null;
-                if (g.khoSku > 0) {
-                    sKHO = (globalNextFreeChupKHO && baseStart < globalNextFreeChupKHO) ? globalNextFreeChupKHO : baseStart;
-                    eKHO = addWorkingDays(sKHO, Math.max(0, getProcessDays(g.khoSku) - 1));
-                    globalNextFreeChupKHO = addWorkingDays(eKHO, 1);
-                }
-
-                let sNVT = null, eNVT = null;
-                if (g.nvtSku > 0) {
-                    sNVT = (globalNextFreeChupNVT && baseStart < globalNextFreeChupNVT) ? globalNextFreeChupNVT : baseStart;
-                    eNVT = addWorkingDays(sNVT, Math.max(0, getProcessDays(g.nvtSku) - 1));
-                    globalNextFreeChupNVT = addWorkingDays(eNVT, 1);
-                }
-
-                let sOther = null, eOther = null;
-                if (g.otherSku > 0) {
-                    sOther = (globalNextFreeChupOther && baseStart < globalNextFreeChupOther) ? globalNextFreeChupOther : baseStart;
-                    eOther = addWorkingDays(sOther, Math.max(0, getProcessDays(g.otherSku) - 1));
-                    globalNextFreeChupOther = addWorkingDays(eOther, 1);
-                }
-
-                let starts = [sKHO, sNVT, sOther].filter(x => x !== null);
-                let ends = [eKHO, eNVT, eOther].filter(x => x !== null);
-                let minStart = starts.length > 0 ? starts.reduce((min, p) => p < min ? p : min, starts[0]) : baseStart;
-                let maxEnd = ends.length > 0 ? ends.reduce((max, p) => p > max ? p : max, ends[0]) : baseStart;
-                
-                let manualKey = g.ngayNhan;
-                let finalStartChup = imageManualDates[manualKey] || minStart;
-                let finalEndChup = imageManualEndDates[manualKey] || maxEnd;
-
-                let sR = addWorkingDays(finalStartChup, 2); 
-                if (globalNextFreeRetouch && sR < globalNextFreeRetouch) sR = globalNextFreeRetouch;
-                let asR = imageManualRetouchStarts[manualKey] || sR;
-                let eR = addWorkingDays(asR, Math.max(0, getProcessDays(g.skuCount) - 1)); 
-                let aeR = imageManualRetouchEnds[manualKey] || eR;
-                globalNextFreeRetouch = addWorkingDays(aeR, 1);
-                schedules[g.ngayNhan] = { endChup: finalEndChup, endRetouch: aeR, startChup: finalStartChup, startRetouch: asR, sKHO, eKHO, sNVT, eNVT, sOther, eOther };
-            });
-            return schedules;
         };
 
+        window.populateReviewFilters = function() {
+            const curMonth = getFilterState('review-month');
+            const months = new Set();
+            tableData.forEach(row => {
+                if (!window.isSkuMatched(row.sku)) return;
+                if (!row.loMuon) return;
+                months.add(row.month || 'Trống');
+            });
+            buildFilterDropdown(months, 'review-month', curMonth);
+        };
+
+        window.clearReviewFilters = function() {
+            ['review-month'].forEach(type => {
+                const btn = document.getElementById(`selectAll-${type}`);
+                if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); }
+            });
+        };
+
+        // RENDER RẢNH TAY GANTT & TRACKING TABLE
+        window.renderImageTrackingTable = function() {
+            const tbody = document.getElementById('imageTrackingBody'); if(!tbody) return;
+            const getV = (type) => {
+                const cbs = document.querySelectorAll(`.cb-img-${type}`);
+                if (cbs.length === 0) return ['ALL'];
+                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            };
+            const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon'); const sF = getV('status');
+
+            // Lấy lịch trình thực tế GỐC (bảo toàn độ dài của sơ đồ)
+            let trueSchedules = window.getGlobalSchedule();
+
+            // Nhóm dữ liệu để hiển thị (Có bộ lọc tìm kiếm)
+            let displayGroups = {};
+            tableData.forEach(row => {
+                if (!window.isSkuMatched(row.sku)) return; 
+                if (!row.ngayNhan) return; 
+                
+                const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const l = row.loMuon || 'Trống';
+                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
+                if (!nF.includes('ALL') && !nF.includes(n)) return;
+                if (!lF.includes('ALL') && !lF.includes(l)) return;
+
+                let groupKey = row.ngayNhan;
+                if (!displayGroups[groupKey]) { displayGroups[groupKey] = { groupKey: groupKey, ngayNhan: row.ngayNhan, skuCount: 0, chupDone: 0, retouchDone: 0, muonDone: 0, items: {}, ids: [] }; }
+                let group = displayGroups[groupKey];
+                group.ids.push(row.id);
+                
+                let itemKey = l + '|' + n;
+                if (!group.items[itemKey]) { group.items[itemKey] = { loMuon: l, noiMuon: n, skuCount: 0, ttMuons: new Set() }; }
+                group.items[itemKey].skuCount++;
+                group.items[itemKey].ttMuons.add(row.ttMuon || 'Trống');
+                group.skuCount++;
+                
+                let ttMuonLower = (row.ttMuon || '').toLowerCase();
+                if (ttMuonLower.includes('done')) group.muonDone++;
+                if (row.ttChup && row.ttChup.toLowerCase().includes('done')) group.chupDone++;
+                if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) group.retouchDone++;
+            });
+
+            let todayStr = new Date().toISOString().slice(0, 10);
+            
+            let processedGanttData = Object.values(displayGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan)).map(g => {
+                let ts = trueSchedules[g.ngayNhan]; 
+                if (!ts) return null; 
+                
+                let tCD = getWorkingDays(ts.startChup, ts.endChup) || 1; 
+                let tRD = getWorkingDays(ts.startRetouch, ts.endRetouch) || 1;
+                let isChupLate = todayStr > ts.endChup && g.chupDone < g.skuCount;
+                let isRetouchLate = todayStr > ts.endRetouch && g.retouchDone < g.skuCount;
+                
+                return { ...g, manualKey: g.groupKey, sKHO: ts.sKHO, eKHO: ts.eKHO, sNVT: ts.sNVT, eNVT: ts.eNVT, sOther: ts.sOther, eOther: ts.eOther, startChup: ts.startChup, endChup: ts.endChup, startRetouch: ts.startRetouch, endRetouch: ts.endRetouch, tCD, tRD, isChupLate, isRetouchLate };
+            }).filter(g => g !== null);
+
+            window.currentGanttData = processedGanttData;
+
+            // Lọc theo Checkbox Trạng Thái trên thanh điều hướng
+            const showOnlyLate = document.getElementById('filter-img-late')?.checked;
+            if (showOnlyLate) { processedGanttData = processedGanttData.filter(g => g.isChupLate || g.isRetouchLate); }
+
+            if (!sF.includes('ALL')) {
+                processedGanttData = processedGanttData.filter(g => {
+                    let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
+                    let statusLabelText = 'Đang xử lý';
+                    if (isHoanThanh) statusLabelText = 'Hoàn thành';
+                    else if (g.muonDone === 0) statusLabelText = 'Dự kiến mượn';
+                    return sF.includes(statusLabelText);
+                });
+            }
+
+            let totalSKU = 0;
+            let totalChuaChup = 0;
+            let totalChuaRetouch = 0;
+            let html = '';
+
+            processedGanttData.forEach(g => {
+                totalSKU += g.skuCount;
+                
+                if (g.muonDone > 0) {
+                    totalChuaChup += Math.max(0, g.skuCount - g.chupDone);
+                    totalChuaRetouch += Math.max(0, g.skuCount - g.retouchDone);
+                }
+
+                let isGroupLate = g.isChupLate || g.isRetouchLate;
+                let lateIndicatorImg = isGroupLate ? `<span class="inline-flex relative h-2.5 w-2.5 ml-2 flex-shrink-0" title="Lô trễ hạn!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span></span>` : '';
+
+                let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0 flex items-center justify-between"><span class="truncate pr-2">${i.loMuon}</span> ${lateIndicatorImg}</div>`).join('') || '-';
+                
+                let ttMuonHTML = Object.values(g.items).map(i => {
+                    let tts = Array.from(i.ttMuons).filter(t => t !== 'Trống').join(', ');
+                    if (!tts) tts = '-';
+                    let colorClass = tts.toLowerCase().includes('done') ? 'text-emerald-600 font-bold' : 'text-amber-600 font-medium';
+                    if (tts === '-') colorClass = 'text-gray-400';
+                    return `<div class="py-1 border-b border-gray-100 last:border-0 truncate ${colorClass}" title="${tts}">${tts}</div>`;
+                }).join('') || '-';
+
+                let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.chupDone}</span> / ${g.skuCount} ${g.isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
+                let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.retouchDone}</span> / ${g.skuCount} ${g.isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
+                
+                let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
+                let statusLabelText = 'Đang xử lý';
+                let statusClass = 'bg-amber-100 text-amber-700';
+
+                if (isHoanThanh) {
+                    statusLabelText = 'Hoàn thành';
+                    statusClass = 'bg-emerald-100 text-emerald-700';
+                } else if (g.muonDone === 0) {
+                    statusLabelText = 'Dự kiến mượn';
+                    statusClass = 'bg-slate-100 text-slate-600 border border-slate-200';
+                }
+
+                let statusLabel = `<span class="px-2 py-1 ${statusClass} rounded text-xs font-bold whitespace-nowrap">${statusLabelText}</span>`;
+
+                html += `
+                    <tr class="hover:bg-gray-50 transition-colors bg-white">
+                        <td class="px-4 py-3 border-r border-gray-100 text-center min-w-[140px]">${ttMuonHTML}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue">${formatDateToDisplay(g.ngayNhan)}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-sm text-gray-600 min-w-[250px] whitespace-normal">${loListHTML}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue bg-pnjBlue/5">${g.skuCount}</td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startChup}" onchange="updateImageManualDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endChup}" onchange="updateImageManualEndDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.tCD}</td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startRetouch}" onchange="updateImageManualRetouchStart('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endRetouch}" onchange="updateImageManualRetouchEnd('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-gray-700 bg-gray-100">${g.tRD}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
+                        <td class="px-2 py-2 text-center"><button onclick="downloadSpecificSKUs('${g.ids.join(',')}', '${g.ngayNhan}')" class="bg-gray-100 hover:bg-pnjBlue hover:text-white text-pnjBlue p-2 rounded transition-colors shadow-sm" title="Tải mã SKU 13 của lô này"><i class="fas fa-file-csv"></i></button></td>
+                    </tr>`;
+            });
+            tbody.innerHTML = html || '<tr><td colspan="14" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu phù hợp.</td></tr>';
+
+            const elTotal1 = document.getElementById('imageTrackingGrandTotal');
+            if (elTotal1) elTotal1.innerText = totalSKU.toLocaleString();
+            
+            const elChuaChup = document.getElementById('imageTrackingChuaChup');
+            if (elChuaChup) elChuaChup.innerText = totalChuaChup.toLocaleString();
+
+            const elChuaRetouch = document.getElementById('imageTrackingChuaRetouch');
+            if (elChuaRetouch) elChuaRetouch.innerText = totalChuaRetouch.toLocaleString();
+            
+            const elTotal2 = document.getElementById('ganttGrandTotal');
+            if (elTotal2) elTotal2.innerText = totalSKU.toLocaleString();
+
+            // Nhường luồng cho UI cập nhật bảng xong mới vẽ Gantt (rất tốn tài nguyên nếu dữ liệu lớn)
+            setTimeout(() => {
+                if(window.renderGanttChart) window.renderGanttChart(processedGanttData);
+            }, 50);
+        };
+
+        window.renderGanttChart = function(ganttData) {
+            const container = document.getElementById('gantt-container'); if(!container) return;
+            if(!ganttData || ganttData.length === 0) { container.innerHTML = '<div class="text-center text-gray-400 italic py-8">Không có dữ liệu để vẽ timeline.</div>'; return; }
+
+            let minDate = ganttData[0].ngayNhan; let maxDate = ganttData[0].endRetouch;
+            ganttData.forEach(g => { if (g.ngayNhan < minDate) minDate = g.ngayNhan; if (g.endRetouch > maxDate) maxDate = g.endRetouch; });
+            minDate = addWorkingDays(minDate, -1); maxDate = addWorkingDays(maxDate, 3);
+            let timelineDates = getDatesInRange(minDate, maxDate);
+
+            let html = '<table class="text-sm text-left whitespace-nowrap border-collapse border border-gray-200" style="table-layout: fixed; min-width: 100%;">';
+            html += '<thead class="text-xs text-gray-700 bg-gray-50 sticky top-0" style="z-index: 30;"><tr>';
+            html += '<th class="px-3 py-2 border border-gray-200 bg-gray-50" style="min-width: 150px; max-width: 150px; position: sticky; left: 0; z-index: 30;" rowspan="2">Lô</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 100px; max-width: 100px; position: sticky; left: 150px; z-index: 30;" rowspan="2">Ngày nhận</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 90px; max-width: 90px; position: sticky; left: 250px; z-index: 30;" rowspan="2">Nơi mượn</th>';
+            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 60px; max-width: 60px; position: sticky; left: 340px; z-index: 30;" rowspan="2">SL</th>';
+            
+            timelineDates.forEach(d => {
+                let isW = isWeekend(d); let isH = isHoliday(d);
+                let bgClass = (isW || isH) ? 'bg-gray-300' : 'bg-gray-100';
+                let parts = d.split('-'); let shortDate = `${parts[2]}/${parts[1]}`;
+                html += `<th class="px-1 py-1 border border-gray-200 text-center ${bgClass} text-[10px] min-w-[40px]">${shortDate}</th>`;
+            });
+            html += '</tr><tr>';
+            timelineDates.forEach(d => {
+                let dayName = getDayName(d); let isW = isWeekend(d); let isH = isHoliday(d);
+                let bgClass = (isW || isH) ? 'bg-gray-400 text-white' : 'bg-white';
+                html += `<th class="px-1 py-1 border border-gray-200 text-center ${bgClass} text-[10px] min-w-[40px]">${dayName}</th>`;
+            });
+            html += '</tr></thead>';
+            html += '<tbody class="divide-y divide-gray-200 bg-white">';
+            
+            ganttData.forEach(g => {
+                let isManualOverride = !!(imageManualDates[g.manualKey] || imageManualEndDates[g.manualKey]);
+                
+                Object.values(g.items).forEach(item => {
+                    let nUpper = item.noiMuon.toUpperCase(); let iStart = null, iEnd = null;
+                    if (!isManualOverride) { if(nUpper === 'KHO') { iStart = g.sKHO; iEnd = g.eKHO; } else if(nUpper === 'NVT') { iStart = g.sNVT; iEnd = g.eNVT; } else { iStart = g.sOther; iEnd = g.eOther; } } 
+                    else { iStart = g.startChup; iEnd = g.endChup; }
+
+                    html += `<tr>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 font-medium bg-white truncate" style="position: sticky; left: 0; z-index: 10;" title="${item.loMuon}">${item.loMuon}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center text-gray-500 bg-white" style="position: sticky; left: 150px; z-index: 10;">${formatDateToDisplay(g.ngayNhan)}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 250px; z-index: 10;">${item.noiMuon}</td>`;
+                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 340px; z-index: 10;">${item.skuCount}</td>`;
+                    
+                    timelineDates.forEach(d => {
+                        let isW = isWeekend(d); let isH = isHoliday(d);
+                        let isTaskDay = iStart && iEnd && d >= iStart && d <= iEnd && !isW && !isH;
+                        let bgClass = isTaskDay ? 'bg-pnjGold text-white text-center text-[10px]' : ((isW || isH) ? 'bg-gray-100' : '');
+                        html += `<td class="border border-gray-200 ${bgClass}">${isTaskDay ? 'Chụp' : ''}</td>`;
+                    });
+                    html += `</tr>`;
+                });
+
+                html += `<tr class="bg-gray-50 font-bold">`;
+                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 0; z-index: 10;"></td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 150px; z-index: 10;"></td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 text-right text-[#1C3B5E] bg-gray-50" style="position: sticky; left: 250px; z-index: 10;">Total</td>`;
+                html += `<td class="px-3 py-2 border border-gray-200 text-center text-pnjBlue bg-gray-50" style="position: sticky; left: 340px; z-index: 10;">${g.skuCount}</td>`;
+                
+                timelineDates.forEach(d => {
+                    let isW = isWeekend(d); let isH = isHoliday(d);
+                    let isTaskDay = d >= g.startRetouch && d <= g.endRetouch && !isW && !isH;
+                    let cellClass = isTaskDay ? 'bg-pnjBlue text-white text-center text-[10px]' : ((isW || isH) ? 'bg-gray-200' : '');
+                    html += `<td class="border border-gray-200 ${cellClass}">${isTaskDay ? 'Retouch' : ''}</td>`;
+                });
+                html += `</tr>`;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        };
+
+        // RENDERING MAIN SKUS DATA TABLE
         window.renderTable = function() {
             const tbody = document.getElementById('tableBody'); if(!tbody) return;
             
@@ -1867,11 +1937,11 @@
             let endIndex = Math.min(startIndex + rowsPerPage, totalRows);
             let pageData = dataToRender.slice(startIndex, endIndex);
 
-            const isSheetLinked = GOOGLE_SHEET_CSV_URL !== "DÁN_LINK_CSV_GOOGLE_SHEET_CỦA_CHỊ_VÀO_ĐÂY" && GOOGLE_SHEET_CSV_URL !== "";
+            const isSheetLinked = GOOGLE_SHEET_CSV_URL !== "";
 
             tbody.innerHTML = pageData.map(row => {
                 const calculatedDays = calculateDays(row.ngayBatDau, row.ngayNhan);
-                // Nếu dùng Google Sheets thì vô hiệu hóa (disabled) ô nhập liệu để tránh người dùng sửa nhầm trên web
+                // Vô hiệu hóa ô nhập liệu của Database khi đã nạp từ G-Sheets (Chống ghi đè nhầm)
                 const disabledState = (!window.isFakeLoggedIn || isSheetLinked) ? 'disabled' : '';
                 const titleLock = isSheetLinked ? 'title="Dữ liệu được khóa để đồng bộ từ Google Sheets"' : '';
                 
@@ -1923,374 +1993,9 @@
             if (btnNext) btnNext.disabled = currentPage === totalPages || totalPages === 0;
 
             if(window.renderReviewTable) window.renderReviewTable();
-        }
-
-        window.renderVideoTable = function() {
-            const tbody = document.getElementById('videoSummaryBody'); if(!tbody) return;
-            tbody.innerHTML = videoData.map(row => {
-                let tQVal = (row.ttQuay || '').toLowerCase();
-                let tQClass = tQVal.includes('xong') || tQVal.includes('done') ? 'text-[#B8860B] font-bold bg-[#Fdf6E3]' : (tQVal.includes('đang') ? 'text-[#1C3B5E] font-bold bg-[#E8F0FE]' : 'text-gray-600 bg-gray-50');
-                let tDVal = (row.ttDung || '').toLowerCase();
-                let tDClass = tDVal.includes('đang') ? 'text-[#1C3B5E] font-bold bg-[#E8F0FE]' : ((tDVal.includes('xong') || tDVal.includes('done')) ? 'text-[#B8860B] font-bold bg-[#Fdf6E3]' : 'text-gray-600 bg-gray-50');
-
-                return `
-                <tr class="hover:bg-gray-50 transition-colors group">
-                    <td class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} px-2 py-2 text-center border-r border-gray-100"><button onclick="deleteVideoRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
-                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${row.month}" onchange="updateVideoCell('${row.id}', 'month', this.value)" class="text-center font-bold text-gray-700 bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loVideo || ''}" onchange="updateVideoCell('${row.id}', 'loVideo', this.value)" class="font-bold text-[#1C3B5E] bg-transparent border-none" placeholder="VD: Video-Jan" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100 w-24"><input type="number" value="${row.slThucTe || ''}" onchange="updateVideoCell('${row.id}', 'slThucTe', this.value)" class="text-center font-bold text-red-500 bg-transparent border-none" placeholder="0" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttQuay || ''}" list="ttQuayList" onchange="updateVideoCell('${row.id}', 'ttQuay', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tQClass}" placeholder="VD: Đã xong" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttDung || ''}" list="ttDungList" onchange="updateVideoCell('${row.id}', 'ttDung', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tDClass}" placeholder="VD: Đang dựng" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1"><input type="text" value="${row.ghiChu || ''}" onchange="updateVideoCell('${row.id}', 'ghiChu', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                </tr>`;
-            }).join('');
-            // Không gọi trực tiếp renderVideoDashboard ở đây để tránh đụng vòng lặp, đã gọi ở onSnapshot
-        }
-
-        window.renderVideoDashboard = function() {
-            let yearlyTotal = 0; let monthlyData = {};
-            for(let i=1; i<=12; i++) { monthlyData[i] = { count: 0 }; }
-            videoData.forEach(row => {
-                let m = parseInt(row.month); let sl = parseInt(row.slThucTe) || 0;
-                if(isNaN(m) || m < 1 || m > 12) return;
-                yearlyTotal += sl; monthlyData[m].count += sl;
-            });
-
-            // Thay đổi mục tiêu 480 thành 540
-            let yearPct = Math.min(100, ((yearlyTotal / 540) * 100));
-            let displayPct = yearPct % 1 === 0 ? yearPct.toFixed(0) : yearPct.toFixed(1);
-            const yearPctEl = document.getElementById('kpi-video-year-pct'); if (yearPctEl) yearPctEl.innerText = `Đã đạt ${displayPct}% kế hoạch năm`;
-            const yearBarEl = document.getElementById('kpi-video-year-bar'); if (yearBarEl) yearBarEl.style.width = `${yearPct}%`;
-            const kpiTotalActual = document.getElementById('kpi-video-total-actual'); if (kpiTotalActual) kpiTotalActual.innerText = yearlyTotal;
-
-            let chartLabels = []; let chartValues = [];
-            for(let i=1; i<=12; i++) { if(monthlyData[i].count > 0) { chartLabels.push(`Tháng ${i}`); chartValues.push(monthlyData[i].count); } }
-
-            const canvas = document.getElementById('chartVideo'); const empty = document.getElementById('emptyChartVideo');
-            if (canvas && empty) {
-                if(chartVideoInstance) chartVideoInstance.destroy();
-                if (chartLabels.length === 0) { canvas.classList.add('hidden'); empty.classList.remove('hidden'); } else {
-                    canvas.classList.remove('hidden'); empty.classList.add('hidden');
-                    chartVideoInstance = new Chart(canvas, {
-                        type: 'bar',
-                        data: { labels: chartLabels, datasets: [{ label: 'Số lượng Video', data: chartValues, backgroundColor: '#7393B3', borderRadius: 6, barPercentage: 0.6 }] },
-                        options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, border: {display: false}, ticks: { font: { family: "'Be Vietnam Pro', sans-serif" } } }, x: { grid: { display: false }, border: {display: false}, ticks: { font: { family: "'Be Vietnam Pro', sans-serif" } } } } },
-                        plugins: [{ id: 'customDataLabelsVideo', afterDatasetsDraw(chart) { const { ctx, data } = chart; ctx.save(); ctx.font = 'bold 12px "Be Vietnam Pro", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillStyle = '#1C3B5E'; data.datasets[0].data.forEach((value, index) => { if (value > 0) { const meta = chart.getDatasetMeta(0); const bar = meta.data[index]; ctx.fillText(value, bar.x, bar.y - 4); } }); ctx.restore(); } }]
-                    });
-                }
-            }
-
-            // Xử lý biểu đồ Brand cho Video từ dữ liệu nhập tay
-            let brandCounts = {};
-            videoBrandManualData.forEach(item => {
-                let b = (item.brand || 'Chưa đặt tên').trim();
-                if (!brandCounts[b]) brandCounts[b] = 0;
-                brandCounts[b] += (parseInt(item.count) || 0);
-            });
-
-            let sortedBrandVideo = Object.keys(brandCounts).map(k => ({ name: k, count: brandCounts[k] })).filter(b => b.count > 0).sort((a,b) => b.count - a.count);
-            let vChartLabels = sortedBrandVideo.map(b => b.name);
-            let vChartValues = sortedBrandVideo.map(b => b.count);
-
-            const canvasVBrand = document.getElementById('chartVideoBrand');
-            const emptyVBrand = document.getElementById('emptyChartVideoBrand');
-            if (canvasVBrand && emptyVBrand) {
-                if (chartVideoBrandInstance) chartVideoBrandInstance.destroy();
-                if (vChartLabels.length === 0) {
-                    canvasVBrand.classList.add('hidden'); emptyVBrand.classList.remove('hidden');
-                } else {
-                    canvasVBrand.classList.remove('hidden'); emptyVBrand.classList.add('hidden');
-                    chartVideoBrandInstance = new Chart(canvasVBrand, {
-                        type: 'bar',
-                        data: {
-                            labels: vChartLabels,
-                            datasets: [{ label: 'Số lượng Video', data: vChartValues, backgroundColor: '#003366', borderRadius: 4, barPercentage: 0.6 }]
-                        },
-                        options: {
-                            indexAxis: 'y',
-                            responsive: true, maintainAspectRatio: false,
-                            layout: { padding: { right: 40, top: 10, bottom: 10 } },
-                            plugins: { legend: { display: false } },
-                            scales: {
-                                x: { display: false, beginAtZero: true },
-                                y: { border: { display: false }, grid: { display: false }, ticks: { font: { family: "'Be Vietnam Pro', sans-serif", weight: 'bold' }, color: '#4B5563' } }
-                            }
-                        },
-                        plugins: [{
-                            id: 'customDataLabelsVideoBrand',
-                            afterDatasetsDraw(chart) {
-                                const { ctx, data } = chart;
-                                ctx.save();
-                                ctx.font = 'bold 12px "Be Vietnam Pro", sans-serif';
-                                ctx.textAlign = 'left';
-                                ctx.textBaseline = 'middle';
-                                ctx.fillStyle = '#1C3B5E';
-                                data.datasets[0].data.forEach((value, index) => {
-                                    if (value > 0) {
-                                        const meta = chart.getDatasetMeta(0);
-                                        const bar = meta.data[index];
-                                        ctx.fillText(value.toLocaleString(), bar.x + 8, bar.y);
-                                    }
-                                });
-                                ctx.restore();
-                            }
-                        }]
-                    });
-                }
-            }
-        }
-
-        window.populateReviewFilters = function() {
-            const curMonth = getFilterState('review-month');
-            const months = new Set();
-            tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return;
-                if (!row.loMuon) return;
-                months.add(row.month || 'Trống');
-            });
-            buildFilterDropdown(months, 'review-month', curMonth);
         };
 
-        window.clearReviewFilters = function() {
-            ['review-month'].forEach(type => {
-                const btn = document.getElementById(`selectAll-${type}`);
-                if(btn) { btn.checked = true; window.toggleAllCheckboxes(type, true); }
-            });
-        };
-
-        window.renderReviewTable = function() {
-            const tbody = document.getElementById('reviewSummaryBody');
-            if (!tbody) return;
-
-            const getV = (t) => {
-                const cbs = document.querySelectorAll(`.cb-${t}`);
-                if (cbs.length === 0) return ['ALL'];
-                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
-            };
-            const mF = getV('review-month');
-
-            let groups = {};
-            let grandTotalMuon = 0;
-            let grandTotalVideoYes = 0;
-            let grandTotalImageYes = 0;
-
-            tableData.forEach(row => {
-                if (!row.loMuon) return;
-                if (!window.isSkuMatched(row.sku)) return; 
-                
-                const m = row.month || 'Trống';
-                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
-
-                const l = row.loMuon;
-                const k = `${m}|${l}`;
-                
-                if (!groups[k]) {
-                    groups[k] = { month: m, loMuon: l, total: 0, videoYes: 0, imageYes: 0 };
-                }
-                groups[k].total++;
-                grandTotalMuon++;
-
-                if (row.videoReview && row.videoReview.toLowerCase().trim() === 'yes') {
-                    groups[k].videoYes++;
-                    grandTotalVideoYes++;
-                }
-                if (row.imageReview && row.imageReview.toLowerCase().trim() === 'yes') {
-                    groups[k].imageYes++;
-                    grandTotalImageYes++;
-                }
-            });
-
-            let sortedGroups = Object.values(groups).sort((a,b) => {
-                let mDiff = parseInt(a.month) - parseInt(b.month);
-                if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
-                return a.loMuon.localeCompare(b.loMuon);
-            });
-
-            tbody.innerHTML = sortedGroups.map(g => {
-                let isVideoDone = g.videoYes === g.total && g.total > 0;
-                let vClass = isVideoDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
-                let isImageDone = g.imageYes === g.total && g.total > 0;
-                let iClass = isImageDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
-
-                return `
-                    <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="px-4 py-3 text-center border-r border-gray-100 font-medium">${g.month}</td>
-                        <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${g.loMuon}</td>
-                        <td class="px-4 py-3 text-center border-r border-gray-100 font-bold text-gray-700">${g.total}</td>
-                        <td class="px-4 py-3 text-center border-r border-gray-100"><span class="${vClass}">${g.videoYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
-                        <td class="px-4 py-3 text-center"><span class="${iClass}">${g.imageYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
-                    </tr>
-                `;
-            }).join('') || `<tr><td colspan="5" class="px-4 py-8 text-center text-gray-400 italic">Chưa có dữ liệu phân bổ lô mượn.</td></tr>`;
-
-            const elTotalMuon = document.getElementById('reviewTotalMuon');
-            if (elTotalMuon) elTotalMuon.innerText = grandTotalMuon.toLocaleString();
-            
-            const elTotalVideo = document.getElementById('reviewTotalVideo');
-            if (elTotalVideo) elTotalVideo.innerText = grandTotalVideoYes.toLocaleString();
-            const elTotalVideoMuon = document.getElementById('reviewTotalVideoMuon');
-            if (elTotalVideoMuon) elTotalVideoMuon.innerText = grandTotalMuon.toLocaleString();
-
-            const elTotalImage = document.getElementById('reviewTotalImage');
-            if (elTotalImage) elTotalImage.innerText = grandTotalImageYes.toLocaleString();
-            const elTotalImageMuon = document.getElementById('reviewTotalImageMuon');
-            if (elTotalImageMuon) elTotalImageMuon.innerText = grandTotalMuon.toLocaleString();
-        };
-
-        window.renderSummary = function() {
-            const tbody = document.getElementById('summaryBody'); if(!tbody) return;
-            
-            const getV = (t) => {
-                const cbs = document.querySelectorAll(`.cb-${t}`);
-                if (cbs.length === 0) return ['ALL'];
-                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
-            };
-
-            const mF = getV('month'); const nF = getV('noiMuon'); const tF = getV('ttMuon'); const sF = getV('status');
-            const globalSchedules = window.getGlobalSchedule ? window.getGlobalSchedule() : {};
-            let groups = {}; let grandTotal = 0;
-            
-            tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return;
-
-                const m = row.month || 'Trống'; 
-                const n = row.noiMuon || 'Trống'; 
-                const tt = row.ttMuon || 'Trống';
-                
-                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
-                if (!nF.includes('ALL') && !nF.includes(n)) return;
-                if (!tF.includes('ALL') && !tF.includes(tt)) return;
-
-                const d = calculateDays(row.ngayBatDau, row.ngayNhan); 
-                const l = row.loMuon || 'Trống';
-                const bd = row.ngayBatDau || 'Trống'; 
-                const nh = row.ngayNhan || 'Trống'; 
-                const ds = d !== '' ? d : 'Trống';
-                const tr = row.ngayTra || 'Trống';
-                
-                const k = `${m}|${n}|${l}|${bd}|${nh}|${tr}|${ds}|${tt}`;
-                
-                if (!groups[k]) {
-                    groups[k] = { m, n, l, bd, nh, tr, ds, tt, count: 0, cD: 0, cND: 0, rD: 0, rND: 0, daTraCount: 0, notes: new Set(), ids: [] };
-                }
-                
-                groups[k].count++; groups[k].ids.push(row.id);
-                
-                if (row.ttChup && row.ttChup.toLowerCase().includes('done')) groups[k].cD++; else groups[k].cND++;
-                if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) groups[k].rD++; else groups[k].rND++;
-                if (row.daTra) groups[k].daTraCount++; 
-                if (row.note && row.note.trim()) groups[k].notes.add(row.note.trim());
-            });
-            
-            let todayStr = new Date().toISOString().slice(0, 10);
-
-            let sortedGroups = Object.values(groups).sort((a,b) => {
-                let m1 = parseInt(a.m);
-                let m2 = parseInt(b.m);
-                
-                let isEarlyA = !isNaN(m1) && m1 >= 1 && m1 <= 3;
-                let isEarlyB = !isNaN(m2) && m2 >= 1 && m2 <= 3;
-
-                if (isEarlyA && !isEarlyB) return -1;
-                if (!isEarlyA && isEarlyB) return 1;
-
-                if (isEarlyA && isEarlyB && m1 !== m2) {
-                    return m1 - m2;
-                }
-
-                if (a.nh === 'Trống' && b.nh !== 'Trống') return 1;
-                if (b.nh === 'Trống' && a.nh !== 'Trống') return -1;
-                if (a.nh !== 'Trống' && b.nh !== 'Trống' && a.nh !== b.nh) {
-                    return a.nh.localeCompare(b.nh);
-                }
-                
-                if(a.m === 'Trống' && b.m !== 'Trống') return 1;
-                if(b.m === 'Trống' && a.m !== 'Trống') return -1;
-                if(a.m !== 'Trống' && b.m !== 'Trống' && m1 !== m2) {
-                    return m1 - m2;
-                }
-
-                return (a.l || '').localeCompare(b.l || '');
-            });
-
-            let filteredGroups = sortedGroups.filter(g => {
-                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
-                let isChuanBi = g.tt.toLowerCase().includes('chuẩn bị') || g.tt === 'Trống' || g.tt === '';
-                let statusLabelText = 'Đang xử lý';
-                if (isHoanThanh) statusLabelText = 'Hoàn thành';
-                else if (isChuanBi) statusLabelText = 'Dự kiến mượn';
-                if (!sF.includes('ALL') && !sF.includes(statusLabelText)) return false;
-                return true;
-            });
-
-            filteredGroups.forEach(g => { grandTotal += g.count; });
-
-            tbody.innerHTML = filteredGroups.map(g => {
-                let isChupLate = false;
-                let isRetouchLate = false;
-                
-                if (g.nh !== 'Trống') {
-                    let schedule = globalSchedules[g.nh];
-                    if (schedule) {
-                        isChupLate = todayStr > schedule.endChup && g.cD < g.count;
-                        isRetouchLate = todayStr > schedule.endRetouch && g.rD < g.count;
-                    }
-                }
-                
-                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
-                let isChuanBi = g.tt.toLowerCase().includes('chuẩn bị') || g.tt === 'Trống' || g.tt === '';
-                let isDaTra = g.count > 0 && g.daTraCount === g.count; 
-
-                let statusLabelText = 'Đang xử lý';
-                let statusClass = 'bg-amber-100 text-amber-700';
-
-                if (isHoanThanh) {
-                    statusLabelText = 'Hoàn thành';
-                    statusClass = 'bg-emerald-100 text-emerald-700';
-                } else if (isChuanBi) {
-                    statusLabelText = 'Dự kiến mượn';
-                    statusClass = 'bg-slate-100 text-slate-600 border border-slate-200';
-                }
-
-                let statusLabel = `<span class="px-2 py-1 ${statusClass} rounded text-xs font-bold whitespace-nowrap">${statusLabelText}</span>`;
-
-                let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.cD}</span> / ${g.count} ${isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
-                let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.rD}</span> / ${g.count} ${isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
-
-                return `
-                <tr class="hover:bg-gray-50 transition-colors bg-white">
-                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100 relative min-w-[160px]"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    
-                    <td class="px-2 py-1 border-r border-gray-100 min-w-[150px]">
-                        <div class="flex items-center justify-center gap-1.5 w-full">
-                            <input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none ${isDaTra ? 'text-emerald-600 font-bold' : 'text-gray-500'} text-center flex-grow p-0 outline-none transition-colors" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
-                            <div class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} flex items-center pr-1" title="Đánh dấu lô này Đã Trả Hàng">
-                                <input type="checkbox" ${isDaTra ? 'checked' : ''} onchange="updateSummaryGroup('${g.ids.join(',')}', 'daTra', this.checked)" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 cursor-pointer shadow-sm transition-all hover:scale-110" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
-                            </div>
-                            <div class="${window.isFakeLoggedIn ? 'hidden' : ''} flex items-center pr-1" title="${isDaTra ? 'Đã trả hàng' : 'Chưa trả'}">
-                                ${isDaTra ? '<i class="fas fa-check-circle text-emerald-500 text-sm"></i>' : '<div class="w-3.5 h-3.5"></div>'}
-                            </div>
-                        </div>
-                    </td>
-
-                    <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.ds}</td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
-                    <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
-                    <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
-                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${Array.from(g.notes).join('; ')}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'note', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                    <td class="px-4 py-3 text-right font-black text-pnjBlue bg-pnjBlue/5">${g.count}</td>
-                </tr>`;
-            }).join('');
-            
-            const sgt = document.getElementById('summaryGrandTotal'); 
-            if (sgt) sgt.innerText = grandTotal.toLocaleString();
-        }
-
+        // RENDERING MAIN REPORT PAGE
         window.renderReport = function() {
             const getV = (t) => {
                 const cbs = document.querySelectorAll(`.cb-report-${t}`);
@@ -2450,7 +2155,6 @@
                 sortedBrands.forEach(b => {
                     let pct = totalBrandChup > 0 ? ((b.chup / totalBrandChup) * 100).toFixed(1) + '%' : '0%';
                     
-                    // Render dòng Brand chính
                     htmlBrandTable += `
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${b.name}</td>
@@ -2459,9 +2163,8 @@
                         </tr>
                     `;
 
-                    // Render các dòng phân nhánh Brand 2 (nếu là KDQT)
                     if (b.name.toUpperCase() === 'KDQT' && Object.keys(b.subBrands).length > 0) {
-                        let sortedSubs = Object.entries(b.subBrands).sort((x, y) => y[1] - x[1]); // Sắp xếp Brand 2 theo SL giảm dần
+                        let sortedSubs = Object.entries(b.subBrands).sort((x, y) => y[1] - x[1]); 
                         sortedSubs.forEach(([subName, subCount]) => {
                             let subPct = totalBrandChup > 0 ? ((subCount / totalBrandChup) * 100).toFixed(1) + '%' : '0%';
                             htmlBrandTable += `
@@ -2496,15 +2199,15 @@
                                 ] 
                             }, 
                             options: { 
-                                indexAxis: 'y', // Chuyển thành biểu đồ ngang
+                                indexAxis: 'y', 
                                 responsive: true, 
                                 maintainAspectRatio: false, 
-                                layout: { padding: { right: 40, top: 10, bottom: 10 } }, // Chừa không gian bên phải cho số liệu
+                                layout: { padding: { right: 40, top: 10, bottom: 10 } }, 
                                 plugins: { 
                                     legend: { display: false } 
                                 }, 
                                 scales: { 
-                                    x: { display: false, beginAtZero: true }, // Ẩn trục X cho đẹp
+                                    x: { display: false, beginAtZero: true }, 
                                     y: { border: { display: false }, grid: { display: false }, ticks: { font: { family: "'Be Vietnam Pro', sans-serif", weight: 'bold' }, color: '#4B5563' } } 
                                 } 
                             },
@@ -2514,8 +2217,8 @@
                                     const { ctx, data } = chart; 
                                     ctx.save(); 
                                     ctx.font = 'bold 12px "Be Vietnam Pro", sans-serif'; 
-                                    ctx.textAlign = 'left'; // Căn trái
-                                    ctx.textBaseline = 'middle'; // Căn giữa theo chiều dọc
+                                    ctx.textAlign = 'left'; 
+                                    ctx.textBaseline = 'middle'; 
                                     ctx.fillStyle = '#1C3B5E'; 
                                     data.datasets.forEach((dataset, i) => { 
                                         const meta = chart.getDatasetMeta(i); 
@@ -2523,7 +2226,6 @@
                                             meta.data.forEach((bar, index) => { 
                                                 const value = dataset.data[index]; 
                                                 if (value > 0) { 
-                                                    // Vẽ text nằm bên phải của thanh ngang
                                                     ctx.fillText(value.toLocaleString(), bar.x + 8, bar.y); 
                                                 } 
                                             }); 
@@ -2538,234 +2240,353 @@
             }
         };
 
-        // --- FIX CRITICAL: Bảng tiến độ và Gantt không bị co hẹp ngày khi tìm kiếm ---
-        window.renderImageTrackingTable = function() {
-            const tbody = document.getElementById('imageTrackingBody'); if(!tbody) return;
-            const getV = (type) => {
-                const cbs = document.querySelectorAll(`.cb-img-${type}`);
+        window.renderSummary = function() {
+            const tbody = document.getElementById('summaryBody'); if(!tbody) return;
+            
+            const getV = (t) => {
+                const cbs = document.querySelectorAll(`.cb-${t}`);
                 if (cbs.length === 0) return ['ALL'];
                 return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
             };
-            const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon'); const sF = getV('status');
 
-            // BƯỚC 1: Lấy lịch trình thực tế GỐC (Tuyệt đối không dùng filter tìm kiếm ở bước này)
-            let trueSchedules = window.getGlobalSchedule();
-
-            // BƯỚC 2: Nhóm dữ liệu để hiển thị (CÓ dùng filter tìm kiếm)
-            let displayGroups = {};
+            const mF = getV('month'); const nF = getV('noiMuon'); const tF = getV('ttMuon'); const sF = getV('status');
+            const globalSchedules = window.getGlobalSchedule ? window.getGlobalSchedule() : {};
+            let groups = {}; let grandTotal = 0;
+            
             tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return; // BỘ LỌC TÌM KIẾM ĐƯỢC ÁP DỤNG TẠI ĐÂY
-                if (!row.ngayNhan) return; 
+                if (!window.isSkuMatched(row.sku)) return;
+
+                const m = row.month || 'Trống'; 
+                const n = row.noiMuon || 'Trống'; 
+                const tt = row.ttMuon || 'Trống';
                 
-                const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const l = row.loMuon || 'Trống';
                 if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
                 if (!nF.includes('ALL') && !nF.includes(n)) return;
-                if (!lF.includes('ALL') && !lF.includes(l)) return;
+                if (!tF.includes('ALL') && !tF.includes(tt)) return;
 
-                let groupKey = row.ngayNhan;
-                if (!displayGroups[groupKey]) { displayGroups[groupKey] = { groupKey: groupKey, ngayNhan: row.ngayNhan, skuCount: 0, chupDone: 0, retouchDone: 0, muonDone: 0, items: {}, ids: [] }; }
-                let group = displayGroups[groupKey];
-                group.ids.push(row.id);
+                const d = calculateDays(row.ngayBatDau, row.ngayNhan); 
+                const l = row.loMuon || 'Trống';
+                const bd = row.ngayBatDau || 'Trống'; 
+                const nh = row.ngayNhan || 'Trống'; 
+                const ds = d !== '' ? d : 'Trống';
+                const tr = row.ngayTra || 'Trống';
                 
-                let itemKey = l + '|' + n;
-                if (!group.items[itemKey]) { group.items[itemKey] = { loMuon: l, noiMuon: n, skuCount: 0, ttMuons: new Set() }; }
-                group.items[itemKey].skuCount++;
-                group.items[itemKey].ttMuons.add(row.ttMuon || 'Trống');
-                group.skuCount++;
+                const k = `${m}|${n}|${l}|${bd}|${nh}|${tr}|${ds}|${tt}`;
                 
-                let ttMuonLower = (row.ttMuon || '').toLowerCase();
-                if (ttMuonLower.includes('done')) group.muonDone++;
-                if (row.ttChup && row.ttChup.toLowerCase().includes('done')) group.chupDone++;
-                if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) group.retouchDone++;
+                if (!groups[k]) {
+                    groups[k] = { m, n, l, bd, nh, tr, ds, tt, count: 0, cD: 0, cND: 0, rD: 0, rND: 0, daTraCount: 0, notes: new Set(), ids: [] };
+                }
+                
+                groups[k].count++; groups[k].ids.push(row.id);
+                
+                if (row.ttChup && row.ttChup.toLowerCase().includes('done')) groups[k].cD++; else groups[k].cND++;
+                if (row.ttRetouch && row.ttRetouch.toLowerCase().includes('done')) groups[k].rD++; else groups[k].rND++;
+                if (row.daTra) groups[k].daTraCount++; 
+                if (row.note && row.note.trim()) groups[k].notes.add(row.note.trim());
             });
-
-            let todayStr = new Date().toISOString().slice(0, 10);
             
-            // BƯỚC 3: Ghép nối ngày tháng GỐC vào dữ liệu hiển thị (Bảo toàn độ dài của Gantt Chart)
-            let processedGanttData = Object.values(displayGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan)).map(g => {
-                let ts = trueSchedules[g.ngayNhan]; // ts chứa ngày gốc
-                if (!ts) return null; // Safety check
+            let todayStr = new Date().toISOString().slice(0, 10);
+
+            let sortedGroups = Object.values(groups).sort((a,b) => {
+                let m1 = parseInt(a.m);
+                let m2 = parseInt(b.m);
                 
-                let tCD = getWorkingDays(ts.startChup, ts.endChup) || 1; 
-                let tRD = getWorkingDays(ts.startRetouch, ts.endRetouch) || 1;
-                let isChupLate = todayStr > ts.endChup && g.chupDone < g.skuCount;
-                let isRetouchLate = todayStr > ts.endRetouch && g.retouchDone < g.skuCount;
-                
-                return { ...g, manualKey: g.groupKey, sKHO: ts.sKHO, eKHO: ts.eKHO, sNVT: ts.sNVT, eNVT: ts.eNVT, sOther: ts.sOther, eOther: ts.eOther, startChup: ts.startChup, endChup: ts.endChup, startRetouch: ts.startRetouch, endRetouch: ts.endRetouch, tCD, tRD, isChupLate, isRetouchLate };
-            }).filter(g => g !== null);
+                let isEarlyA = !isNaN(m1) && m1 >= 1 && m1 <= 3;
+                let isEarlyB = !isNaN(m2) && m2 >= 1 && m2 <= 3;
 
-            window.currentGanttData = processedGanttData;
+                if (isEarlyA && !isEarlyB) return -1;
+                if (!isEarlyA && isEarlyB) return 1;
 
-            // Luôn gọi Alert Cảnh báo trước khi Bị Lọc để đảm bảo không bị ẩn đi
-            if (window.renderDeadlineAlerts) window.renderDeadlineAlerts(processedGanttData);
-
-            // BƯỚC 4: Lọc theo Checkbox Trạng Thái trên thanh điều hướng
-            const showOnlyLate = document.getElementById('filter-img-late')?.checked;
-            if (showOnlyLate) { processedGanttData = processedGanttData.filter(g => g.isChupLate || g.isRetouchLate); }
-
-            if (!sF.includes('ALL')) {
-                processedGanttData = processedGanttData.filter(g => {
-                    let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
-                    let statusLabelText = 'Đang xử lý';
-                    if (isHoanThanh) statusLabelText = 'Hoàn thành';
-                    else if (g.muonDone === 0) statusLabelText = 'Dự kiến mượn';
-                    return sF.includes(statusLabelText);
-                });
-            }
-
-            let totalSKU = 0;
-            let totalChuaChup = 0;
-            let totalChuaRetouch = 0;
-            let html = '';
-
-            processedGanttData.forEach(g => {
-                totalSKU += g.skuCount;
-                
-                if (g.muonDone > 0) {
-                    totalChuaChup += Math.max(0, g.skuCount - g.chupDone);
-                    totalChuaRetouch += Math.max(0, g.skuCount - g.retouchDone);
+                if (isEarlyA && isEarlyB && m1 !== m2) {
+                    return m1 - m2;
                 }
 
-                let isGroupLate = g.isChupLate || g.isRetouchLate;
-                let lateIndicatorImg = isGroupLate ? `<span class="inline-flex relative h-2.5 w-2.5 ml-2 flex-shrink-0" title="Lô trễ hạn!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span></span>` : '';
-
-                let loListHTML = Object.values(g.items).map(i => `<div class="py-1 border-b border-gray-100 last:border-0 flex items-center justify-between"><span class="truncate pr-2">${i.loMuon}</span> ${lateIndicatorImg}</div>`).join('') || '-';
+                if (a.nh === 'Trống' && b.nh !== 'Trống') return 1;
+                if (b.nh === 'Trống' && a.nh !== 'Trống') return -1;
+                if (a.nh !== 'Trống' && b.nh !== 'Trống' && a.nh !== b.nh) {
+                    return a.nh.localeCompare(b.nh);
+                }
                 
-                let ttMuonHTML = Object.values(g.items).map(i => {
-                    let tts = Array.from(i.ttMuons).filter(t => t !== 'Trống').join(', ');
-                    if (!tts) tts = '-';
-                    let colorClass = tts.toLowerCase().includes('done') ? 'text-emerald-600 font-bold' : 'text-amber-600 font-medium';
-                    if (tts === '-') colorClass = 'text-gray-400';
-                    return `<div class="py-1 border-b border-gray-100 last:border-0 truncate ${colorClass}" title="${tts}">${tts}</div>`;
-                }).join('') || '-';
+                if(a.m === 'Trống' && b.m !== 'Trống') return 1;
+                if(b.m === 'Trống' && a.m !== 'Trống') return -1;
+                if(a.m !== 'Trống' && b.m !== 'Trống' && m1 !== m2) {
+                    return m1 - m2;
+                }
 
-                let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.chupDone}</span> / ${g.skuCount} ${g.isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
-                let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.retouchDone}</span> / ${g.skuCount} ${g.isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
+                return (a.l || '').localeCompare(b.l || '');
+            });
+
+            let filteredGroups = sortedGroups.filter(g => {
+                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
+                let isChuanBi = g.tt.toLowerCase().includes('chuẩn bị') || g.tt === 'Trống' || g.tt === '';
+                let statusLabelText = 'Đang xử lý';
+                if (isHoanThanh) statusLabelText = 'Hoàn thành';
+                else if (isChuanBi) statusLabelText = 'Dự kiến mượn';
+                if (!sF.includes('ALL') && !sF.includes(statusLabelText)) return false;
+                return true;
+            });
+
+            filteredGroups.forEach(g => { grandTotal += g.count; });
+
+            tbody.innerHTML = filteredGroups.map(g => {
+                let isChupLate = false;
+                let isRetouchLate = false;
                 
-                let isHoanThanh = (g.muonDone === g.skuCount) && (g.chupDone === g.skuCount) && (g.retouchDone === g.skuCount);
+                if (g.nh !== 'Trống') {
+                    let schedule = globalSchedules[g.nh];
+                    if (schedule) {
+                        isChupLate = todayStr > schedule.endChup && g.cD < g.count;
+                        isRetouchLate = todayStr > schedule.endRetouch && g.rD < g.count;
+                    }
+                }
+                
+                let isHoanThanh = g.tt.toLowerCase().includes('done') && g.cD === g.count && g.rD === g.count;
+                let isChuanBi = g.tt.toLowerCase().includes('chuẩn bị') || g.tt === 'Trống' || g.tt === '';
+                let isDaTra = g.count > 0 && g.daTraCount === g.count; 
+
                 let statusLabelText = 'Đang xử lý';
                 let statusClass = 'bg-amber-100 text-amber-700';
 
                 if (isHoanThanh) {
                     statusLabelText = 'Hoàn thành';
                     statusClass = 'bg-emerald-100 text-emerald-700';
-                } else if (g.muonDone === 0) {
+                } else if (isChuanBi) {
                     statusLabelText = 'Dự kiến mượn';
                     statusClass = 'bg-slate-100 text-slate-600 border border-slate-200';
                 }
 
                 let statusLabel = `<span class="px-2 py-1 ${statusClass} rounded text-xs font-bold whitespace-nowrap">${statusLabelText}</span>`;
 
-                html += `
-                    <tr class="hover:bg-gray-50 transition-colors bg-white">
-                        <td class="px-4 py-3 border-r border-gray-100 text-center min-w-[140px]">${ttMuonHTML}</td>
-                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue">${formatDateToDisplay(g.ngayNhan)}</td>
-                        <td class="px-4 py-3 border-r border-gray-100 text-sm text-gray-600 min-w-[250px] whitespace-normal">${loListHTML}</td>
-                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjBlue bg-pnjBlue/5">${g.skuCount}</td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startChup}" onchange="updateImageManualDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endChup}" onchange="updateImageManualEndDate('${g.manualKey}', this.value)" class="text-xs bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.tCD}</td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.startRetouch}" onchange="updateImageManualRetouchStart('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-2 py-2 border-r border-gray-100 text-center"><input type="date" value="${g.endRetouch}" onchange="updateImageManualRetouchEnd('${g.manualKey}', this.value)" class="text-xs text-gray-600 bg-transparent border-none outline-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-gray-700 bg-gray-100">${g.tRD}</td>
-                        <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
-                        <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
-                        <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
-                        <td class="px-2 py-2 text-center"><button onclick="downloadSpecificSKUs('${g.ids.join(',')}', '${g.ngayNhan}')" class="bg-gray-100 hover:bg-pnjBlue hover:text-white text-pnjBlue p-2 rounded transition-colors shadow-sm" title="Tải mã SKU 13 của lô này"><i class="fas fa-file-csv"></i></button></td>
-                    </tr>`;
-            });
-            tbody.innerHTML = html || '<tr><td colspan="14" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu phù hợp.</td></tr>';
+                let chupVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.cD}</span> / ${g.count} ${isChupLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Chụp!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
+                let retouchVisual = `<div class="flex items-center justify-center gap-2"><span class="text-emerald-600 font-bold">${g.rD}</span> / ${g.count} ${isRetouchLate ? '<span class="relative flex h-3 w-3" title="Trễ Deadline Retouch!"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span></span>' : ''}</div>`;
 
-            const elTotal1 = document.getElementById('imageTrackingGrandTotal');
-            if (elTotal1) elTotal1.innerText = totalSKU.toLocaleString();
-            
-            const elChuaChup = document.getElementById('imageTrackingChuaChup');
-            if (elChuaChup) elChuaChup.innerText = totalChuaChup.toLocaleString();
-
-            const elChuaRetouch = document.getElementById('imageTrackingChuaRetouch');
-            if (elChuaRetouch) elChuaRetouch.innerText = totalChuaRetouch.toLocaleString();
-            
-            const elTotal2 = document.getElementById('ganttGrandTotal');
-            if (elTotal2) elTotal2.innerText = totalSKU.toLocaleString();
-
-            // Nhường luồng cho UI cập nhật bảng xong mới vẽ Gantt (rất tốn tài nguyên nếu dữ liệu lớn)
-            setTimeout(() => {
-                if(window.renderGanttChart) window.renderGanttChart(processedGanttData);
-            }, 50);
-        }
-
-        window.renderGanttChart = function(ganttData) {
-            const container = document.getElementById('gantt-container'); if(!container) return;
-            if(!ganttData || ganttData.length === 0) { container.innerHTML = '<div class="text-center text-gray-400 italic py-8">Không có dữ liệu để vẽ timeline.</div>'; return; }
-
-            let minDate = ganttData[0].ngayNhan; let maxDate = ganttData[0].endRetouch;
-            ganttData.forEach(g => { if (g.ngayNhan < minDate) minDate = g.ngayNhan; if (g.endRetouch > maxDate) maxDate = g.endRetouch; });
-            minDate = addWorkingDays(minDate, -1); maxDate = addWorkingDays(maxDate, 3);
-            let timelineDates = getDatesInRange(minDate, maxDate);
-
-            let html = '<table class="text-sm text-left whitespace-nowrap border-collapse border border-gray-200" style="table-layout: fixed; min-width: 100%;">';
-            html += '<thead class="text-xs text-gray-700 bg-gray-50 sticky top-0" style="z-index: 30;"><tr>';
-            html += '<th class="px-3 py-2 border border-gray-200 bg-gray-50" style="min-width: 150px; max-width: 150px; position: sticky; left: 0; z-index: 30;" rowspan="2">Lô</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 100px; max-width: 100px; position: sticky; left: 150px; z-index: 30;" rowspan="2">Ngày nhận</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 90px; max-width: 90px; position: sticky; left: 250px; z-index: 30;" rowspan="2">Nơi mượn</th>';
-            html += '<th class="px-3 py-2 border border-gray-200 text-center bg-gray-50" style="min-width: 60px; max-width: 60px; position: sticky; left: 340px; z-index: 30;" rowspan="2">SL</th>';
-            
-            timelineDates.forEach(d => {
-                let isW = isWeekend(d); let isH = isHoliday(d);
-                let bgClass = (isW || isH) ? 'bg-gray-300' : 'bg-gray-100';
-                let parts = d.split('-'); let shortDate = `${parts[2]}/${parts[1]}`;
-                html += `<th class="px-1 py-1 border border-gray-200 text-center ${bgClass} text-[10px] min-w-[40px]">${shortDate}</th>`;
-            });
-            html += '</tr><tr>';
-            timelineDates.forEach(d => {
-                let dayName = getDayName(d); let isW = isWeekend(d); let isH = isHoliday(d);
-                let bgClass = (isW || isH) ? 'bg-gray-400 text-white' : 'bg-white';
-                html += `<th class="px-1 py-1 border border-gray-200 text-center ${bgClass} text-[10px] min-w-[40px]">${dayName}</th>`;
-            });
-            html += '</tr></thead>';
-            html += '<tbody class="divide-y divide-gray-200 bg-white">';
-            
-            ganttData.forEach(g => {
-                let isManualOverride = !!(imageManualDates[g.manualKey] || imageManualEndDates[g.manualKey]);
-                
-                Object.values(g.items).forEach(item => {
-                    let nUpper = item.noiMuon.toUpperCase(); let iStart = null, iEnd = null;
-                    if (!isManualOverride) { if(nUpper === 'KHO') { iStart = g.sKHO; iEnd = g.eKHO; } else if(nUpper === 'NVT') { iStart = g.sNVT; iEnd = g.eNVT; } else { iStart = g.sOther; iEnd = g.eOther; } } 
-                    else { iStart = g.startChup; iEnd = g.endChup; }
-
-                    html += `<tr>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 font-medium bg-white truncate" style="position: sticky; left: 0; z-index: 10;" title="${item.loMuon}">${item.loMuon}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center text-gray-500 bg-white" style="position: sticky; left: 150px; z-index: 10;">${formatDateToDisplay(g.ngayNhan)}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 250px; z-index: 10;">${item.noiMuon}</td>`;
-                    html += `<td class="px-3 py-2 border border-gray-200 text-center bg-white" style="position: sticky; left: 340px; z-index: 10;">${item.skuCount}</td>`;
+                return `
+                <tr class="hover:bg-gray-50 transition-colors bg-white">
+                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${g.m === 'Trống' ? '' : g.m}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'month', this.value)" class="text-center font-medium bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.n === 'Trống' ? '' : g.n}" list="noiMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'noiMuon', this.value)" class="bg-transparent border-none text-center" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100 relative min-w-[160px]"><input type="text" value="${g.l === 'Trống' ? '' : g.l}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'loMuon', this.value)" class="font-bold text-pnjBlue bg-transparent border-none w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.bd === 'Trống' ? '' : g.bd}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayBatDau', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="date" value="${g.nh === 'Trống' ? '' : g.nh}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayNhan', this.value)" class="text-xs bg-transparent border-none text-gray-500 text-center w-full" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     
-                    timelineDates.forEach(d => {
-                        let isW = isWeekend(d); let isH = isHoliday(d);
-                        let isTaskDay = iStart && iEnd && d >= iStart && d <= iEnd && !isW && !isH;
-                        let bgClass = isTaskDay ? 'bg-pnjGold text-white text-center text-[10px]' : ((isW || isH) ? 'bg-gray-100' : '');
-                        html += `<td class="border border-gray-200 ${bgClass}">${isTaskDay ? 'Chụp' : ''}</td>`;
-                    });
-                    html += `</tr>`;
-                });
+                    <td class="px-2 py-1 border-r border-gray-100 min-w-[150px]">
+                        <div class="flex items-center justify-center gap-1.5 w-full">
+                            <input type="date" value="${g.tr === 'Trống' ? '' : g.tr}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ngayTra', this.value)" class="text-xs bg-transparent border-none ${isDaTra ? 'text-emerald-600 font-bold' : 'text-gray-500'} text-center flex-grow p-0 outline-none transition-colors" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
+                            <div class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} flex items-center pr-1" title="Đánh dấu lô này Đã Trả Hàng">
+                                <input type="checkbox" ${isDaTra ? 'checked' : ''} onchange="updateSummaryGroup('${g.ids.join(',')}', 'daTra', this.checked)" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 cursor-pointer shadow-sm transition-all hover:scale-110" ${!window.isFakeLoggedIn ? 'disabled' : ''}>
+                            </div>
+                            <div class="${window.isFakeLoggedIn ? 'hidden' : ''} flex items-center pr-1" title="${isDaTra ? 'Đã trả hàng' : 'Chưa trả'}">
+                                ${isDaTra ? '<i class="fas fa-check-circle text-emerald-500 text-sm"></i>' : '<div class="w-3.5 h-3.5"></div>'}
+                            </div>
+                        </div>
+                    </td>
 
-                html += `<tr class="bg-gray-50 font-bold">`;
-                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 0; z-index: 10;"></td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 bg-gray-50" style="position: sticky; left: 150px; z-index: 10;"></td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 text-right text-[#1C3B5E] bg-gray-50" style="position: sticky; left: 250px; z-index: 10;">Total</td>`;
-                html += `<td class="px-3 py-2 border border-gray-200 text-center text-pnjBlue bg-gray-50" style="position: sticky; left: 340px; z-index: 10;">${g.skuCount}</td>`;
-                
-                timelineDates.forEach(d => {
-                    let isW = isWeekend(d); let isH = isHoliday(d);
-                    let isTaskDay = d >= g.startRetouch && d <= g.endRetouch && !isW && !isH;
-                    let cellClass = isTaskDay ? 'bg-pnjBlue text-white text-center text-[10px]' : ((isW || isH) ? 'bg-gray-200' : '');
-                    html += `<td class="border border-gray-200 ${cellClass}">${isTaskDay ? 'Retouch' : ''}</td>`;
-                });
-                html += `</tr>`;
+                    <td class="px-4 py-3 border-r border-gray-100 text-center font-bold text-pnjGold bg-pnjGold/5">${g.ds}</td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${g.tt === 'Trống' ? '' : g.tt}" list="ttMuonList" onchange="updateSummaryGroup('${g.ids.join(',')}', 'ttMuon', this.value)" class="bg-transparent border-none font-medium ${g.tt.includes('Done')?'text-emerald-600':''}" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center">${chupVisual}</td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center">${retouchVisual}</td>
+                    <td class="px-4 py-3 border-r border-gray-100 text-center">${statusLabel}</td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${Array.from(g.notes).join('; ')}" onchange="updateSummaryGroup('${g.ids.join(',')}', 'note', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-4 py-3 text-right font-black text-pnjBlue bg-pnjBlue/5">${g.count}</td>
+                </tr>`;
+            }).join('');
+            
+            const sgt = document.getElementById('summaryGrandTotal'); 
+            if (sgt) sgt.innerText = grandTotal.toLocaleString();
+        };
+
+        window.renderVideoTable = function() {
+            const tbody = document.getElementById('videoSummaryBody'); if(!tbody) return;
+            tbody.innerHTML = videoData.map(row => {
+                let tQVal = (row.ttQuay || '').toLowerCase();
+                let tQClass = tQVal.includes('xong') || tQVal.includes('done') ? 'text-[#B8860B] font-bold bg-[#Fdf6E3]' : (tQVal.includes('đang') ? 'text-[#1C3B5E] font-bold bg-[#E8F0FE]' : 'text-gray-600 bg-gray-50');
+                let tDVal = (row.ttDung || '').toLowerCase();
+                let tDClass = tDVal.includes('đang') ? 'text-[#1C3B5E] font-bold bg-[#E8F0FE]' : ((tDVal.includes('xong') || tDVal.includes('done')) ? 'text-[#B8860B] font-bold bg-[#Fdf6E3]' : 'text-gray-600 bg-gray-50');
+
+                return `
+                <tr class="hover:bg-gray-50 transition-colors group">
+                    <td class="admin-only ${!window.isFakeLoggedIn ? 'hidden' : ''} px-2 py-2 text-center border-r border-gray-100"><button onclick="deleteVideoRow('${row.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fas fa-trash"></i></button></td>
+                    <td class="px-1 py-1 border-r border-gray-100 w-16"><input type="number" min="1" max="12" value="${row.month}" onchange="updateVideoCell('${row.id}', 'month', this.value)" class="text-center font-bold text-gray-700 bg-transparent border-none" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.loVideo || ''}" onchange="updateVideoCell('${row.id}', 'loVideo', this.value)" class="font-bold text-[#1C3B5E] bg-transparent border-none" placeholder="VD: Video-Jan" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100 w-24"><input type="number" value="${row.slThucTe || ''}" onchange="updateVideoCell('${row.id}', 'slThucTe', this.value)" class="text-center font-bold text-red-500 bg-transparent border-none" placeholder="0" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttQuay || ''}" list="ttQuayList" onchange="updateVideoCell('${row.id}', 'ttQuay', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tQClass}" placeholder="VD: Đã xong" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.ttDung || ''}" list="ttDungList" onchange="updateVideoCell('${row.id}', 'ttDung', this.value)" class="text-center border-none rounded px-2 py-1 w-full outline-none focus:ring-1 focus:ring-pnjGold ${tDClass}" placeholder="VD: Đang dựng" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="px-1 py-1"><input type="text" value="${row.ghiChu || ''}" onchange="updateVideoCell('${row.id}', 'ghiChu', this.value)" class="bg-transparent border-none text-gray-500" placeholder="Ghi chú..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                </tr>`;
+            }).join('');
+        };
+
+        window.renderVideoDashboard = function() {
+            let yearlyTotal = 0; let monthlyData = {};
+            for(let i=1; i<=12; i++) { monthlyData[i] = { count: 0 }; }
+            videoData.forEach(row => {
+                let m = parseInt(row.month); let sl = parseInt(row.slThucTe) || 0;
+                if(isNaN(m) || m < 1 || m > 12) return;
+                yearlyTotal += sl; monthlyData[m].count += sl;
             });
-            html += '</tbody></table>';
-            container.innerHTML = html;
-        }
 
+            let yearPct = Math.min(100, ((yearlyTotal / 540) * 100));
+            let displayPct = yearPct % 1 === 0 ? yearPct.toFixed(0) : yearPct.toFixed(1);
+            const yearPctEl = document.getElementById('kpi-video-year-pct'); if (yearPctEl) yearPctEl.innerText = `Đã đạt ${displayPct}% kế hoạch năm`;
+            const yearBarEl = document.getElementById('kpi-video-year-bar'); if (yearBarEl) yearBarEl.style.width = `${yearPct}%`;
+            const kpiTotalActual = document.getElementById('kpi-video-total-actual'); if (kpiTotalActual) kpiTotalActual.innerText = yearlyTotal;
+
+            let chartLabels = []; let chartValues = [];
+            for(let i=1; i<=12; i++) { if(monthlyData[i].count > 0) { chartLabels.push(`Tháng ${i}`); chartValues.push(monthlyData[i].count); } }
+
+            const canvas = document.getElementById('chartVideo'); const empty = document.getElementById('emptyChartVideo');
+            if (canvas && empty) {
+                if(chartVideoInstance) chartVideoInstance.destroy();
+                if (chartLabels.length === 0) { canvas.classList.add('hidden'); empty.classList.remove('hidden'); } else {
+                    canvas.classList.remove('hidden'); empty.classList.add('hidden');
+                    chartVideoInstance = new Chart(canvas, {
+                        type: 'bar',
+                        data: { labels: chartLabels, datasets: [{ label: 'Số lượng Video', data: chartValues, backgroundColor: '#7393B3', borderRadius: 6, barPercentage: 0.6 }] },
+                        options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, border: {display: false}, ticks: { font: { family: "'Be Vietnam Pro', sans-serif" } } }, x: { grid: { display: false }, border: {display: false}, ticks: { font: { family: "'Be Vietnam Pro', sans-serif" } } } } },
+                        plugins: [{ id: 'customDataLabelsVideo', afterDatasetsDraw(chart) { const { ctx, data } = chart; ctx.save(); ctx.font = 'bold 12px "Be Vietnam Pro", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillStyle = '#1C3B5E'; data.datasets[0].data.forEach((value, index) => { if (value > 0) { const meta = chart.getDatasetMeta(0); const bar = meta.data[index]; ctx.fillText(value, bar.x, bar.y - 4); } }); ctx.restore(); } }]
+                    });
+                }
+            }
+
+            // Xử lý biểu đồ Brand cho Video
+            let brandCounts = {};
+            videoBrandManualData.forEach(item => {
+                let b = (item.brand || 'Chưa đặt tên').trim();
+                if (!brandCounts[b]) brandCounts[b] = 0;
+                brandCounts[b] += (parseInt(item.count) || 0);
+            });
+
+            let sortedBrandVideo = Object.keys(brandCounts).map(k => ({ name: k, count: brandCounts[k] })).filter(b => b.count > 0).sort((a,b) => b.count - a.count);
+            let vChartLabels = sortedBrandVideo.map(b => b.name);
+            let vChartValues = sortedBrandVideo.map(b => b.count);
+
+            const canvasVBrand = document.getElementById('chartVideoBrand');
+            const emptyVBrand = document.getElementById('emptyChartVideoBrand');
+            if (canvasVBrand && emptyVBrand) {
+                if (chartVideoBrandInstance) chartVideoBrandInstance.destroy();
+                if (vChartLabels.length === 0) {
+                    canvasVBrand.classList.add('hidden'); emptyVBrand.classList.remove('hidden');
+                } else {
+                    canvasVBrand.classList.remove('hidden'); emptyVBrand.classList.add('hidden');
+                    chartVideoBrandInstance = new Chart(canvasVBrand, {
+                        type: 'bar',
+                        data: {
+                            labels: vChartLabels,
+                            datasets: [{ label: 'Số lượng Video', data: vChartValues, backgroundColor: '#003366', borderRadius: 4, barPercentage: 0.6 }]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true, maintainAspectRatio: false,
+                            layout: { padding: { right: 40, top: 10, bottom: 10 } },
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { display: false, beginAtZero: true },
+                                y: { border: { display: false }, grid: { display: false }, ticks: { font: { family: "'Be Vietnam Pro', sans-serif", weight: 'bold' }, color: '#4B5563' } }
+                            }
+                        },
+                        plugins: [{
+                            id: 'customDataLabelsVideoBrand',
+                            afterDatasetsDraw(chart) {
+                                const { ctx, data } = chart;
+                                ctx.save();
+                                ctx.font = 'bold 12px "Be Vietnam Pro", sans-serif';
+                                ctx.textAlign = 'left';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillStyle = '#1C3B5E';
+                                data.datasets[0].data.forEach((value, index) => {
+                                    if (value > 0) {
+                                        const meta = chart.getDatasetMeta(0);
+                                        const bar = meta.data[index];
+                                        ctx.fillText(value.toLocaleString(), bar.x + 8, bar.y);
+                                    }
+                                });
+                                ctx.restore();
+                            }
+                        }]
+                    });
+                }
+            }
+        };
+
+        window.renderReviewTable = function() {
+            const tbody = document.getElementById('reviewSummaryBody');
+            if (!tbody) return;
+
+            const getV = (t) => {
+                const cbs = document.querySelectorAll(`.cb-${t}`);
+                if (cbs.length === 0) return ['ALL'];
+                return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            };
+            const mF = getV('review-month');
+
+            let groups = {};
+            let grandTotalMuon = 0;
+            let grandTotalVideoYes = 0;
+            let grandTotalImageYes = 0;
+
+            tableData.forEach(row => {
+                if (!row.loMuon) return;
+                if (!window.isSkuMatched(row.sku)) return; 
+                
+                const m = row.month || 'Trống';
+                if (!mF.includes('ALL') && !mF.includes(m.toString())) return;
+
+                const l = row.loMuon;
+                const k = `${m}|${l}`;
+                
+                if (!groups[k]) {
+                    groups[k] = { month: m, loMuon: l, total: 0, videoYes: 0, imageYes: 0 };
+                }
+                groups[k].total++;
+                grandTotalMuon++;
+
+                if (row.videoReview && row.videoReview.toLowerCase().trim() === 'yes') {
+                    groups[k].videoYes++;
+                    grandTotalVideoYes++;
+                }
+                if (row.imageReview && row.imageReview.toLowerCase().trim() === 'yes') {
+                    groups[k].imageYes++;
+                    grandTotalImageYes++;
+                }
+            });
+
+            let sortedGroups = Object.values(groups).sort((a,b) => {
+                let mDiff = parseInt(a.month) - parseInt(b.month);
+                if (!isNaN(mDiff) && mDiff !== 0) return mDiff;
+                return a.loMuon.localeCompare(b.loMuon);
+            });
+
+            tbody.innerHTML = sortedGroups.map(g => {
+                let isVideoDone = g.videoYes === g.total && g.total > 0;
+                let vClass = isVideoDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
+                let isImageDone = g.imageYes === g.total && g.total > 0;
+                let iClass = isImageDone ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold';
+
+                return `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-4 py-3 text-center border-r border-gray-100 font-medium">${g.month}</td>
+                        <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${g.loMuon}</td>
+                        <td class="px-4 py-3 text-center border-r border-gray-100 font-bold text-gray-700">${g.total}</td>
+                        <td class="px-4 py-3 text-center border-r border-gray-100"><span class="${vClass}">${g.videoYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
+                        <td class="px-4 py-3 text-center"><span class="${iClass}">${g.imageYes}</span> <span class="text-gray-400">/</span> ${g.total}</td>
+                    </tr>
+                `;
+            }).join('') || `<tr><td colspan="5" class="px-4 py-8 text-center text-gray-400 italic">Chưa có dữ liệu phân bổ lô mượn.</td></tr>`;
+
+            const elTotalMuon = document.getElementById('reviewTotalMuon');
+            if (elTotalMuon) elTotalMuon.innerText = grandTotalMuon.toLocaleString();
+            
+            const elTotalVideo = document.getElementById('reviewTotalVideo');
+            if (elTotalVideo) elTotalVideo.innerText = grandTotalVideoYes.toLocaleString();
+            const elTotalVideoMuon = document.getElementById('reviewTotalVideoMuon');
+            if (elTotalVideoMuon) elTotalVideoMuon.innerText = grandTotalMuon.toLocaleString();
+
+            const elTotalImage = document.getElementById('reviewTotalImage');
+            if (elTotalImage) elTotalImage.innerText = grandTotalImageYes.toLocaleString();
+            const elTotalImageMuon = document.getElementById('reviewTotalImageMuon');
+            if (elTotalImageMuon) elTotalImageMuon.innerText = grandTotalMuon.toLocaleString();
+        };
+
+        // EXPORT DATA UTILS
         window.exportCSV = function() {
             let dataToExport = tableData;
             if (window.globalSkuFilterArrayLower && window.globalSkuFilterArrayLower.length > 0) {
@@ -2776,7 +2597,7 @@
             let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại,Video review,Hình ảnh review,Brand,Brand 2\n";
             dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}","${(r.videoReview||'').replace(/"/g,'""')}","${(r.imageReview||'').replace(/"/g,'""')}","${(r.brand||'').replace(/"/g,'""')}","${(r.brand2||'').replace(/"/g,'""')}"\n`; });
             downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
-        }
+        };
 
         window.exportSummaryCSV = function() {
             const tbody = document.getElementById('summaryBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
@@ -2793,7 +2614,7 @@
                 }).join(",") + "\n"; 
             });
             downloadCSV(csv, `PNJ_Report_${new Date().toISOString().slice(0,10)}.csv`);
-        }
+        };
 
         window.exportReviewCSV = function() {
             const tbody = document.getElementById('reviewSummaryBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
@@ -2804,7 +2625,7 @@
                 }).join(",") + "\n"; 
             });
             downloadCSV(csv, `PNJ_TienDoReview_${new Date().toISOString().slice(0,10)}.csv`);
-        }
+        };
 
         window.exportReportBrandCSV = function() {
             const tbody = document.getElementById('reportBrandBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
@@ -2815,7 +2636,7 @@
                 }).join(",") + "\n"; 
             });
             downloadCSV(csv, `PNJ_Report_Brand_${new Date().toISOString().slice(0,10)}.csv`);
-        }
+        };
 
         window.downloadSpecificSKUs = function(idsStr, dateLabel) {
             if (!idsStr) return;
@@ -2824,7 +2645,7 @@
             let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Tình trạng chụp,Tình trạng retouch,Ghi chú\n";
             rowsToExport.forEach(r => { csv += `"${r.sku || ''}","${r.loMuon || ''}","${r.noiMuon || ''}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`; });
             downloadCSV(csv, `DanhSachSKU_${dateLabel}.csv`);
-        }
+        };
 
         window.downloadFilteredSKUs = function() {
             if (!window.currentGanttData || window.currentGanttData.length === 0) {
@@ -2857,7 +2678,7 @@
             });
 
             downloadCSV(csv, `DanhSachSKU_SanXuatHinhAnh_${new Date().toISOString().slice(0,10)}.csv`);
-        }
+        };
 
         function downloadCSV(csv, filename) {
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -2889,24 +2710,12 @@
                     if (c.length >= 4 && c[0]) {
                         newData.push({ 
                             id: generateId()+i, 
-                            sku: c[0] || '', 
-                            month: c[1] || '', 
-                            noiMuon: c[2] || '', 
-                            loMuon: c[3] || '', 
-                            ngayBatDau: parseDateFromCSV(c[4]), 
-                            ngayNhan: parseDateFromCSV(c[5]), 
-                            ngayTra: parseDateFromCSV(c[6]), 
-                            ttMuon: c[8] || '', 
-                            ngayChup: parseDateFromCSV(c[9]), 
-                            ttChup: c[10] || '', 
-                            ngayRetouch: parseDateFromCSV(c[11]), 
-                            ttRetouch: c[12] || '', 
-                            note: c[13] || '', 
-                            phanLoai: c[14] || '', 
-                            videoReview: c[15] || '', 
-                            imageReview: c[16] || '', 
-                            brand: c[17] || '', 
-                            brand2: c[18] || '' 
+                            sku: c[0] || '', month: c[1] || '', noiMuon: c[2] || '', loMuon: c[3] || '', 
+                            ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), 
+                            ttMuon: c[8] || '', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10] || '', 
+                            ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12] || '', note: c[13] || '', 
+                            phanLoai: c[14] || '', videoReview: c[15] || '', imageReview: c[16] || '', 
+                            brand: c[17] || '', brand2: c[18] || '' 
                         });
                     }
                 }
@@ -2921,9 +2730,9 @@
                 event.target.value = '';
             };
             reader.readAsText(file);
-        }
+        };
 
-        // Kích hoạt tự động chạy khi mở trang web
+        // KÍCH HOẠT CHẠY BAN ĐẦU
         window.addEventListener('DOMContentLoaded', () => {
             window.isFakeLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
             if (window.applyAdminState) window.applyAdminState();
