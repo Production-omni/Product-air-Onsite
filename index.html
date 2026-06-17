@@ -62,6 +62,17 @@
 </head>
 <body class="bg-pnjBg text-gray-800 font-sans min-h-screen">
 
+    <!-- MÀN HÌNH LOADING KẾT NỐI MÁY CHỦ -->
+    <div id="global-loader" class="fixed inset-0 bg-white/95 backdrop-blur-sm z-[9999] flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="relative flex justify-center items-center">
+            <div class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-pnjBlue/20"></div>
+            <div class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-pnjGold border-solid" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+            <div class="w-12 h-12 bg-pnjBlue text-pnjGold rounded-xl flex items-center justify-center font-bold text-2xl shadow-sm border border-pnjGold/30 relative z-10">P</div>
+        </div>
+        <h3 class="mt-6 text-xl font-bold text-pnjBlue tracking-wide">PNJ PRODUCT AIR</h3>
+        <p class="mt-2 text-sm text-gray-500 font-medium animate-pulse" id="loader-text">Đang đồng bộ dữ liệu Firebase...</p>
+    </div>
+
     <!-- LOGIN MODAL -->
     <div id="login-modal" class="hidden fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex flex-col items-center justify-center z-50">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md relative animate-[fadeIn_0.3s_ease-out]">
@@ -407,7 +418,7 @@
                             <i class="fas fa-chart-pie text-pnjGold"></i> Biểu Đồ Tỷ Trọng Brand
                         </span>
                     </div>
-                    <div class="p-5 relative min-h-[400px] w-full flex-grow bg-gray-50/30 flex items-center justify-center">
+                    <div class="p-5 relative h-[280px] w-full flex-grow bg-gray-50/30 flex items-center justify-center">
                         <canvas id="chartBrand" style="height: 100%; width: 100%;"></canvas>
                         <div id="emptyChartBrand" class="hidden absolute inset-0 flex items-center justify-center text-gray-500 italic bg-gray-50/90">Không có dữ liệu.</div>
                     </div>
@@ -946,25 +957,13 @@
             }
         };
 
-        const setupApp = async () => {
-            await initAuth();
-            onAuthStateChanged(auth, (user) => {
-                currentUser = user;
-                if (user) {
-                    window.listenToCloudData();
-                } else {
-                    if(window.loadDataLocal) window.loadDataLocal();
-                }
-            });
-        };
-
-        window.isFakeLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
-        window.applyAdminState();
-        
-        setupApp();
-
         window.listenToCloudData = function() {
             if (!currentUser) return;
+            const loader = document.getElementById('global-loader');
+            const loaderText = document.getElementById('loader-text');
+            if(loader) loader.classList.remove('hidden', 'opacity-0');
+            if(loaderText) loaderText.innerText = "Đang đồng bộ dữ liệu Firebase...";
+
             if (unsubscribeSnapshot) unsubscribeSnapshot();
             
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data');
@@ -974,6 +973,7 @@
                     const data = docSnap.data();
                     window.tableData = data.tableData || [];
                     window.videoData = data.videoData || [];
+                    window.videoBrandManualData = data.videoBrandManualData || [];
                     window.imageManualDates = data.imageManualDates || {};
                     window.imageManualEndDates = data.imageManualEndDates || {};
                     window.imageManualRetouchStarts = data.imageManualRetouchStarts || {};
@@ -990,33 +990,51 @@
                         window.updateLastUpdatedUI(data.timestamp);
                     }
                     
-                    if (window.renderTable) window.renderTable(); 
-                    if (window.renderVideoTable) window.renderVideoTable(); 
-                    if (window.switchTab) {
-                        const currentTab = document.querySelector('nav button.bg-pnjBlue');
-                        if (currentTab) window.switchTab(currentTab.id.replace('btn-', ''));
-                        else window.switchTab('tab-report');
-                    }
+                    if (loaderText) loaderText.innerText = "Đang xử lý giao diện...";
+                    setTimeout(() => { if (window.renderTable) window.renderTable(); }, 0);
+                    setTimeout(() => { if (window.renderSummary) window.renderSummary(); }, 50);
+                    setTimeout(() => { if (window.renderReport) window.renderReport(); }, 100);
+                    setTimeout(() => { 
+                        if (window.renderVideoTable) window.renderVideoTable(); 
+                        if (window.renderVideoBrandTable) window.renderVideoBrandTable();
+                        if (window.renderVideoDashboard) window.renderVideoDashboard();
+                    }, 150);
+                    setTimeout(() => { 
+                        if (window.renderImageTrackingTable) window.renderImageTrackingTable(); 
+                        if (loader) {
+                            loader.classList.add('opacity-0');
+                            setTimeout(() => loader.classList.add('hidden'), 500);
+                        }
+                    }, 200);
                 } else {
+                    if (loader) {
+                        loader.classList.add('opacity-0');
+                        setTimeout(() => loader.classList.add('hidden'), 500);
+                    }
                     if (window.tableData && window.tableData.length === 0 && window.loadDataLocal) {
                         window.loadDataLocal();
                     }
                 }
             }, (error) => {
-                console.warn("Lỗi đồng bộ Cloud:", error);
+                console.warn("Lỗi Firebase:", error);
                 if (window.loadDataLocal) window.loadDataLocal();
             });
         };
 
         window.saveDataToCloud = async function() {
             if (!window.isFakeLoggedIn) { alert("Vui lòng đăng nhập Admin để lưu dữ liệu!"); return; }
-            if (!currentUser) { alert("Đang kết nối hệ thống máy chủ, vui lòng thử lại sau giây lát."); return; }
+            if (!currentUser) { alert("Đang kết nối hệ thống máy chủ Firebase, vui lòng thử lại sau giây lát."); return; }
             try {
+                const saveBtns = document.querySelectorAll('button[onclick="saveData()"]');
+                const originalHtmls = [];
+                saveBtns.forEach((btn, idx) => { originalHtmls[idx] = btn.innerHTML; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang lưu...`; btn.disabled = true; });
+
                 const now = new Date().toISOString();
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data'); 
                 await setDoc(docRef, {
                     tableData: window.tableData || [],
                     videoData: window.videoData || [],
+                    videoBrandManualData: window.videoBrandManualData || [],
                     imageManualDates: window.imageManualDates || {},
                     imageManualEndDates: window.imageManualEndDates || {},
                     imageManualRetouchStarts: window.imageManualRetouchStarts || {},
@@ -1026,19 +1044,39 @@
                     timestamp: now
                 });
                 
+                saveBtns.forEach((btn, idx) => { btn.innerHTML = originalHtmls[idx]; btn.disabled = false; });
                 if (window.updateLastUpdatedUI) window.updateLastUpdatedUI(now);
                 
                 const toast = document.getElementById('toast'); 
                 if (toast) {
+                    toast.innerHTML = `<i class="fas fa-check-circle text-lg"></i> Dữ liệu đã lưu an toàn lên Firebase!`;
                     toast.classList.remove('opacity-0', 'translate-y-[-10px]'); 
                     setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-[-10px]'); }, 2500);
                 }
             } catch(e) {
-                console.warn("Lưu Cloud thất bại:", e.message);
-                alert("Lưu Cloud thất bại: Hệ thống sẽ tự động lưu tạm trên máy của bạn.");
+                console.warn("Lưu Firebase thất bại:", e.message);
+                alert("Lưu Cloud thất bại: " + e.message);
+                const saveBtns = document.querySelectorAll('button[onclick="saveData()"]');
+                saveBtns.forEach(btn => { btn.innerHTML = `<i class="fas fa-save"></i> Lưu Dữ Liệu`; btn.disabled = false; });
                 if(window.saveDataLocal) window.saveDataLocal(); 
             }
         };
+
+        const setupApp = async () => {
+            await initAuth();
+            onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                if (user) {
+                    window.listenToCloudData();
+                } else {
+                    if(window.loadDataLocal) window.loadDataLocal();
+                }
+            });
+        };
+
+        window.isFakeLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
+        window.applyAdminState();
+        setupApp();
     </script>
 
     <script>
@@ -1080,15 +1118,35 @@
             }
         };
 
+        window.loadDataLocal = function() {
+            const loader = document.getElementById('global-loader');
+            if (loader) {
+                loader.classList.add('opacity-0');
+                setTimeout(() => loader.classList.add('hidden'), 500);
+            }
+            if (window.renderTable) window.renderTable(); 
+            if (window.renderVideoTable) window.renderVideoTable(); 
+            if (window.renderVideoBrandTable) window.renderVideoBrandTable();
+            if (window.renderVideoDashboard) window.renderVideoDashboard();
+            if (window.switchTab) {
+                const currentTab = document.querySelector('nav button.bg-pnjBlue');
+                if (currentTab) window.switchTab(currentTab.id.replace('btn-', ''));
+                else window.switchTab('tab-report');
+            }
+        };
+
         var tableData = [];
         var videoData = [];
+        var videoBrandManualData = [];
         var imageManualDates = {}; 
         var imageManualEndDates = {}; 
         var imageManualRetouchStarts = {}; 
         var imageManualRetouchEnds = {}; 
         var chartDoneInstance = null;
         var chartVideoInstance = null;
+        var chartVideoBrandInstance = null;
         var chartBrandInstance = null;
+        var chartBrandChupInstance = null;
         window.globalSkuFilterArray = [];
         window.globalSkuFilterArrayLower = []; 
 
@@ -1150,6 +1208,8 @@
 
             if (window.renderTable) window.renderTable();
             if (window.renderVideoTable) window.renderVideoTable();
+            if (window.renderVideoBrandTable) window.renderVideoBrandTable();
+            if (window.renderVideoDashboard) window.renderVideoDashboard();
             if (window.renderSummary) window.renderSummary();
             if (window.renderImageTrackingTable) window.renderImageTrackingTable();
         };
@@ -1319,7 +1379,7 @@
 
             if(tabId === 'tab-summary') { populateSummaryFilters(); window.renderSummary(); window.loadFlowSettings(); }
             else if (tabId === 'tab-report') { populateReportFilters(); window.renderReport(); }
-            else if (tabId === 'tab-video') { window.populateReviewFilters(); window.renderVideoTable(); window.renderReviewTable(); }
+            else if (tabId === 'tab-video') { window.populateReviewFilters(); window.renderVideoTable(); window.renderVideoBrandTable(); window.renderVideoDashboard(); window.renderReviewTable(); }
             else if (tabId === 'tab-image') { populateImageFilters(); window.renderImageTrackingTable(); }
             else if (tabId === 'tab-process') { window.loadProcessFlowSettings(); }
             else if (tabId === 'tab-database') { window.renderTable(); }
@@ -1471,6 +1531,41 @@
         window.updateImageManualEndDate = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualEndDates[key] = value; else delete imageManualEndDates[key]; window.renderImageTrackingTable(); window.saveData(); }
         window.updateImageManualRetouchStart = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchStarts[key] = value; else delete imageManualRetouchStarts[key]; window.renderImageTrackingTable(); window.saveData(); }
         window.updateImageManualRetouchEnd = function(key, value) { if(!window.isFakeLoggedIn) return; if (value) imageManualRetouchEnds[key] = value; else delete imageManualRetouchEnds[key]; window.renderImageTrackingTable(); window.saveData(); }
+
+        window.addVideoBrandRow = function() {
+            if(!window.isFakeLoggedIn) return;
+            videoBrandManualData.push({ id: generateId(), brand: '', count: 0 });
+            window.renderVideoBrandTable();
+            window.renderVideoDashboard();
+        }
+
+        window.deleteVideoBrandRow = function(id) {
+            if(!window.isFakeLoggedIn) return;
+            videoBrandManualData = videoBrandManualData.filter(r => r.id !== id);
+            window.renderVideoBrandTable();
+            window.renderVideoDashboard();
+        }
+
+        window.updateVideoBrandCell = function(id, field, value) {
+            if(!window.isFakeLoggedIn) return;
+            const row = videoBrandManualData.find(r => r.id === id);
+            if (row) {
+                row[field] = field === 'count' ? (parseInt(value) || 0) : value;
+                window.renderVideoDashboard(); 
+            }
+        }
+
+        window.renderVideoBrandTable = function() {
+            const tbody = document.getElementById('videoBrandManualBody');
+            if(!tbody) return;
+            tbody.innerHTML = videoBrandManualData.map(row => `
+                <tr class="hover:bg-gray-50 transition-colors bg-white">
+                    <td class="py-1.5 px-2 text-center border-r border-gray-100"><button onclick="deleteVideoBrandRow('${row.id}')" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button></td>
+                    <td class="py-1.5 px-2 border-r border-gray-100"><input type="text" value="${row.brand}" onchange="updateVideoBrandCell('${row.id}', 'brand', this.value)" class="w-full text-xs p-1.5 border border-transparent hover:border-gray-300 focus:border-pnjGold rounded outline-none font-semibold text-[#1C3B5E]" placeholder="Tên brand..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                    <td class="py-1.5 px-2"><input type="number" value="${row.count}" onchange="updateVideoBrandCell('${row.id}', 'count', this.value)" class="w-full text-xs p-1.5 text-center border border-transparent hover:border-gray-300 focus:border-pnjGold rounded outline-none font-bold text-pnjGold bg-pnjGold/5" placeholder="0" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                </tr>
+            `).join('') || `<tr><td colspan="3" class="py-4 text-center text-xs text-gray-400 italic">Bấm "Thêm Brand" để nhập số liệu</td></tr>`;
+        }
 
         window.saveData = function() {
             if (!window.isFakeLoggedIn) {
@@ -2089,6 +2184,7 @@
                 const n = row.noiMuon || 'Trống';
                 const pl = row.phanLoai || 'Trống';
                 const brand = (row.brand || '').trim() || 'Trống';
+                const brand2 = (row.brand2 || '').trim() || 'Trống';
                 
                 if (!nF.includes('ALL') && !nF.includes(n)) return;
                 if (!plF.includes('ALL') && !plF.includes(pl)) return;
@@ -2112,9 +2208,19 @@
                     if (!iDC && !iCBM) sPC++;
                     if (iDC && !iDR) sPR++;
                     
-                    if (!brandStats[brand]) brandStats[brand] = { name: brand, muon: 0, chup: 0, retouch: 0 };
+                    if (!brandStats[brand]) brandStats[brand] = { name: brand, muon: 0, chup: 0, retouch: 0, subBrands: {} };
                     if (iDM) { brandStats[brand].muon++; totalBrandMuon++; }
-                    if (iDC) { brandStats[brand].chup++; totalBrandChup++; }
+                    if (iDC) { 
+                        brandStats[brand].chup++; 
+                        totalBrandChup++; 
+                        // Phân tích chi tiết Brand 2 riêng cho nhánh KDQT
+                        if (brand.toUpperCase() === 'KDQT' && brand2 !== 'Trống' && brand2 !== '') {
+                            if (!brandStats[brand].subBrands[brand2]) {
+                                brandStats[brand].subBrands[brand2] = 0;
+                            }
+                            brandStats[brand].subBrands[brand2]++;
+                        }
+                    }
                     if (iDR) { brandStats[brand].retouch++; totalBrandRetouch++; }
                 }
 
@@ -2197,16 +2303,37 @@
                     if (b.name === 'Trống') return -1;
                     return b.chup - a.chup || a.name.localeCompare(b.name);
                 });
-                tbodyBrand.innerHTML = sortedBrands.map(b => {
+                
+                let htmlBrandTable = '';
+                sortedBrands.forEach(b => {
                     let pct = totalBrandChup > 0 ? ((b.chup / totalBrandChup) * 100).toFixed(1) + '%' : '0%';
-                    return `
+                    
+                    // Render dòng Brand chính
+                    htmlBrandTable += `
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${b.name}</td>
                             <td class="px-4 py-3 text-center border-r border-gray-100 font-bold text-pnjGold bg-pnjGold/10">${b.chup.toLocaleString()}</td>
                             <td class="px-4 py-3 text-center font-bold text-gray-700 bg-gray-100">${pct}</td>
                         </tr>
                     `;
-                }).join('') || `<tr><td colspan="3" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu.</td></tr>`;
+
+                    // Render các dòng phân nhánh Brand 2 (nếu là KDQT)
+                    if (b.name.toUpperCase() === 'KDQT' && Object.keys(b.subBrands).length > 0) {
+                        let sortedSubs = Object.entries(b.subBrands).sort((x, y) => y[1] - x[1]); // Sắp xếp Brand 2 theo SL giảm dần
+                        sortedSubs.forEach(([subName, subCount]) => {
+                            let subPct = totalBrandChup > 0 ? ((subCount / totalBrandChup) * 100).toFixed(1) + '%' : '0%';
+                            htmlBrandTable += `
+                                <tr class="hover:bg-gray-50 transition-colors bg-gray-50/50">
+                                    <td class="px-4 py-2 border-r border-gray-100 text-[#1C3B5E] pl-8 select-none"><span class="text-gray-400 mr-2 font-light">↳</span><span class="italic text-xs font-semibold text-gray-600">${subName}</span></td>
+                                    <td class="px-4 py-2 text-center border-r border-gray-100 font-semibold text-pnjGold text-xs">${subCount.toLocaleString()}</td>
+                                    <td class="px-4 py-2 text-center font-semibold text-gray-500 text-xs">${subPct}</td>
+                                </tr>
+                            `;
+                        });
+                    }
+                });
+                
+                tbodyBrand.innerHTML = htmlBrandTable || `<tr><td colspan="3" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu.</td></tr>`;
 
                 const elChup = document.getElementById('reportBrandTotalChup'); if (elChup) elChup.innerText = totalBrandChup.toLocaleString();
 
@@ -2223,19 +2350,20 @@
                             data: { 
                                 labels: sortedBrands.map(b => b.name), 
                                 datasets: [ 
-                                    { label: 'Số lượng Đã Mượn', data: sortedBrands.map(b => b.muon), backgroundColor: '#003366', borderRadius: 6, barPercentage: 0.5 }
+                                    { label: 'Số lượng Đã Mượn', data: sortedBrands.map(b => b.muon), backgroundColor: '#003366', borderRadius: 4, barPercentage: 0.5, maxBarThickness: 24 }
                                 ] 
                             }, 
                             options: { 
+                                indexAxis: 'y', 
                                 responsive: true, 
                                 maintainAspectRatio: false, 
-                                layout: { padding: { top: 25 } }, 
+                                layout: { padding: { right: 40, top: 10, bottom: 10 } }, 
                                 plugins: { 
                                     legend: { display: false } 
                                 }, 
                                 scales: { 
-                                    x: { grid: { display: false } }, 
-                                    y: { border: { display: false }, beginAtZero: true } 
+                                    x: { display: false, beginAtZero: true }, 
+                                    y: { border: { display: false }, grid: { display: false }, ticks: { font: { family: "'Be Vietnam Pro', sans-serif", weight: 'bold' }, color: '#4B5563' } } 
                                 } 
                             },
                             plugins: [{ 
@@ -2244,8 +2372,8 @@
                                     const { ctx, data } = chart; 
                                     ctx.save(); 
                                     ctx.font = 'bold 12px "Be Vietnam Pro", sans-serif'; 
-                                    ctx.textAlign = 'center'; 
-                                    ctx.textBaseline = 'bottom'; 
+                                    ctx.textAlign = 'left'; 
+                                    ctx.textBaseline = 'middle'; 
                                     ctx.fillStyle = '#1C3B5E'; 
                                     data.datasets.forEach((dataset, i) => { 
                                         const meta = chart.getDatasetMeta(i); 
@@ -2253,62 +2381,7 @@
                                             meta.data.forEach((bar, index) => { 
                                                 const value = dataset.data[index]; 
                                                 if (value > 0) { 
-                                                    ctx.fillText(value, bar.x, bar.y - 4); 
-                                                } 
-                                            }); 
-                                        } 
-                                    }); 
-                                    ctx.restore(); 
-                                } 
-                            }]
-                        });
-                    }
-                }
-
-                const canvasBrandChup = document.getElementById('chartBrandChup'); 
-                const emptyBrandChup = document.getElementById('emptyChartBrandChup');
-                if(canvasBrandChup && emptyBrandChup) {
-                    if (chartBrandChupInstance) chartBrandChupInstance.destroy();
-                    if (sortedBrands.length === 0) { 
-                        canvasBrandChup.classList.add('hidden'); emptyBrandChup.classList.remove('hidden'); 
-                    } else {
-                        canvasBrandChup.classList.remove('hidden'); emptyBrandChup.classList.add('hidden');
-                        chartBrandChupInstance = new Chart(canvasBrandChup, { 
-                            type: 'bar', 
-                            data: { 
-                                labels: sortedBrands.map(b => b.name), 
-                                datasets: [ 
-                                    { label: 'Số lượng Đã Chụp', data: sortedBrands.map(b => b.chup), backgroundColor: '#D4AF37', borderRadius: 6, barPercentage: 0.5 } 
-                                ] 
-                            }, 
-                            options: { 
-                                responsive: true, 
-                                maintainAspectRatio: false, 
-                                layout: { padding: { top: 25 } }, 
-                                plugins: { 
-                                    legend: { display: false } 
-                                }, 
-                                scales: { 
-                                    x: { grid: { display: false } }, 
-                                    y: { border: { display: false }, beginAtZero: true } 
-                                } 
-                            },
-                            plugins: [{ 
-                                id: 'customDataLabelsBrandChup', 
-                                afterDatasetsDraw(chart) { 
-                                    const { ctx, data } = chart; 
-                                    ctx.save(); 
-                                    ctx.font = 'bold 12px "Be Vietnam Pro", sans-serif'; 
-                                    ctx.textAlign = 'center'; 
-                                    ctx.textBaseline = 'bottom'; 
-                                    ctx.fillStyle = '#1C3B5E'; 
-                                    data.datasets.forEach((dataset, i) => { 
-                                        const meta = chart.getDatasetMeta(i); 
-                                        if (!meta.hidden) { 
-                                            meta.data.forEach((bar, index) => { 
-                                                const value = dataset.data[index]; 
-                                                if (value > 0) { 
-                                                    ctx.fillText(value, bar.x, bar.y - 4); 
+                                                    ctx.fillText(value.toLocaleString(), bar.x + 8, bar.y); 
                                                 } 
                                             }); 
                                         } 
@@ -2320,9 +2393,8 @@
                     }
                 }
             }
-        }
+        };
 
-        // --- FIX CRITICAL: Bảng tiến độ và Gantt không bị co hẹp ngày khi tìm kiếm ---
         window.renderImageTrackingTable = function() {
             const tbody = document.getElementById('imageTrackingBody'); if(!tbody) return;
             const getV = (type) => {
@@ -2332,13 +2404,11 @@
             };
             const mF = getV('month'); const nF = getV('noiMuon'); const lF = getV('loMuon'); const sF = getV('status');
 
-            // BƯỚC 1: Lấy lịch trình thực tế GỐC (Tuyệt đối không dùng filter tìm kiếm ở bước này)
             let trueSchedules = window.getGlobalSchedule();
 
-            // BƯỚC 2: Nhóm dữ liệu để hiển thị (CÓ dùng filter tìm kiếm)
             let displayGroups = {};
             tableData.forEach(row => {
-                if (!window.isSkuMatched(row.sku)) return; // BỘ LỌC TÌM KIẾM ĐƯỢC ÁP DỤNG TẠI ĐÂY
+                if (!window.isSkuMatched(row.sku)) return; 
                 if (!row.ngayNhan) return; 
                 
                 const m = row.month || 'Trống'; const n = row.noiMuon || 'Trống'; const l = row.loMuon || 'Trống';
@@ -2365,10 +2435,9 @@
 
             let todayStr = new Date().toISOString().slice(0, 10);
             
-            // BƯỚC 3: Ghép nối ngày tháng GỐC vào dữ liệu hiển thị (Bảo toàn độ dài của Gantt Chart)
             let processedGanttData = Object.values(displayGroups).sort((a, b) => a.ngayNhan.localeCompare(b.ngayNhan)).map(g => {
-                let ts = trueSchedules[g.ngayNhan]; // ts chứa ngày gốc
-                if (!ts) return null; // Safety check
+                let ts = trueSchedules[g.ngayNhan]; 
+                if (!ts) return null; 
                 
                 let tCD = getWorkingDays(ts.startChup, ts.endChup) || 1; 
                 let tRD = getWorkingDays(ts.startRetouch, ts.endRetouch) || 1;
@@ -2380,10 +2449,8 @@
 
             window.currentGanttData = processedGanttData;
 
-            // Luôn gọi Alert Cảnh báo trước khi Bị Lọc để đảm bảo không bị ẩn đi
             if (window.renderDeadlineAlerts) window.renderDeadlineAlerts(processedGanttData);
 
-            // BƯỚC 4: Lọc theo Checkbox Trạng Thái trên thanh điều hướng
             const showOnlyLate = document.getElementById('filter-img-late')?.checked;
             if (showOnlyLate) { processedGanttData = processedGanttData.filter(g => g.isChupLate || g.isRetouchLate); }
 
@@ -2472,7 +2539,9 @@
             const elTotal2 = document.getElementById('ganttGrandTotal');
             if (elTotal2) elTotal2.innerText = totalSKU.toLocaleString();
 
-            window.renderGanttChart(processedGanttData);
+            setTimeout(() => {
+                if(window.renderGanttChart) window.renderGanttChart(processedGanttData);
+            }, 50);
         }
 
         window.renderGanttChart = function(ganttData) {
@@ -2560,7 +2629,6 @@
             let alerts = [];
             
             ganttData.forEach(g => {
-                // Chỉ cần có 1 sản phẩm đã Done mượn là bắt đầu tính toán cảnh báo cho cả lô
                 let isMuonDone = g.muonDone > 0;
                 if (!isMuonDone) return;
 
@@ -2600,135 +2668,17 @@
             const sortOrder = { 'danger': 1, 'warning': 2 };
             alerts.sort((a, b) => sortOrder[a.type] - sortOrder[b.type]);
             
-            let html = '<div class="bg-amber-50 p-4 border-b border-amber-200 flex justify-between items-center"><h4 class="font-bold text-amber-800 flex items-center gap-2"><i class="fas fa-bell text-amber-500 text-lg"></i> Thông báo Deadline</h4><span class="bg-amber-200 text-amber-800 text-xs font-bold px-2 py-1 rounded-full">' + alerts.length + ' thông báo</span></div><div class="max-h-[60vh] overflow-y-auto p-4"><ul class="space-y-3">';
+            let html = '<div class="bg-amber-50 p-4 border-b border-amber-200 flex justify-between items-center"><h4 class="font-bold text-amber-800 flex items-center gap-2"><i class="fas fa-exclamation-triangle"></i> Danh sách cần lưu ý</h4><button onclick="document.getElementById(\'deadline-alerts-panel\').classList.add(\'hidden\');" class="text-amber-500 hover:text-amber-800"><i class="fas fa-times"></i></button></div>';
+            html += '<div class="max-h-[300px] overflow-y-auto p-4 space-y-3">';
             alerts.forEach(a => {
-                let icon = '';
-                let textClass = '';
-                let bgClass = '';
-                if (a.type === 'danger') {
-                    icon = '<i class="fas fa-exclamation-circle text-red-600 mt-0.5"></i>';
-                    textClass = 'text-red-800';
-                    bgClass = 'bg-red-50 border border-red-100';
-                } else if (a.type === 'warning') {
-                    icon = '<i class="fas fa-exclamation-triangle text-amber-600 mt-0.5"></i>';
-                    textClass = 'text-amber-800';
-                    bgClass = 'bg-amber-50 border border-amber-100';
-                }
-                html += `<li class="text-sm ${textClass} ${bgClass} p-3 rounded-lg flex items-start gap-2 shadow-sm">${icon} <span class="leading-relaxed">${a.msg}</span></li>`;
+                let icon = a.type === 'danger' ? '<i class="fas fa-exclamation-circle text-red-500 mt-0.5"></i>' : '<i class="fas fa-exclamation-triangle text-amber-500 mt-0.5"></i>';
+                let bg = a.type === 'danger' ? 'bg-red-50 border-red-100' : 'bg-amber-50/50 border-amber-100';
+                html += `<div class="flex items-start gap-3 p-3 rounded-lg border ${bg} text-sm text-gray-700 shadow-sm">${icon}<div>${a.msg}</div></div>`;
             });
-            html += '</ul></div>';
-            
+            html += '</div>';
             panel.innerHTML = html;
-        }
+        };
 
-        window.exportCSV = function() {
-            let dataToExport = tableData;
-            if (window.globalSkuFilterArrayLower && window.globalSkuFilterArrayLower.length > 0) {
-                dataToExport = tableData.filter(row => window.isSkuMatched(row.sku));
-            }
-            if (dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
-            
-            let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại,Video review,Hình ảnh review,Brand,Brand 2\n";
-            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}","${(r.videoReview||'').replace(/"/g,'""')}","${(r.imageReview||'').replace(/"/g,'""')}","${(r.brand||'').replace(/"/g,'""')}","${(r.brand2||'').replace(/"/g,'""')}"\n`; });
-            downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
-        }
-
-        window.exportSummaryCSV = function() {
-            const tbody = document.getElementById('summaryBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
-            let csv = "\uFEFFTháng,Nơi mượn,Lô mượn,Bắt đầu mượn,Nhận hàng,Trả hàng,Ngày mượn,Tình trạng,Tiến độ Chụp (Xong/Tổng),Tiến độ Retouch (Xong/Tổng),Trạng thái lô,Ghi chú,Tổng SKU\n";
-            Array.from(tbody.querySelectorAll('tr')).forEach(tr => { 
-                csv += Array.from(tr.querySelectorAll('td')).map(td => { 
-                    const input = td.querySelector('input'); 
-                    let val = input ? input.value : td.innerText.trim(); 
-                    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
-                        const parts = val.split('-');
-                        val = `${parts[1]}/${parts[2]}/${parts[0]}`;
-                    }
-                    return `"${val.replace(/"/g,'""')}"`; 
-                }).join(",") + "\n"; 
-            });
-            downloadCSV(csv, `PNJ_Report_${new Date().toISOString().slice(0,10)}.csv`);
-        }
-
-        window.exportReviewCSV = function() {
-            const tbody = document.getElementById('reviewSummaryBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
-            let csv = "\uFEFFTháng,Lô mượn,Tổng mượn,Video Review (Yes/Tổng),Hình ảnh Review (Yes/Tổng)\n";
-            Array.from(tbody.querySelectorAll('tr')).forEach(tr => { 
-                csv += Array.from(tr.querySelectorAll('td')).map(td => { 
-                    return `"${td.innerText.trim().replace(/"/g,'""')}"`; 
-                }).join(",") + "\n"; 
-            });
-            downloadCSV(csv, `PNJ_TienDoReview_${new Date().toISOString().slice(0,10)}.csv`);
-        }
-
-        window.exportReportBrandCSV = function() {
-            const tbody = document.getElementById('reportBrandBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
-            let csv = "\uFEFFTên Brand,Đã Chụp (Done),Tỷ Trọng (%)\n";
-            Array.from(tbody.querySelectorAll('tr')).forEach(tr => { 
-                csv += Array.from(tr.querySelectorAll('td')).map(td => { 
-                    return `"${td.innerText.trim().replace(/"/g,'""')}"`; 
-                }).join(",") + "\n"; 
-            });
-            downloadCSV(csv, `PNJ_Report_Brand_${new Date().toISOString().slice(0,10)}.csv`);
-        }
-
-        window.downloadSpecificSKUs = function(idsStr, dateLabel) {
-            if (!idsStr) return;
-            const ids = idsStr.split(','); let rowsToExport = tableData.filter(r => ids.includes(r.id));
-            if(rowsToExport.length === 0) return alert("Không tìm thấy dữ liệu!");
-            let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Tình trạng chụp,Tình trạng retouch,Ghi chú\n";
-            rowsToExport.forEach(r => { csv += `"${r.sku || ''}","${r.loMuon || ''}","${r.noiMuon || ''}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`; });
-            downloadCSV(csv, `DanhSachSKU_${dateLabel}.csv`);
-        }
-
-        window.downloadFilteredSKUs = function() {
-            if (!window.currentGanttData || window.currentGanttData.length === 0) {
-                return alert("Không có dữ liệu trên bảng tiến độ để tải!");
-            }
-
-            let todayStr = new Date().toISOString().slice(0, 10);
-            let csv = "\uFEFFMã SKU 13,Lô mượn,Nơi mượn,Tình trạng mượn,Ngày nhận,Deadline Chụp,Deadline Retouch,Tình trạng trễ,Tình trạng chụp,Tình trạng retouch,Ghi chú\n";
-            
-            window.currentGanttData.forEach(g => {
-                let deadlineChup = formatDateForExport(g.endChup);
-                let deadlineRetouch = formatDateForExport(g.endRetouch);
-                
-                let groupRows = tableData.filter(r => g.ids.includes(r.id));
-                groupRows.forEach(r => {
-                    if (r.sku) {
-                        let cDone = r.ttChup && r.ttChup.toLowerCase().includes('done');
-                        let rDone = r.ttRetouch && r.ttRetouch.toLowerCase().includes('done');
-                        let isThisRowLateChup = todayStr > g.endChup && !cDone;
-                        let isThisRowLateRetouch = todayStr > g.endRetouch && !rDone;
-                        
-                        let statusArr = [];
-                        if (isThisRowLateChup) statusArr.push("Trễ Chụp");
-                        if (isThisRowLateRetouch) statusArr.push("Trễ Retouch");
-                        let lateStatus = statusArr.join(', ');
-
-                        csv += `"${r.sku}","${r.loMuon || ''}","${r.noiMuon || ''}","${r.ttMuon || ''}","${formatDateForExport(r.ngayNhan)}","${deadlineChup}","${deadlineRetouch}","${lateStatus}","${r.ttChup || ''}","${r.ttRetouch || ''}","${(r.note||'').replace(/"/g,'""')}"\n`;
-                    }
-                });
-            });
-
-            downloadCSV(csv, `DanhSachSKU_SanXuatHinhAnh_${new Date().toISOString().slice(0,10)}.csv`);
-        }
-
-        function downloadCSV(csv, filename) {
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute("href", url);
-                link.setAttribute("download", filename);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }
-
-        // --- FIX CRITICAL: Hỗ trợ nạp CSV cũ và mới đúng trật tự cột ---
         window.importCSV = function(event) {
             if(!window.isFakeLoggedIn) return; 
             const file = event.target.files[0]; if (!file) return;
@@ -2737,30 +2687,89 @@
                 const lines = e.target.result.replace(/^\uFEFF/, '').split('\n');
                 if (lines.length < 2) return alert("File rỗng!");
                 if (tableData.length > 0 && !confirm("Bạn có muốn ghi đè lên dữ liệu hiện tại không?")) return;
+                
                 const newData = [];
                 for (let i = 1; i < lines.length; i++) {
                     const c = lines[i].trim().split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"').trim());
                     if (c.length >= 4 && c[0]) {
-                        if (c.length >= 19) {
-                            // File mới nhất có đủ Video, Hình ảnh, Brand và Brand 2
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'', brand: c[17]||'', brand2: c[18]||'' });
-                        } else if (c.length >= 18) {
-                            // File có Brand nhưng chưa có Brand 2
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'', brand: c[17]||'', brand2: '' });
-                        } else if (c.length >= 17) {
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'', brand: '', brand2: '' });
-                        } else if (c.length >= 15) { 
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: '', imageReview: '', brand: '', brand2: '' });
-                        } else {
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ttChup: c[9]||'', ttRetouch: c[10]||'', note: c[11]||'', phanLoai: c[12]||'', videoReview: '', imageReview: '', brand: '', brand2: '' });
-                        }
+                        newData.push({ 
+                            id: generateId()+i, 
+                            sku: c[0] || '', 
+                            month: c[1] || '', 
+                            noiMuon: c[2] || '', 
+                            loMuon: c[3] || '', 
+                            ngayBatDau: parseDateFromCSV(c[4]), 
+                            ngayNhan: parseDateFromCSV(c[5]), 
+                            ngayTra: parseDateFromCSV(c[6]), 
+                            ttMuon: c[8] || '', 
+                            ngayChup: parseDateFromCSV(c[9]), 
+                            ttChup: c[10] || '', 
+                            ngayRetouch: parseDateFromCSV(c[11]), 
+                            ttRetouch: c[12] || '', 
+                            note: c[13] || '', 
+                            phanLoai: c[14] || '', 
+                            videoReview: c[15] || '', 
+                            imageReview: c[16] || '', 
+                            brand: c[17] || '', 
+                            brand2: c[18] || '' 
+                        });
                     }
                 }
-                if (newData.length > 0) { tableData = newData; window.saveData(); window.renderTable(); window.switchTab('tab-database'); }
+                if (newData.length > 0) { 
+                    tableData = newData; 
+                    currentPage = 1; // Reset trang
+                    window.saveData(); 
+                    window.renderTable(); 
+                    window.switchTab('tab-database'); 
+                    alert("Nhập dữ liệu Database thành công!");
+                }
                 event.target.value = '';
             };
             reader.readAsText(file);
-        }
+        };
+
+        window.calculateSimulation = function() {
+            const noi = document.getElementById('calc-noi').value;
+            const ngay = document.getElementById('calc-ngay').value;
+            const sku = parseInt(document.getElementById('calc-sku').value);
+            const warning = document.getElementById('calc-warning');
+            const warningText = document.getElementById('calc-warning-text');
+            const resArea = document.getElementById('calc-result-area');
+            
+            if (!ngay || !sku || sku <= 0) {
+                alert("Vui lòng nhập Ngày nhận hàng và Tổng số lượng SKU hợp lệ!");
+                return;
+            }
+
+            let startChup = addWorkingDays(ngay, 1);
+            let endChup = addWorkingDays(startChup, getProcessDays(sku) - 1);
+            
+            let startRetouch = addWorkingDays(startChup, 2);
+            let endRetouch = addWorkingDays(startRetouch, getProcessDays(sku) - 1);
+
+            document.getElementById('res-bd-c').innerText = formatDateToDisplay(startChup);
+            document.getElementById('res-kt-c').innerText = formatDateToDisplay(endChup);
+            document.getElementById('res-bd-r').innerText = formatDateToDisplay(startRetouch);
+            document.getElementById('res-kt-r').innerText = formatDateToDisplay(endRetouch);
+
+            let schedules = window.getGlobalSchedule ? window.getGlobalSchedule() : {};
+            let isClash = false;
+            
+            Object.values(schedules).forEach(s => {
+                if ((startChup >= s.startChup && startChup <= s.endChup) || (endChup >= s.startChup && endChup <= s.endChup) || (startChup <= s.startChup && endChup >= s.endChup)) {
+                    isClash = true;
+                }
+            });
+
+            if (isClash) {
+                warning.classList.remove('hidden');
+                warningText.innerText = "Cảnh báo: Thời gian chụp dự kiến có thể bị trùng lặp với lịch trình của các lô hàng khác đang có trên hệ thống!";
+            } else {
+                warning.classList.add('hidden');
+            }
+
+            resArea.classList.remove('hidden');
+        };
     </script>
 </body>
 </html>
