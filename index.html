@@ -915,7 +915,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         let firebaseConfig;
@@ -968,12 +968,40 @@
 
             if (unsubscribeSnapshot) unsubscribeSnapshot();
             
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data');
+            const configRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_config');
             
-            unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+            unsubscribeSnapshot = onSnapshot(configRef, async (docSnap) => {
+                let data = null;
+                let loadedTableData = [];
+
                 if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    window.tableData = data.tableData || [];
+                    data = docSnap.data();
+                    const chunksCount = data.tableChunksCount || 0;
+                    
+                    // Ghép các gói dữ liệu nhỏ lại với nhau
+                    for (let i = 0; i < chunksCount; i++) {
+                        try {
+                            const chunkSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'table_chunk_' + i));
+                            if (chunkSnap.exists()) {
+                                loadedTableData = loadedTableData.concat(chunkSnap.data().rows || []);
+                            }
+                        } catch (e) {
+                            console.error("Lỗi khi tải mảnh dữ liệu " + i, e);
+                        }
+                    }
+                } else {
+                    // Tương thích ngược: Đọc dữ liệu cũ nếu chưa từng bị cắt nhỏ
+                    try {
+                        const oldSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data'));
+                        if (oldSnap.exists()) {
+                            data = oldSnap.data();
+                            loadedTableData = data.tableData || [];
+                        }
+                    } catch (e) {}
+                }
+
+                if (data) {
+                    window.tableData = loadedTableData;
                     window.videoData = data.videoData || [];
                     window.videoBrandManualData = data.videoBrandManualData || [];
                     window.imageManualDates = data.imageManualDates || {};
@@ -1032,9 +1060,22 @@
                 saveBtns.forEach((btn, idx) => { originalHtmls[idx] = btn.innerHTML; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang lưu...`; btn.disabled = true; });
 
                 const now = new Date().toISOString();
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_data'); 
-                await setDoc(docRef, {
-                    tableData: window.tableData || [],
+                
+                // GIẢI PHÁP VƯỢT GIỚI HẠN 1MB: Cắt nhỏ Database gốc
+                const tableData = window.tableData || [];
+                const chunkSize = 500; // Mỗi gói chứa 500 dòng SKU
+                const chunksCount = Math.ceil(tableData.length / chunkSize);
+
+                for (let i = 0; i < chunksCount; i++) {
+                    const chunkDoc = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'table_chunk_' + i);
+                    await setDoc(chunkDoc, {
+                        rows: tableData.slice(i * chunkSize, (i + 1) * chunkSize)
+                    });
+                }
+
+                // Lưu các cài đặt nhẹ vào Config chính
+                const configDoc = doc(db, 'artifacts', appId, 'public', 'data', 'pnj_dashboard', 'main_config'); 
+                await setDoc(configDoc, {
                     videoData: window.videoData || [],
                     videoBrandManualData: window.videoBrandManualData || [],
                     imageManualDates: window.imageManualDates || {},
@@ -1043,6 +1084,7 @@
                     imageManualRetouchEnds: window.imageManualRetouchEnds || {},
                     flowProcessSettings: JSON.parse(localStorage.getItem('pnj_flow_process_settings') || '{}'),
                     flowSettings: JSON.parse(localStorage.getItem('pnj_flow_settings') || '{}'),
+                    tableChunksCount: chunksCount,
                     timestamp: now
                 });
                 
