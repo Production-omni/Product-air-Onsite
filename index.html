@@ -429,9 +429,8 @@
                             <thead class="text-xs text-gray-600 uppercase bg-[#F8F5EE] sticky top-0 z-10 shadow-[0_1px_0_#E8E2D2]">
                                 <tr>
                                     <th class="px-4 py-3 font-bold border-r border-[#E8E2D2]">Tên Brand</th>
-                                    <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Đã Mượn (Done)</th>
                                     <th class="px-4 py-3 font-bold text-center border-r border-[#E8E2D2]">Đã Chụp (Done)</th>
-                                    <th class="px-4 py-3 font-bold text-center">Đã Retouch (Done)</th>
+                                    <th class="px-4 py-3 font-bold text-center">Tỷ Trọng (%)</th>
                                 </tr>
                             </thead>
                             <tbody id="reportBrandBody" class="divide-y divide-gray-100 bg-white">
@@ -442,9 +441,7 @@
                     <div class="bg-gray-50 p-4 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-gray-800 text-sm font-bold gap-3">
                         <div class="text-xs uppercase text-gray-500 tracking-wider">Tổng cộng các Brand hiển thị:</div>
                         <div class="flex gap-4 flex-wrap justify-end">
-                            <div class="bg-pnjBlue/5 px-3 py-1.5 rounded border border-pnjBlue/10 flex items-center gap-2">Mượn:<span id="reportBrandTotalMuon" class="text-pnjBlue text-lg font-black">0</span></div>
-                            <div class="bg-pnjGold/10 px-3 py-1.5 rounded border border-pnjGold/20 flex items-center gap-2">Chụp:<span id="reportBrandTotalChup" class="text-amber-700 text-lg font-black">0</span></div>
-                            <div class="bg-gray-200 px-3 py-1.5 rounded border border-gray-300 flex items-center gap-2">Retouch:<span id="reportBrandTotalRetouch" class="text-gray-800 text-lg font-black">0</span></div>
+                            <div class="bg-pnjGold/10 px-3 py-1.5 rounded border border-pnjGold/20 flex items-center gap-2">Tổng Đã Chụp:<span id="reportBrandTotalChup" class="text-amber-700 text-lg font-black">0</span></div>
                         </div>
                     </div>
                 </div>
@@ -880,7 +877,8 @@
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[250px]">Ghi chú</th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">Video review</th>
                                 <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">Hình ảnh review</th>
-                                <th class="px-4 py-4 min-w-[150px]">Brand</th>
+                                <th class="px-4 py-4 border-r border-pnjBlueLight min-w-[150px]">Brand</th>
+                                <th class="px-4 py-4 min-w-[150px]">Brand 2</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody" class="divide-y divide-gray-200"></tbody>
@@ -1433,7 +1431,7 @@
             return Math.max(1, Math.ceil(skuCount * 5 / 160));
         }
 
-        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '', videoReview: '', imageReview: '', brand: '' }); window.renderTable(); }
+        window.addNewRow = function() { if(!window.isFakeLoggedIn) return; tableData.unshift({ id: generateId(), sku: '', month: '', noiMuon: '', loMuon: '', ttMuon: '', ngayChup: '', ttChup: '', ngayRetouch: '', ttRetouch: '', phanLoai: '', ngayBatDau: '', ngayNhan: '', ngayTra: '', note: '', videoReview: '', imageReview: '', brand: '', brand2: '' }); window.renderTable(); }
         window.addNewVideoRow = function() { if(!window.isFakeLoggedIn) return; videoData.unshift({ id: generateId(), month: '', loVideo: '', slThucTe: 0, ttQuay: '', ttDung: '', ghiChu: '' }); window.renderVideoTable(); }
         window.deleteRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { tableData = tableData.filter(row => row.id !== id); window.renderTable(); } }
         window.deleteVideoRow = function(id) { if(!window.isFakeLoggedIn) return; if(confirm('Xóa dòng này?')) { videoData = videoData.filter(row => row.id !== id); window.renderVideoTable(); } }
@@ -1741,7 +1739,8 @@
                         <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.note}" onchange="updateCell('${row.id}', 'note', this.value)" ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.videoReview || ''}" onchange="updateCell('${row.id}', 'videoReview', this.value)" placeholder="Link video..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                         <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.imageReview || ''}" onchange="updateCell('${row.id}', 'imageReview', this.value)" placeholder="Link hình ảnh..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
-                        <td class="px-1 py-1"><input type="text" value="${row.brand || ''}" onchange="updateCell('${row.id}', 'brand', this.value)" placeholder="Nhập brand..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1 border-r border-gray-100"><input type="text" value="${row.brand || ''}" onchange="updateCell('${row.id}', 'brand', this.value)" placeholder="Nhập brand..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
+                        <td class="px-1 py-1"><input type="text" value="${row.brand2 || ''}" onchange="updateCell('${row.id}', 'brand2', this.value)" placeholder="Nhập brand 2..." ${!window.isFakeLoggedIn ? 'disabled' : ''}></td>
                     </tr>`;
             }).join('');
             const totalCount = document.getElementById('totalRowsCount');
@@ -2196,22 +2195,20 @@
                 let sortedBrands = Object.values(brandStats).sort((a, b) => {
                     if (a.name === 'Trống') return 1;
                     if (b.name === 'Trống') return -1;
-                    return b.muon - a.muon || a.name.localeCompare(b.name);
+                    return b.chup - a.chup || a.name.localeCompare(b.name);
                 });
                 tbodyBrand.innerHTML = sortedBrands.map(b => {
+                    let pct = totalBrandChup > 0 ? ((b.chup / totalBrandChup) * 100).toFixed(1) + '%' : '0%';
                     return `
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-4 py-3 border-r border-gray-100 font-bold text-[#1C3B5E]">${b.name}</td>
-                            <td class="px-4 py-3 text-center border-r border-gray-100 font-bold text-pnjBlue bg-pnjBlue/5">${b.muon.toLocaleString()}</td>
                             <td class="px-4 py-3 text-center border-r border-gray-100 font-bold text-pnjGold bg-pnjGold/10">${b.chup.toLocaleString()}</td>
-                            <td class="px-4 py-3 text-center font-bold text-gray-700 bg-gray-100">${b.retouch.toLocaleString()}</td>
+                            <td class="px-4 py-3 text-center font-bold text-gray-700 bg-gray-100">${pct}</td>
                         </tr>
                     `;
-                }).join('') || `<tr><td colspan="4" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu.</td></tr>`;
+                }).join('') || `<tr><td colspan="3" class="px-4 py-8 text-center text-gray-400 italic">Không có dữ liệu.</td></tr>`;
 
-                const elMuon = document.getElementById('reportBrandTotalMuon'); if (elMuon) elMuon.innerText = totalBrandMuon.toLocaleString();
                 const elChup = document.getElementById('reportBrandTotalChup'); if (elChup) elChup.innerText = totalBrandChup.toLocaleString();
-                const elRetouch = document.getElementById('reportBrandTotalRetouch'); if (elRetouch) elRetouch.innerText = totalBrandRetouch.toLocaleString();
 
                 const canvasBrand = document.getElementById('chartBrand'); 
                 const emptyBrand = document.getElementById('emptyChartBrand');
@@ -2631,8 +2628,8 @@
             }
             if (dataToExport.length === 0) return alert("Không có dữ liệu để xuất!");
             
-            let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại,Video review,Hình ảnh review,Brand\n";
-            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}","${(r.videoReview||'').replace(/"/g,'""')}","${(r.imageReview||'').replace(/"/g,'""')}","${(r.brand||'').replace(/"/g,'""')}"\n`; });
+            let csv = "\uFEFFMã SKU 13,Tháng,Nơi mượn,Lô mượn,Ngày bắt đầu mượn,Ngày nhận hàng,Ngày trả hàng,Tổng số ngày mượn,Tình trạng mượn,Ngày chụp,Tình trạng chụp,Ngày retouch,Tình trạng retouch,Ghi chú,Phân loại,Video review,Hình ảnh review,Brand,Brand 2\n";
+            dataToExport.forEach(r => { csv += `"${r.sku}","${r.month}","${r.noiMuon}","${r.loMuon}","${formatDateForExport(r.ngayBatDau)}","${formatDateForExport(r.ngayNhan)}","${formatDateForExport(r.ngayTra)}","${calculateDays(r.ngayBatDau,r.ngayNhan)}","${r.ttMuon}","${formatDateForExport(r.ngayChup)}","${r.ttChup}","${formatDateForExport(r.ngayRetouch)}","${r.ttRetouch}","${(r.note||'').replace(/"/g,'""')}","${r.phanLoai}","${(r.videoReview||'').replace(/"/g,'""')}","${(r.imageReview||'').replace(/"/g,'""')}","${(r.brand||'').replace(/"/g,'""')}","${(r.brand2||'').replace(/"/g,'""')}"\n`; });
             downloadCSV(csv, `PNJ_Database_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
@@ -2666,7 +2663,7 @@
 
         window.exportReportBrandCSV = function() {
             const tbody = document.getElementById('reportBrandBody'); if(!tbody || tbody.children.length === 0) return alert("Bảng trống!");
-            let csv = "\uFEFFBrand,Số Lượng Mượn,Số Lượng Chụp,Số Lượng Retouch\n";
+            let csv = "\uFEFFTên Brand,Đã Chụp (Done),Tỷ Trọng (%)\n";
             Array.from(tbody.querySelectorAll('tr')).forEach(tr => { 
                 csv += Array.from(tr.querySelectorAll('td')).map(td => { 
                     return `"${td.innerText.trim().replace(/"/g,'""')}"`; 
@@ -2744,15 +2741,18 @@
                 for (let i = 1; i < lines.length; i++) {
                     const c = lines[i].trim().split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"').trim());
                     if (c.length >= 4 && c[0]) {
-                        if (c.length >= 18) {
-                            // File mới nhất có đủ Video, Hình ảnh và Brand
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'', brand: c[17]||'' });
+                        if (c.length >= 19) {
+                            // File mới nhất có đủ Video, Hình ảnh, Brand và Brand 2
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'', brand: c[17]||'', brand2: c[18]||'' });
+                        } else if (c.length >= 18) {
+                            // File có Brand nhưng chưa có Brand 2
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'', brand: c[17]||'', brand2: '' });
                         } else if (c.length >= 17) {
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'', brand: '' });
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: c[15]||'', imageReview: c[16]||'', brand: '', brand2: '' });
                         } else if (c.length >= 15) { 
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: '', imageReview: '', brand: '' });
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ngayChup: parseDateFromCSV(c[9]), ttChup: c[10]||'', ngayRetouch: parseDateFromCSV(c[11]), ttRetouch: c[12]||'', note: c[13]||'', phanLoai: c[14]||'', videoReview: '', imageReview: '', brand: '', brand2: '' });
                         } else {
-                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ttChup: c[9]||'', ttRetouch: c[10]||'', note: c[11]||'', phanLoai: c[12]||'', videoReview: '', imageReview: '', brand: '' });
+                            newData.push({ id: generateId()+i, sku: c[0], month: c[1], noiMuon: c[2], loMuon: c[3], ngayBatDau: parseDateFromCSV(c[4]), ngayNhan: parseDateFromCSV(c[5]), ngayTra: parseDateFromCSV(c[6]), ttMuon: c[8]||'', ttChup: c[9]||'', ttRetouch: c[10]||'', note: c[11]||'', phanLoai: c[12]||'', videoReview: '', imageReview: '', brand: '', brand2: '' });
                         }
                     }
                 }
