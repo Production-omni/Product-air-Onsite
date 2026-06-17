@@ -926,8 +926,9 @@
                 throw new Error("Missing config");
             }
         } catch (e) {
+            // Cấu hình Firebase thực tế của dự án chị Kiều Anh
             firebaseConfig = {
-                apiKey: "",
+                apiKey: "AIzaSyBW_picOLzLjkU-JT3PrfwDpFbUN5Cw9ag",
                 authDomain: "product-air-onsite.firebaseapp.com",
                 projectId: "product-air-onsite",
                 storageBucket: "product-air-onsite.firebasestorage.app",
@@ -954,6 +955,7 @@
                 }
             } catch (error) {
                 console.error("Firebase Auth Error:", error);
+                throw error; // Bắt buộc ném lỗi ra ngoài để setupApp tự động tắt màn hình Loading
             }
         };
 
@@ -1063,15 +1065,21 @@
         };
 
         const setupApp = async () => {
-            await initAuth();
-            onAuthStateChanged(auth, (user) => {
-                currentUser = user;
-                if (user) {
-                    window.listenToCloudData();
-                } else {
-                    if(window.loadDataLocal) window.loadDataLocal();
-                }
-            });
+            try {
+                await initAuth();
+                onAuthStateChanged(auth, (user) => {
+                    currentUser = user;
+                    if (user) {
+                        window.listenToCloudData();
+                    } else {
+                        if(window.loadDataLocal) window.loadDataLocal();
+                    }
+                });
+            } catch (error) {
+                console.warn("Lỗi Firebase (Có thể do thiếu API Key trên Github):", error);
+                // Nếu lỗi kết nối Firebase trên Github, tự động tắt Loading và cho dùng Offline
+                if(window.loadDataLocal) window.loadDataLocal();
+            }
         };
 
         window.isFakeLoggedIn = localStorage.getItem('pnj_admin_logged_in') === 'true';
